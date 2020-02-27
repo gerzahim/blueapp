@@ -1,4 +1,4 @@
-@extends('layouts.master') 
+@extends('layouts.master')
 
 
 @section('content')
@@ -54,7 +54,7 @@
                                 @endforeach
                             </ul>
                         </div>
-                        @endif                       
+                        @endif
                         <form method="POST" action="{{ route('po.store') }}">
                             @csrf
                             <div class="form-body">
@@ -62,17 +62,18 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>PO Name</label>
+                                            <span class="text-danger">{{ $errors->first('name') }}</span>
                                             <input type="text" class="form-control" id="name" name="name" placeholder="MIA-ZHE011..">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Vendor</label>
-                                            <select id="vendor_id" name="vendor_id" class="selectpicker form-control" >
-                                                @foreach($vendors as $vendor)                     
+                                            <select id="vendor_id" name="vendor_id" class="form-control" >
+                                                @foreach($vendors as $vendor)
                                                 <option value="{{ $vendor['id'] }}">{{ $vendor['name'] }}</option>
                                                 @endforeach
-                                            </select>  
+                                            </select>
                                         </div>
                                     </div>
 
@@ -81,11 +82,11 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Courier</label>
-                                            <select id="courier_id" name="courier_id" class="selectpicker form-control" >
-                                                @foreach($couriers as $courier)                     
+                                            <select id="courier_id" name="courier_id" class="form-control" >
+                                                @foreach($couriers as $courier)
                                                 <option value="{{ $courier['id'] }}">{{ $courier['name'] }}</option>
                                                 @endforeach
-                                            </select>  
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -93,16 +94,16 @@
                                             <label>Tracking Number</label>
                                             <input type="text" class="form-control" id="tracking" name="tracking" placeholder="...">
                                         </div>
-                                    </div>                                    
+                                    </div>
                                 </div>
                                 <div class="row">
- 
+
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Transaction Type</label>
-                                            <select id="courier_id" name="courier_id" class="selectpicker form-control" >
+                                            <select id="transaction_type_id" name="transaction_type_id" class="form-control" >
                                                 <option value="1">Purchase - PO</option>
-                                            </select>  
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -110,7 +111,7 @@
                                             <label>Bill of Landing</label>
                                             <input type="text" class="form-control" id="bol" name="bol" placeholder="...">
                                         </div>
-                                    </div>                                    
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
@@ -128,9 +129,9 @@
                                     </div>
                                 </div>
                                 <hr>
-                                
+
                                 <po-component></po-component>
-                                
+
 
 
                             </div>
@@ -143,11 +144,11 @@
                             </div>
                         </form>
                     </div>
-                </div> 
+                </div>
             </div>
         </div>
-    
-    
+
+
     </div>
     <!-- ============================================================== -->
     <!-- End Container fluid  -->

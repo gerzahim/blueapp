@@ -3,26 +3,33 @@ Custom Inventory Management System HUAHAI
 
 
 ## TODO
+ 
+- Save PO
+- Create Class Stock
+- Update Stock when save PO  
+
+- RMA IN, 
+- Order OUT
+ 
 
 - Create Crud Reason Type IN, OUT
-- Update CheckIN table
-- Create Save PO
-- Update Stock
-- RMA IN
-- Check OUT
-
 - Create Crud Couries
 - Create Crud ProductDimensions
+- Validate Form PO with Vue, change PO
+    validate not duplicate PO Name
+    validate not add  duplicate product in the PO
 - Create Crud PO
 - Fix Menu Icons
 - Fix Home Logo
 - Replace Blue App Name
 
+- Return Borrowed IN
+- Lend Out
+
 
 
 
 ## About Laravel
-
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
 - [Simple, fast routing engine](https://laravel.com/docs/routing).

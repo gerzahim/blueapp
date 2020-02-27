@@ -3,11 +3,11 @@ services:
     #Nginx Service
     webserver:
         image: nginx:alpine
-        container_name: nginx_container
+        container_name: blue_nginx_container
         restart: unless-stopped
         tty: true
         ports:
-          - "80:80"
+          - "7070:80"
           - "443:443"
         volumes:
           - ./src:/var/www/
@@ -18,14 +18,14 @@ services:
     #PHP Service
     app:
         build: .docker/php
-        container_name: app_container
+        container_name: blue_app_container
         volumes:
           - ./src:/var/www/
           - .docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
         restart: unless-stopped
         tty: true
         environment:
-          - maildev_host=maildev_container
+          - maildev_host=blue_maildev_container
             #SERVICE_NAME: app
             #SERVICE_TAGS: dev          
         working_dir: /var/www
@@ -36,7 +36,7 @@ services:
     #MySQL Service
     mysql:
         image: mysql:8
-        container_name: mysql_container
+        container_name: blue_mysql_container
         volumes:
             - .docker/data/db:/var/lib/mysql
         command:
@@ -51,18 +51,18 @@ services:
     #PHP-MyAdmin MYSQL
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
-        container_name: phpmyadmin_container
+        container_name: blue_phpmyadmin_container
         environment:
           PMA_HOST: mysql
           PMA_PORT: 3306
         ports:
-            - 8080:80
+            - 7071:80
         links:
             - mysql
 
     #Mail_Host
     maildev:
         image: djfarrelly/maildev
-        container_name: maildev_container
+        container_name: blue_maildev_container
         ports:
-          - 8002:80
+          - 7072:80

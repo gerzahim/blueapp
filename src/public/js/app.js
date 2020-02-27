@@ -2000,11 +2000,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2013,9 +2008,10 @@ __webpack_require__.r(__webpack_exports__);
       accessView: false,
       ajax: false,
       name: '',
+      products: [],
       vars: [{
-        'varname': '',
-        'value': ''
+        'qty': '1',
+        'batch_number': ''
       }],
       empty: false
     };
@@ -2024,10 +2020,20 @@ __webpack_require__.r(__webpack_exports__);
     insertVarLine: function insertVarLine() {
       var variables = this.vars;
       variables.push({
-        'varname': '',
-        'value': ''
+        'qty': '1',
+        'batch_number': ''
+      });
+    },
+    fetchProducts: function fetchProducts() {
+      var _this = this;
+
+      axios.get('/get_products').then(function (response) {
+        _this.products = response.data.products;
       });
     }
+  },
+  created: function created() {
+    this.fetchProducts();
   },
   mounted: function mounted() {
     console.log('Component mounted.');
@@ -37483,7 +37489,28 @@ var render = function() {
         { staticClass: "card-body" },
         _vm._l(_vm.vars, function(variable, key) {
           return _c("div", { key: key, staticClass: "row" }, [
-            _vm._m(1, true),
+            _c("div", { staticClass: "col-md-4" }, [
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", [_vm._v("Product ")]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    staticClass: "form-control",
+                    attrs: { id: "product_id[]", name: "product_id[]" }
+                  },
+                  _vm._l(_vm.products, function(product) {
+                    return _c("option", {
+                      domProps: {
+                        value: product.id,
+                        textContent: _vm._s(product.name)
+                      }
+                    })
+                  }),
+                  0
+                )
+              ])
+            ]),
             _vm._v(" "),
             _c("div", { staticClass: "col-md-2" }, [
               _c("div", { staticClass: "form-group" }, [
@@ -37494,25 +37521,25 @@ var render = function() {
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: variable.varname,
-                      expression: "variable.varname"
+                      value: variable.qty,
+                      expression: "variable.qty"
                     }
                   ],
                   staticClass: "form-control",
                   attrs: {
                     type: "number",
-                    id: "qty_product[]",
-                    name: "qty_product[]",
+                    id: "qty[]",
+                    name: "qty[]",
                     min: "1",
                     placeholder: "0"
                   },
-                  domProps: { value: variable.varname },
+                  domProps: { value: variable.qty },
                   on: {
                     input: function($event) {
                       if ($event.target.composing) {
                         return
                       }
-                      _vm.$set(variable, "varname", $event.target.value)
+                      _vm.$set(variable, "qty", $event.target.value)
                     }
                   }
                 })
@@ -37528,24 +37555,24 @@ var render = function() {
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: variable.value,
-                      expression: "variable.value"
+                      value: variable.batch_number,
+                      expression: "variable.batch_number"
                     }
                   ],
                   staticClass: "form-control",
                   attrs: {
                     type: "text",
-                    id: "batch[]",
-                    name: "batch[]",
+                    id: "batch_number[]",
+                    name: "batch_number[]",
                     placeholder: "XFR4487..."
                   },
-                  domProps: { value: variable.value },
+                  domProps: { value: variable.batch_number },
                   on: {
                     input: function($event) {
                       if ($event.target.composing) {
                         return
                       }
-                      _vm.$set(variable, "value", $event.target.value)
+                      _vm.$set(variable, "batch_number", $event.target.value)
                     }
                   }
                 })
@@ -37586,25 +37613,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "col-md-6" }, [
       _c("h4", { staticClass: "mb-0 mt-2" }, [_vm._v("Select Products")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-4" }, [
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", [_vm._v("Product ")]),
-        _vm._v(" "),
-        _c(
-          "select",
-          {
-            staticClass: "selectpicker form-control",
-            attrs: { id: "product_id[]", name: "product_id[]" }
-          },
-          [_c("option", { attrs: { value: "1" } }, [_vm._v("Product 1")])]
-        )
-      ])
     ])
   }
 ]

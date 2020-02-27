@@ -3,22 +3,36 @@
 namespace App\Http\Controllers;
 
 use App\Purchases;
+use App\PurchasesItem;
 use App\Vendor;
 use App\Product;
 use App\Courier;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+
 
 class PurchaseController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of POs
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
         $pos = Purchases::latest()->paginate(10);
         return view('po.index', compact('pos'));
+    }
+
+    /**
+     * Get List of Products by Json
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getProductsbyAjax() {
+        $products = Product::all();
+        return response()->json(['products' => $products]);
     }
 
     /**
@@ -28,7 +42,7 @@ class PurchaseController extends Controller
      */
     public function create()
     {
-        $vendors = Vendor::all();           
+        $vendors = Vendor::all();
         $products = Product::all();
         $couriers = Courier::all();
         return view('po.create', compact('vendors','products','couriers'));
@@ -36,51 +50,50 @@ class PurchaseController extends Controller
 
 
     /**
-     * Store a newly created resource in storage.
+     * Create New PO and PO
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
         $this->validate($request, [
             'name' => 'required',
-            'courier_id' => 'required',
             'transaction_type_id' => 'required',
             'product_id.*' => 'required|integer|min:1',
-            'qty_product.*' => 'required|integer|min:1'
+            'qty.*' => 'required|integer|min:1'
         ]);
 
-        dd($request->all());
-        Purchases::create($request->only(['name']));
- 
+        // Insert PO
+        $purchases = Purchases::create($request->only(['name','vendor_id','courier_id','tracking','transaction_type_id','bol','package_list','reference']));
+
+        if($purchases){
+            $purchases_id = $purchases->id;
+            $product_id   = $request->product_id;
+            $qty          = $request->qty;
+            $batch_number = $request->batch_number;
+            $time_now     = date('Y-m-d H:i:s');
+
+            for($count = 0; $count < count($product_id); $count++) {
+                $data = array(
+                    'purchases_id' => $purchases_id,
+                    'product_id'   => $product_id[$count],
+                    'qty'          => $qty[$count],
+                    'batch_number' => $batch_number[$count],
+                    'created_at'   => $time_now,
+                    'updated_at'   => $time_now
+                );
+                $insert_data[] = $data;
+            }
+            // Insert PO Items Associated to PO
+            PurchasesItem::insert($insert_data);
+        }
         return redirect()->route('po.index')->with('success', 'PO created successfully.');
     }
 
-
-    function insert(Request $request)
-    {
-        $first_name = $request->first_name;
-        $last_name = $request->last_name;
-        for($count = 0; $count < count($first_name); $count++) {
-            $data = array(
-                'first_name' => $first_name[$count],
-                'last_name'  => $last_name[$count]
-            );
-         $insert_data[] = $data; 
-        }
-  
-        DynamicField::insert($insert_data);
-        return response()->json([
-         'success'  => 'Data Added successfully.'
-        ]);
-    }    
-
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Purchases  $purchases
-     * @return \Illuminate\Http\Response
+     * @param Purchases $purchases
      */
     public function show(Purchases $purchases)
     {
@@ -88,10 +101,7 @@ class PurchaseController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Purchases  $purchases
-     * @return \Illuminate\Http\Response
+     * @param Purchases $purchases
      */
     public function edit(Purchases $purchases)
     {
@@ -100,10 +110,8 @@ class PurchaseController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Purchases  $purchases
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Purchases $purchases
      */
     public function update(Request $request, Purchases $purchases)
     {
@@ -112,9 +120,7 @@ class PurchaseController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Purchases  $purchases
-     * @return \Illuminate\Http\Response
+     * @param Purchases $purchases
      */
     public function destroy(Purchases $purchases)
     {

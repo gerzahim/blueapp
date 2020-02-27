@@ -12,9 +12,13 @@ class CourierTableSeeder extends Seeder
      */
     public function run(Generator $faker)
     {
+        DB::table('couriers')->insert([
+            'name'=> 'N/A'
+        ]);
+
     	foreach (range(1,10) as $index) {
 	        DB::table('couriers')->insert([
-	            'name' => $faker->numerify('Courier ##')              
+	            'name' => $faker->numerify('Courier ##')
 	        ]);
 	    }
     }

@@ -13,36 +13,31 @@
                             <a v-on:click="insertVarLine();" class="btn btn-success">Add</a>
                         </div>
                     </div>
-                </div>  
+                </div>
 
             </div>
             <div class="card-body">
 
-                
+
                 <div v-for="(variable, key) in vars" :key="key" class="row">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>Product </label>
-                            <select id="product_id[]" name="product_id[]" class="selectpicker form-control" >
-                                <option value="1">Product 1</option>
-                                <!--
-                                @foreach($products as $product)
-                                    <option value="{{ $product['id'] }}">{{ $product['name'] }}</option>
-                                @endforeach                                                 
-                                -->
-                            </select>  
+                            <select id="product_id[]" name="product_id[]" class="form-control" >
+                                <option v-for="product in products" v-bind:value="product.id" v-text="product.name"></option>
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label>Qty</label>
-                            <input type="number" class="form-control" id="qty_product[]" v-model="variable.varname" name="qty_product[]" min="1" placeholder="0">
+                            <input type="number" class="form-control" id="qty[]" v-model="variable.qty" name="qty[]" min="1" placeholder="0">
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>Batch</label>
-                            <input type="text" class="form-control" id="batch[]" v-model="variable.value" name="batch[]" placeholder="XFR4487...">
+                            <input type="text" class="form-control" id="batch_number[]" v-model="variable.batch_number" name="batch_number[]" placeholder="XFR4487...">
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -53,7 +48,7 @@
                             <a v-on:click="removeElement(index);" class="btn btn-danger text-white">Remove</a>
                             -->
                         </div>
-                    </div>        
+                    </div>
                 </div>
 
 
@@ -71,15 +66,29 @@
                 accessView: false,
                 ajax: false,
                 name: '',
-                vars: [{'varname': '', 'value': ''}],
+                products: [],
+                vars: [{'qty': '1', 'batch_number': ''}],
                 empty: false,
             }
         },
         methods: {
             insertVarLine() {
                 let variables = this.vars
-                variables.push({'varname': '', 'value': ''})
+                variables.push({'qty': '1', 'batch_number': ''})
+            },
+
+
+
+            fetchProducts() {
+                axios
+                    .get('/get_products')
+                    .then(response => {
+                        this.products = response.data.products
+                    })
             }
+        },
+        created() {
+            this.fetchProducts()
         },
         mounted() {
             console.log('Component mounted.')

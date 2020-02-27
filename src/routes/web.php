@@ -14,7 +14,8 @@
 
 
 
-
+Route::resource('home', 'HomeController');
+Route::resource('/', 'HomeController');
 Route::resource('post', 'PostController');
 
 Route::resource('category', 'CategoryController');
@@ -23,19 +24,9 @@ Route::resource('product', 'ProductController');
 Route::resource('client', 'ClientController');
 
 Route::resource('po', 'PurchaseController');
-Route::resource('courier', 'CourierController'); # /routes/web.php
+Route::get('/get_products', 'PurchaseController@getProductsbyAjax');
+
+Route::resource('courier', 'CourierController');
 
 
 
-/*
-Route::get('welcome', function () {
-    return view('layouts.home');
-});
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::post('/postcreate', [
-	'uses' => 'PurchaseController@getqtyProducts',
-	'as' => 'postcreate'
-]);
-*/
