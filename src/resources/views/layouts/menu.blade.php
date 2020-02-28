@@ -38,7 +38,7 @@
                                 <span class="hide-menu">Products</span></a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link sidebar-link" href="{{ route('product.index') }}" aria-expanded="false">
+                            <a class="sidebar-link sidebar-link" href="{{ route('stock.index') }}" aria-expanded="false">
                                 <i data-feather="tag" class="feather-icon"></i>
                                 <span class="hide-menu">Inventory Stock</span></a>
                         </li>

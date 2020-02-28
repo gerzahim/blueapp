@@ -10,7 +10,7 @@ use App\Courier;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-
+use App\Http\Controllers\StockController;
 
 class PurchaseController extends Controller
 {
@@ -50,7 +50,7 @@ class PurchaseController extends Controller
 
 
     /**
-     * Create New PO and PO
+     * Create New PO and Stock
      *
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
@@ -84,10 +84,15 @@ class PurchaseController extends Controller
                     'created_at'   => $time_now,
                     'updated_at'   => $time_now
                 );
-                $insert_data[] = $data;
+
+                // Insert PO Items Associated to PO
+                PurchasesItem::insert($data);
+
+                // Saving Stock
+                $stock = new StockController();
+                $stock->registerProductStock($purchases_id, $product_id[$count], $qty[$count]);
             }
-            // Insert PO Items Associated to PO
-            PurchasesItem::insert($insert_data);
+
         }
         return redirect()->route('po.index')->with('success', 'PO created successfully.');
     }

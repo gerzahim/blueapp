@@ -14,8 +14,8 @@ class ProductTableSeeder extends Seeder
     {
     	foreach (range(1,10) as $index) {
 	        DB::table('products')->insert([
-                'name' => $faker->numerify('Product ##'),              
-                'code' => $faker->numerify('sku_##'),
+                'name' => $faker->numerify('Product ###'),
+                'code' => $faker->numerify('sku_###'),
                 'dimensions_id' => $faker->randomDigit(),
                 'category_id' => $faker->randomDigit()
 	        ]);
