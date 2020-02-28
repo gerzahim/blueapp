@@ -59,21 +59,52 @@ class PurchaseController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
+            'name'                => 'required',
             'transaction_type_id' => 'required',
-            'product_id.*' => 'required|integer|min:1',
-            'qty.*' => 'required|integer|min:1'
+            'product_id.*'        => 'required|integer|min:1',
+            'qty.*'               => 'required|integer|min:1'
         ]);
 
-        // Insert PO
-        $purchases = Purchases::create($request->only(['name','vendor_id','courier_id','tracking','transaction_type_id','bol','package_list','reference']));
+        $time_now     = date('Y-m-d H:i:s');
+
+
+        //'courier_id','tracking','transaction_type_id','bol','package_list','reference'
+        $data = array(
+            'name' => $request->name,
+            'contact_type_id' => 1,
+            'contact_id' => $request->vendor_id,
+            'courier_id' => $request->courier_id,
+            'tracking' => $request->tracking,
+            'transaction_type_id' => $request->transaction_type_id,
+            'bol' => $request->bol,
+            'package_list' => $request->package_list,
+            'reference' => $request->reference,
+            'created_at'   => $time_now,
+            'updated_at'   => $time_now
+        );
+
+        $purchases = Purchases::create([
+            'name'                => $request->name,
+            'contact_type_id'     => 1,
+            'contact_id'          => $request->vendor_id,
+            'courier_id'          => $request->courier_id,
+            'tracking'            => $request->tracking,
+            'transaction_type_id' => $request->transaction_type_id,
+            'bol'                 => $request->bol,
+            'package_list'        => $request->package_list,
+            'reference'           => $request->reference,
+            'created_at'          => $time_now,
+            'updated_at'          => $time_now
+        ]);
+
+        $lastInsertedId= $purchases->id;
 
         if($purchases){
-            $purchases_id = $purchases->id;
+            $purchases_id = $lastInsertedId;
             $product_id   = $request->product_id;
             $qty          = $request->qty;
             $batch_number = $request->batch_number;
-            $time_now     = date('Y-m-d H:i:s');
+
 
             for($count = 0; $count < count($product_id); $count++) {
                 $data = array(
@@ -92,9 +123,25 @@ class PurchaseController extends Controller
                 $stock = new StockController();
                 $stock->registerProductStock($purchases_id, $product_id[$count], $qty[$count]);
             }
-
         }
         return redirect()->route('po.index')->with('success', 'PO created successfully.');
+    }
+
+    public function updatePO(){
+        // Select PO
+        // Edit PO and ProductItems
+        // qty
+        // Update PO type po
+        // Update Stock
+    }
+
+    public function storeRMA(){
+        // Select Client
+        // Select PO
+        // Select Product
+        // qty
+        // Create PO type Rma
+        // Update Stock
     }
 
     /**

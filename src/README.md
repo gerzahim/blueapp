@@ -1,10 +1,9 @@
 ## TODO
 
-- Create Crud Reason Type IN, OUT
-- Update CheckIN table
-- Create Save PO
+- Create RMA IN
+- Update PO
 - Update Stock
-- RMA IN
+
 - Check OUT
 
 - Create Crud Couries

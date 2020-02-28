@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
 
         //Mandatory
         $this->call(TransactionTypeTableSeeder::class);
+        $this->call(ContactTypeTableSeeder::class);
         //$this->call(CourierTableSeeder::class);
     }
 }
