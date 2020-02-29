@@ -3,30 +3,21 @@ Custom Inventory Management System HUAHAI
 
 
 ## TODO
-- form-control-sm all inputs 
-- validate [product,qty] + fix is-invalid
-- Validate is take the same product
-- Validate all form PO
+- Replace Blue App Name
+- Validate all form PO ( validate PO Name has Value, Validate there is vars value, Check No PO Name Duplicated)
 - Make submit PO Form and save [{products:1, qty: 5, batch: asdads, products:2, qty: 5, batch: asdads}]
+  ( save en PO_Header as dictionary and PO_items by each line)
 - Update Stock when save PO
-- Update PO Form
+- Make Update PO Form
 - Update Stock when update PO  
 
 - RMA IN, 
 - Order OUT 
 - Create Crud Couries
+- Create Crud Vendors
 - Create Crud ProductDimensions
-- Validate Form PO with Vue, change PO
-    validate not duplicate PO Name
-    validate not add  duplicate product in the PO
 - Create Crud PO
 - Fix Menu Icons
-- Fix Home Logo
-- Replace Blue App Name
-
-- Return Borrowed IN
-- Lend Out
-
 
 
 

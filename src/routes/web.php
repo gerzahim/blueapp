@@ -25,6 +25,9 @@ Route::resource('client', 'ClientController');
 
 Route::resource('po', 'PurchaseController');
 Route::get('/get_products', 'PurchaseController@getProductsbyAjax');
+Route::get('/get_vendors', 'PurchaseController@getVendorsbyAjax');
+Route::get('/get_clients', 'PurchaseController@getClientsbyAjax');
+Route::get('/get_couriers', 'PurchaseController@getCouriersbyAjax');
 
 Route::resource('courier', 'CourierController');
 Route::resource('stock', 'StockController');

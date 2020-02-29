@@ -7,19 +7,18 @@
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0" ><small>PO Name</small></label>
-                            <div class="input-group input-group-sm">
-                                <input type="text" class="form-control" id="name" name="name" placeholder="MIA-ZHE011..">
-                            </div>
+                            <input type="text" class="form-control form-control-sm" id="name" name="name" placeholder="MIA-ZHE011..">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0"><small>Vendor</small></label>
                             <div class="input-group input-group-sm">
-                                <select id="vendor_id" name="vendor_id" class="form-control input-sm" >
-                                    <select id="product_id[]" name="product_id[]" class="form-control" >
-                                        <option v-for="product in products" v-bind:value="product.id" v-text="product.name"></option>
-                                    </select>
+                                <select id="vendor_id" name="vendor_id" class="form-control form-control-sm" v-bind:class="[error_vendor ? 'is-invalid' : '']" v-model="vendor_selected">
+                                    <option value="0" selected>Select Vendor</option>
+                                    <option v-for="vendor in vendors" v-bind:value="{ id: vendor.id, name: vendor.name }">
+                                        {{ vendor.name }}
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -30,10 +29,11 @@
                         <div class="form-group-po">
                             <label class="mb-0"><small>Courier</small></label>
                             <div class="input-group input-group-sm">
-                                <select id="couriers_id" name="courier_id" class="form-control input-sm" >
-                                    <select id="prosduct_id[]" name="product_id[]" class="form-control" >
-                                        <option v-for="product in products" v-bind:value="product.id" v-text="product.name"></option>
-                                    </select>
+                                <select id="courier_id" name="courier_id" class="form-control form-control-sm" v-bind:class="[error_courier ? 'is-invalid' : '']" v-model="courier_selected">
+                                    <option value="0" selected>Select Courier</option>
+                                    <option v-for="courier in couriers" v-bind:value="{ id: courier.id, name: courier.name }">
+                                        {{ courier.name }}
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -41,9 +41,7 @@
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0" ><small>Tracking Number</small></label>
-                            <div class="input-group input-group-sm">
-                                <input type="text" class="form-control input-sm" id="tracking" name="tracking" placeholder="...">
-                            </div>
+                            <input type="text" class="form-control form-control-sm" id="tracking" name="tracking" placeholder="...">
                         </div>
                     </div>
                 </div>
@@ -52,19 +50,15 @@
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0" ><small>Transaction Type</small></label>
-                            <div class="input-group input-group-sm">
-                                <select id="transaction_type_id" name="transaction_type_id" class="form-control input-sm" >
-                                    <option value="1">Purchase - PO</option>
-                                </select>
-                            </div>
+                            <select id="transaction_type_id" name="transaction_type_id" class="form-control form-control-sm" >
+                                <option value="1">Purchase - PO</option>
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0" ><small>Bill of Landing</small></label>
-                            <div class="input-group input-group-sm">
-                                <input type="text" class="form-control input-sm" id="bol" name="bol" placeholder="...">
-                            </div>
+                            <input type="text" class="form-control form-control-sm" id="bol" name="bol" placeholder="...">
                         </div>
                     </div>
                 </div>
@@ -72,32 +66,29 @@
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0" ><small>Package List</small></label>
-                            <div class="input-group input-group-sm">
-                                <input type="text" class="form-control input-sm" id="package_list" name="package_list" placeholder="...">
-                            </div>
+                            <input type="text" class="form-control form-control-sm" id="package_list" name="package_list" placeholder="...">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0" ><small>Reference</small></label>
-                            <div class="input-group input-group-sm">
-                                <input type="text" class="form-control input-sm" id="reference" name="reference" min="1" placeholder="...">
-                            </div>
+                            <input type="text" class="form-control form-control-sm" id="reference" name="reference" min="1" placeholder="...">
                         </div>
                     </div>
                 </div>
                 <div class="col-md-12">
                     <div class="card border-success pb-1 mb-2 mt-2">
                         <div class="card-header bg-success pb-0 pt-1">
-                            <h4 class="mb-1 mt-1 text-white text-sm-left ">Add Products to PO</h4>
+                            <h6 class="mb-1 mt-1 text-white text-sm-left">Add Products to PO</h6>
                         </div>
 
-                        <div class="card-body pt-1 pb-1">
+                        <div class="card-body bg-light pt-1 pb-1">
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group-po">
                                         <label class="mb-0"><small>Products</small></label>
                                         <select id="product_id" name="product_id" class="form-control form-control-sm" v-bind:class="[error_product ? 'is-invalid' : '']" v-model="product_selected">
+                                            <option value="0" selected>Select Product</option>
                                             <option v-for="product in products" v-bind:value="{ id: product.id, name: product.name }">
                                                 {{ product.name }}
                                             </option>
@@ -108,7 +99,7 @@
                                 <div class="col-md-2">
                                     <div class="form-group-po">
                                         <label class="mb-0" ><small>Qty</small></label>
-                                        <input type="number" class="form-control form-control-sm" v-bind:class="[error_qty ? 'is-invalid' : '']" v-model="qty" min="1" value="1">
+                                        <input type="number" class="form-control form-control-sm" v-bind:class="[error_qty ? 'is-invalid' : '']" v-model="qty" min="1">
                                         <div v-show="error_qty" class="invalid-feedback">Please Indicate Qty!</div>
                                     </div>
                                 </div>
@@ -120,9 +111,9 @@
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group-po">
-                                        <label class="mb-0"><small>Action</small></label>
+                                        <label class="mb-0"><small>Add</small></label>
                                         <div class="input-group input-group-sm">
-                                            <button type="button" class="btn-success" @click="insertVarLine()"><i class="fas fa-plus"></i></button>
+                                            <button type="button" class="btn-success" @click="insertNewProduct()"><i class="fas fa-plus"></i></button>
                                         </div>
                                     </div>
                                 </div>
@@ -134,20 +125,19 @@
                 <div class="row">
                     <div class="col-12">
                         <h6 class="text-muted">Products</h6>
-                        <ul class="list-group-po nobull">
-                            <li v-for="(variable, key) in vars" :key="key" class="list-group-po-item py-1 px-3">
-                                <div class="row h-100">
-                                    <div class="col-2 my-auto">
+                        <ul class="list-group-po nobull px-1">
+                            <li v-for="(variable, key) in vars" :key="key" class="list-group-po-item py-1 px-1 mx-1 bg-light">
+                                <div class="row mx-1 h-100">
+                                    <div class="col-sm-12 col-lg-12 col-xl-6 my-auto px-1">
+                                        {{variable.product_name}}
                                         <span class="badge badge-primary badge-pill"><b>{{variable.qty}}</b></span>
                                     </div>
-                                    <div class="col-5 my-auto">{{variable.product_name}}
+                                    <div class="col-sm-12 col-lg-12 col-xl-5 my-auto px-1">
+                                        <h6>
+                                            <span class="badge badge-dark">{{variable.batch_number}}</span>
+                                        </h6>
                                     </div>
-                                    <div class="col-3 my-auto">
-                                        <small>
-                                            <span class="badge badge-light">{{variable.batch_number}}</span>
-                                        </small>
-                                    </div>
-                                    <div class="col-2 my-auto">
+                                    <div class="col-sm-12 col-lg-12 col-xl-1 my-auto px-1 text-right">
                                         <button type="button" class="btn-danger pull-right" @click="$delete(vars, key)"><i class="fa fa-times-circle"></i></button>
                                     </div>
                                 </div>
@@ -176,11 +166,19 @@
                 errors:[],
                 error_qty: false,
                 error_product: false,
-                product_selected: '',
-                qty: 0,
+                error_courier: false,
+                error_vendor: false,
+                error_client: false,
+                product_selected: 0,
+                courier_selected: 0,
+                vendor_selected: 0,
+                client_selected: 0,
+                qty: 1,
                 batch_number: '',
                 csrf: document.head.querySelector('meta[name="csrf-token"]').content,
                 products: [],
+                vendors: [],
+                couriers: [],
                 vars: [],
                 empty: false,
             }
@@ -188,55 +186,83 @@
         methods: {
             checkForm:function(e) {
                 this.errors = [];
-                //if(this.total != 100) this.errors.push("Total must be 100!");
                 if(!this.errors.length) return true;
                 e.preventDefault();
             },
             cleanAddProducts() {
                 this.product_id=0,
-                this.qty= 0,
+                this.qty= 1,
                 this.batch_number= ''
             },
             cleanErrors() {
-              this.error_qty= false
+                this.errors = [];
+                this.error_qty = false;
+                this.error_product = false;
             },
-            areProductValues() {
-                //this.errors = [];
+            isProductGoodToAdd() {
+                this.cleanErrors()
 
-                console.log(this.qty, this.qty < 1, typeof(this.qty) )
                 if(this.qty < 1) {
                     this.error_qty = true;
-                    console.log('epale brother -> this.error_qty', this.error_qty)
-                    return false
-                    //this.errors.push("Please Indicate Qty!");
+                    this.errors.push("Please Indicate Qty!");
                 }
 
                 if(typeof(this.product_selected.id) == 'undefined' || this.product_selected.id === null || this.product_selected.id === 0) {
                     this.error_product = true;
-                    return false
-                    //this.errors.push("Must Select a Product!");
+                    this.errors.push("Must Select a Product!");
                 }
 
-
-                //if(!this.errors.length) return true;
-                //return false
-                return true;
+                if(!this.errors.length) return true;
+                return false
             },
-            insertVarLine() {
-                if( this.areProductValues() ) {
+            IsvalueInArray(array, id, batch) {
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i].product_id === id && array[i].batch_number === batch)
+                        return [array[i].qty, i];
+                }
+                return 0;
+            },
+            insertNewProduct() {
+                if( this.isProductGoodToAdd() ) {
                     let variables = this.vars
-                    variables.push({'product_id': this.product_selected.id,'product_name': this.product_selected.name, 'qty': this.qty, 'batch_number': this.batch_number})
-                    this.cleanErrors()
+                    let getInfoArray = this.IsvalueInArray(this.vars, this.product_selected.id, this.batch_number)
+                    let previousQty = getInfoArray[0]
+                    let product_array_key = getInfoArray[1]
+                    if (getInfoArray[0] > 0){
+                        variables.splice(product_array_key,1)
+                        variables.push({'product_id': this.product_selected.id,'product_name': this.product_selected.name, 'qty': parseInt(this.qty)+parseInt(previousQty), 'batch_number': this.batch_number})
+                    }else {
+                        variables.push({'product_id': this.product_selected.id,'product_name': this.product_selected.name, 'qty': this.qty, 'batch_number': this.batch_number})
+                    }
                 }
                 this.cleanAddProducts()
-                console.log('epale brother 2 -> this.error_qty', this.error_qty)
             },
-
             fetchProducts() {
                 axios
                     .get('/get_products')
                     .then(response => {
                         this.products = response.data.products
+                    })
+            },
+            fetchVendors() {
+                axios
+                    .get('/get_vendors')
+                    .then(response => {
+                        this.vendors = response.data.vendors
+                    })
+            },
+            fetchCouries() {
+                axios
+                    .get('/get_couriers')
+                    .then(response => {
+                        this.couriers = response.data.couriers
+                    })
+            },
+            fetchClients() {
+                axios
+                    .get('/get_clients')
+                    .then(response => {
+                        this.clients = response.data.clients
                     })
             }
         },
@@ -245,6 +271,9 @@
         },
         mounted() {
             this.fetchProducts()
+            this.fetchVendors()
+            this.fetchCouries()
+            this.fetchClients()
             console.log('Component mounted.')
         }
     }

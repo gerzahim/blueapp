@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
 use App\Purchases;
 use App\PurchasesItem;
 use App\Vendor;
@@ -34,6 +35,37 @@ class PurchaseController extends Controller
         $products = Product::all();
         return response()->json(['products' => $products]);
     }
+
+    /**
+     * Get List of Products by Json
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getClientsbyAjax() {
+        $clients = Client::all();
+        return response()->json(['clients' => $clients]);
+    }
+
+    /**
+     * Get List of Products by Json
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getVendorsbyAjax() {
+        $vendors = Vendor::all();
+        return response()->json(['vendors' => $vendors]);
+    }
+
+    /**
+     * Get List of Products by Json
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getCouriersbyAjax() {
+        $couriers = Courier::all();
+        return response()->json(['couriers' => $couriers]);
+    }
+
 
     /**
      * Show the form for creating a new resource.
