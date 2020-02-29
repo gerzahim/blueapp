@@ -45,6 +45,7 @@ class PurchaseController extends Controller
         $vendors = Vendor::all();
         $products = Product::all();
         $couriers = Courier::all();
+
         return view('po.create', compact('vendors','products','couriers'));
     }
 

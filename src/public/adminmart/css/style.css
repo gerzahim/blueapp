@@ -1463,6 +1463,9 @@ textarea.form-control {
 .form-group {
   margin-bottom: 1rem; }
 
+.form-group-po {
+    margin-bottom: 0.5rem;; }
+
 .form-text {
   display: block;
   margin-top: 0.25rem; }
@@ -3977,6 +3980,27 @@ input[type="button"].btn-block {
 
 .media-body {
   flex: 1; }
+
+.list-group-po {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1em;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.list-group-po-item {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    text-decoration: none;
+}
+
+.nobull {
+    list-style-type: none;
+}
+
 
 .list-group {
   display: flex;
@@ -7525,8 +7549,8 @@ a.text-purple:hover, a.text-purple:focus {
     color: inherit;
     border-color: #e8eef3; } }
 
-/*============================================================== 
- For all pages 
+/*==============================================================
+ For all pages
  ============================================================== */
 #main-wrapper {
   width: 100%;

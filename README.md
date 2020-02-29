@@ -3,16 +3,17 @@ Custom Inventory Management System HUAHAI
 
 
 ## TODO
- 
-- Save PO
-- Create Class Stock
-- Update Stock when save PO  
+- form-control-sm all inputs 
+- validate [product,qty] + fix is-invalid
+- Validate is take the same product
+- Validate all form PO
+- Make submit PO Form and save [{products:1, qty: 5, batch: asdads, products:2, qty: 5, batch: asdads}]
+- Update Stock when save PO
+- Update PO Form
+- Update Stock when update PO  
 
 - RMA IN, 
-- Order OUT
- 
-
-- Create Crud Reason Type IN, OUT
+- Order OUT 
 - Create Crud Couries
 - Create Crud ProductDimensions
 - Validate Form PO with Vue, change PO
