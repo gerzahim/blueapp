@@ -12,7 +12,7 @@
                     <!-- ============================================================== -->
                     <div class="navbar-brand">
                         <!-- Logo icon -->
-                        <a href="index.html">
+                        <a href="/">
                             <b class="logo-icon">
                                 <!-- dark Logo icon -->
                                 <img src="{{ asset('/adminmart/images/logo-icon.png') }}" alt="homepage" class="dark-logo" />
@@ -22,7 +22,7 @@
                             <span class="logo-text">
                                 <!-- dark Logo text -->
                                 <img src="{{ asset('/adminmart/images/logo-light-text.png') }}" class="dark-logo" alt="homepage" />
-                                
+
                             </span>
                         </a>
                     </div>
@@ -51,7 +51,7 @@
                             <!-- SPACE AVAILABLE -->
                     </ul>
 
-                    
+
                     <!-- ============================================================== -->
                     <!-- Right side toggle and nav items -->
                     <!-- ============================================================== -->

@@ -3,10 +3,14 @@ Custom Inventory Management System HUAHAI
 
 
 ## TODO
-- Replace Blue App Name
+- Replace Blue App Name ***
+- Fix Menu Icons ***
+- Export BD ***
+- update hosting ***
 - Validate all form PO ( validate PO Name has Value, Validate there is vars value, Check No PO Name Duplicated)
 - Make submit PO Form and save [{products:1, qty: 5, batch: asdads, products:2, qty: 5, batch: asdads}]
   ( save en PO_Header as dictionary and PO_items by each line)
+- add Flash Message  
 - Update Stock when save PO
 - Make Update PO Form
 - Update Stock when update PO  
@@ -17,8 +21,7 @@ Custom Inventory Management System HUAHAI
 - Create Crud Vendors
 - Create Crud ProductDimensions
 - Create Crud PO
-- Fix Menu Icons
-
+- Create User Login
 
 
 ## About Laravel
