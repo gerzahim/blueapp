@@ -8,7 +8,7 @@
                         <div class="form-group-po">
                             <label class="mb-0" ><small>PO Name</small></label>
                             <input type="text" class="form-control form-control-sm" id="name" name="name" v-bind:class="[error_name ? 'is-invalid' : '']" v-model="name" placeholder="MIA-ZHE011..">
-                            <div v-show="error_name" class="invalid-feedback">Please Indicate PO Name (Unique)!</div>
+                            <div v-show="error_name" class="invalid-feedback">Please Indicate unique PO Name !</div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -146,7 +146,13 @@
                                 </div>
                             </li>
                         </ul>
-                        <div v-show="error_vars" class="invalid-feedback">Please Add a Product in the PO!</div>
+                        <ul v-show="error_vars">
+                            <div class="alert alert-danger">
+                                <p>
+                                    <strong><li>Please Add a Product to PO !</li></strong>
+                                </p>
+                            </div>                            
+                        </ul>                  
                     </div>
                 </div>
             </div>
@@ -191,9 +197,7 @@
         methods: {
             checkForm:function(e) {
                 this.checkErrors()
-                console.log(this.errors.length)
                 if (!this.errors.length) {
-                    console.log('ayyyy Cabron', this.errors.length < 1, this.errors.length)
                     return true;
                 }
                 e.preventDefault();
@@ -220,9 +224,9 @@
             },
             cleanFormErrors () {
                 this.errors = [];
-                this.error_name = true
-                this.error_vendor = true
-                this.error_vars = true
+                this.error_name = false
+                this.error_vendor = false
+                this.error_vars = false
             },
             cleanErrors() {
                 this.errors = [];
@@ -298,10 +302,10 @@
                     })
             }
         },
-        created() {
+        mounted() {
 
         },
-        mounted() {
+        created() {
             this.fetchProducts()
             this.fetchVendors()
             this.fetchCouries()
