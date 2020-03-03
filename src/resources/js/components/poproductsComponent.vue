@@ -1,13 +1,14 @@
 <template>
     <div class="col-12">
-        <form method="POST" @submit="checkForm" action="/#">
+        <form method="POST" @submit="checkForm" action="/po">
             <input type="hidden" name="_token" :value="csrf">
             <div class="form-body">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0" ><small>PO Name</small></label>
-                            <input type="text" class="form-control form-control-sm" id="name" name="name" placeholder="MIA-ZHE011..">
+                            <input type="text" class="form-control form-control-sm" id="name" name="name" v-bind:class="[error_name ? 'is-invalid' : '']" v-model="name" placeholder="MIA-ZHE011..">
+                            <div v-show="error_name" class="invalid-feedback">Please Indicate PO Name (Unique)!</div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -16,10 +17,11 @@
                             <div class="input-group input-group-sm">
                                 <select id="vendor_id" name="vendor_id" class="form-control form-control-sm" v-bind:class="[error_vendor ? 'is-invalid' : '']" v-model="vendor_selected">
                                     <option value="0" selected>Select Vendor</option>
-                                    <option v-for="vendor in vendors" v-bind:value="{ id: vendor.id, name: vendor.name }">
+                                    <option v-for="vendor in vendors" :value="vendor.id" :key="vendor.id">
                                         {{ vendor.name }}
                                     </option>
                                 </select>
+                                <div v-show="error_vendor" class="invalid-feedback">Please Select a Vendor!</div>
                             </div>
                         </div>
                     </div>
@@ -31,7 +33,7 @@
                             <div class="input-group input-group-sm">
                                 <select id="courier_id" name="courier_id" class="form-control form-control-sm" v-bind:class="[error_courier ? 'is-invalid' : '']" v-model="courier_selected">
                                     <option value="0" selected>Select Courier</option>
-                                    <option v-for="courier in couriers" v-bind:value="{ id: courier.id, name: courier.name }">
+                                    <option v-for="courier in couriers" :value="courier.id" :key="courier.id">
                                         {{ courier.name }}
                                     </option>
                                 </select>
@@ -89,7 +91,7 @@
                                         <label class="mb-0"><small>Products</small></label>
                                         <select id="product_id" name="product_id" class="form-control form-control-sm" v-bind:class="[error_product ? 'is-invalid' : '']" v-model="product_selected">
                                             <option value="0" selected>Select Product</option>
-                                            <option v-for="product in products" v-bind:value="{ id: product.id, name: product.name }">
+                                            <option v-for="product in products" v-bind:value="{ id: product.id, name: product.name }" :key="product.id">
                                                 {{ product.name }}
                                             </option>
                                         </select>
@@ -125,6 +127,7 @@
                 <div class="row">
                     <div class="col-12">
                         <h6 class="text-muted">Products</h6>
+                        <input type="hidden" name="vars" :value="JSON.stringify(vars)">
                         <ul class="list-group-po nobull px-1">
                             <li v-for="(variable, key) in vars" :key="key" class="list-group-po-item py-1 px-1 mx-1 bg-light">
                                 <div class="row mx-1 h-100">
@@ -143,10 +146,9 @@
                                 </div>
                             </li>
                         </ul>
+                        <div v-show="error_vars" class="invalid-feedback">Please Add a Product in the PO!</div>
                     </div>
                 </div>
-
-
             </div>
 
             <div class="form-actions mt-2">
@@ -164,11 +166,14 @@
         data: function () {
             return {
                 errors:[],
+                error_name: false,
                 error_qty: false,
                 error_product: false,
                 error_courier: false,
                 error_vendor: false,
                 error_client: false,
+                error_vars: false,
+                name: null,
                 product_selected: 0,
                 courier_selected: 0,
                 vendor_selected: 0,
@@ -185,19 +190,45 @@
         },
         methods: {
             checkForm:function(e) {
-                this.errors = [];
-                if(!this.errors.length) return true;
+                this.checkErrors()
+                console.log(this.errors.length)
+                if (!this.errors.length) {
+                    console.log('ayyyy Cabron', this.errors.length < 1, this.errors.length)
+                    return true;
+                }
                 e.preventDefault();
+            },
+            checkErrors() {
+                this.cleanFormErrors ()
+                if (!this.name) {
+                    this.error_name = true
+                    this.errors.push('Name required.');
+                }
+                if (!this.vendor_selected) {
+                    this.error_vendor = true
+                    this.errors.push('No Vender Selected')
+                }
+                if (!this.vars.length) {
+                    this.error_vars = true
+                    this.errors.push('No products Added!');
+                }
             },
             cleanAddProducts() {
                 this.product_id=0,
                 this.qty= 1,
                 this.batch_number= ''
             },
+            cleanFormErrors () {
+                this.errors = [];
+                this.error_name = true
+                this.error_vendor = true
+                this.error_vars = true
+            },
             cleanErrors() {
                 this.errors = [];
                 this.error_qty = false;
                 this.error_product = false;
+
             },
             isProductGoodToAdd() {
                 this.cleanErrors()
@@ -235,6 +266,7 @@
                         variables.push({'product_id': this.product_selected.id,'product_name': this.product_selected.name, 'qty': this.qty, 'batch_number': this.batch_number})
                     }
                 }
+                console.log(this.vars)
                 this.cleanAddProducts()
             },
             fetchProducts() {

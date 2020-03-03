@@ -2102,15 +2102,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       errors: [],
+      error_name: false,
       error_qty: false,
       error_product: false,
       error_courier: false,
       error_vendor: false,
       error_client: false,
+      error_vars: false,
+      name: null,
       product_selected: 0,
       courier_selected: 0,
       vendor_selected: 0,
@@ -2127,12 +2132,42 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     checkForm: function checkForm(e) {
-      this.errors = [];
-      if (!this.errors.length) return true;
+      this.checkErrors();
+      console.log(this.errors.length);
+
+      if (!this.errors.length) {
+        console.log('ayyyy Cabron', this.errors.length < 1, this.errors.length);
+        return true;
+      }
+
       e.preventDefault();
+    },
+    checkErrors: function checkErrors() {
+      this.cleanFormErrors();
+
+      if (!this.name) {
+        this.error_name = true;
+        this.errors.push('Name required.');
+      }
+
+      if (!this.vendor_selected) {
+        this.error_vendor = true;
+        this.errors.push('No Vender Selected');
+      }
+
+      if (!this.vars.length) {
+        this.error_vars = true;
+        this.errors.push('No products Added!');
+      }
     },
     cleanAddProducts: function cleanAddProducts() {
       this.product_id = 0, this.qty = 1, this.batch_number = '';
+    },
+    cleanFormErrors: function cleanFormErrors() {
+      this.errors = [];
+      this.error_name = true;
+      this.error_vendor = true;
+      this.error_vars = true;
     },
     cleanErrors: function cleanErrors() {
       this.errors = [];
@@ -2187,6 +2222,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
 
+      console.log(this.vars);
       this.cleanAddProducts();
     },
     fetchProducts: function fetchProducts() {
@@ -37651,7 +37687,7 @@ var render = function() {
     _c(
       "form",
       {
-        attrs: { method: "POST", action: "/#" },
+        attrs: { method: "POST", action: "/po" },
         on: { submit: _vm.checkForm }
       },
       [
@@ -37662,7 +37698,55 @@ var render = function() {
         _vm._v(" "),
         _c("div", { staticClass: "form-body" }, [
           _c("div", { staticClass: "row" }, [
-            _vm._m(0),
+            _c("div", { staticClass: "col-md-6" }, [
+              _c("div", { staticClass: "form-group-po" }, [
+                _vm._m(0),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.name,
+                      expression: "name"
+                    }
+                  ],
+                  staticClass: "form-control form-control-sm",
+                  class: [_vm.error_name ? "is-invalid" : ""],
+                  attrs: {
+                    type: "text",
+                    id: "name",
+                    name: "name",
+                    placeholder: "MIA-ZHE011.."
+                  },
+                  domProps: { value: _vm.name },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.name = $event.target.value
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.error_name,
+                        expression: "error_name"
+                      }
+                    ],
+                    staticClass: "invalid-feedback"
+                  },
+                  [_vm._v("Please Indicate PO Name (Unique)!")]
+                )
+              ])
+            ]),
             _vm._v(" "),
             _c("div", { staticClass: "col-md-6" }, [
               _c("div", { staticClass: "form-group-po" }, [
@@ -37707,11 +37791,7 @@ var render = function() {
                       _vm._l(_vm.vendors, function(vendor) {
                         return _c(
                           "option",
-                          {
-                            domProps: {
-                              value: { id: vendor.id, name: vendor.name }
-                            }
-                          },
+                          { key: vendor.id, domProps: { value: vendor.id } },
                           [
                             _vm._v(
                               "\n                                    " +
@@ -37723,6 +37803,22 @@ var render = function() {
                       })
                     ],
                     2
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      directives: [
+                        {
+                          name: "show",
+                          rawName: "v-show",
+                          value: _vm.error_vendor,
+                          expression: "error_vendor"
+                        }
+                      ],
+                      staticClass: "invalid-feedback"
+                    },
+                    [_vm._v("Please Select a Vendor!")]
                   )
                 ])
               ])
@@ -37773,11 +37869,7 @@ var render = function() {
                       _vm._l(_vm.couriers, function(courier) {
                         return _c(
                           "option",
-                          {
-                            domProps: {
-                              value: { id: courier.id, name: courier.name }
-                            }
-                          },
+                          { key: courier.id, domProps: { value: courier.id } },
                           [
                             _vm._v(
                               "\n                                    " +
@@ -37852,6 +37944,7 @@ var render = function() {
                             return _c(
                               "option",
                               {
+                                key: product.id,
                                 domProps: {
                                   value: { id: product.id, name: product.name }
                                 }
@@ -37995,6 +38088,11 @@ var render = function() {
             _c("div", { staticClass: "col-12" }, [
               _c("h6", { staticClass: "text-muted" }, [_vm._v("Products")]),
               _vm._v(" "),
+              _c("input", {
+                attrs: { type: "hidden", name: "vars" },
+                domProps: { value: JSON.stringify(_vm.vars) }
+              }),
+              _vm._v(" "),
               _c(
                 "ul",
                 { staticClass: "list-group-po nobull px-1" },
@@ -38069,6 +38167,22 @@ var render = function() {
                   )
                 }),
                 0
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value: _vm.error_vars,
+                      expression: "error_vars"
+                    }
+                  ],
+                  staticClass: "invalid-feedback"
+                },
+                [_vm._v("Please Add a Product in the PO!")]
               )
             ])
           ])
@@ -38084,22 +38198,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-6" }, [
-      _c("div", { staticClass: "form-group-po" }, [
-        _c("label", { staticClass: "mb-0" }, [
-          _c("small", [_vm._v("PO Name")])
-        ]),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "form-control form-control-sm",
-          attrs: {
-            type: "text",
-            id: "name",
-            name: "name",
-            placeholder: "MIA-ZHE011.."
-          }
-        })
-      ])
+    return _c("label", { staticClass: "mb-0" }, [
+      _c("small", [_vm._v("PO Name")])
     ])
   },
   function() {

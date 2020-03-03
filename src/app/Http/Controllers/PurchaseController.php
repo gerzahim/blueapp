@@ -94,14 +94,11 @@ class PurchaseController extends Controller
         $this->validate($request, [
             'name'                => 'required',
             'transaction_type_id' => 'required',
-            'product_id.*'        => 'required|integer|min:1',
-            'qty.*'               => 'required|integer|min:1'
+            'vendor_id'        => 'required'
         ]);
 
         $time_now     = date('Y-m-d H:i:s');
 
-
-        //'courier_id','tracking','transaction_type_id','bol','package_list','reference'
         $data = array(
             'name' => $request->name,
             'contact_type_id' => 1,
@@ -134,6 +131,28 @@ class PurchaseController extends Controller
 
         if($purchases){
             $purchases_id = $lastInsertedId;
+
+            $po_lines = json_decode($request->vars);
+            foreach ($po_lines as $po_line )
+            {
+                $data_po = array(
+                    'purchases_id' => $purchases_id,
+                    'product_id'   => $po_line->product_id,
+                    'qty'          => $po_line->qty,
+                    'batch_number' => $po_line->batch_number,
+                    'created_at'   => $time_now,
+                    'updated_at'   => $time_now
+                );
+                // Insert PO Items Associated to PO
+                PurchasesItem::insert($data_po);
+
+                // Saving Stock
+                $stock = new StockController();
+                $stock->registerProductStock($purchases_id, $po_line->product_id, $po_line->qty);
+
+            }
+
+            /*
             $product_id   = $request->product_id;
             $qty          = $request->qty;
             $batch_number = $request->batch_number;
@@ -155,7 +174,7 @@ class PurchaseController extends Controller
                 // Saving Stock
                 $stock = new StockController();
                 $stock->registerProductStock($purchases_id, $product_id[$count], $qty[$count]);
-            }
+            }*/
         }
         return redirect()->route('po.index')->with('success', 'PO created successfully.');
     }
