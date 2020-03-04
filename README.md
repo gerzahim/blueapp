@@ -3,16 +3,19 @@ Custom Inventory Management System HUAHAI
 
 
 ## TODO
-- Validate all PO Form ( validate PO Name has Value, Validate there is vars value, Check No PO Name Duplicated)
-- Make submit PO Form and save [{products:1, qty: 5, batch: asdads, products:2, qty: 5, batch: asdads}]
-  ( save en PO_Header as dictionary and PO_items by each line)
-- add Flash Message  
-- Update Stock when save PO
-- Make Update PO Form
+- Validate all PO Form ( validate PO Name has Value, Validate there is vars value, Check No PO Name Duplicated) ***
+- Make submit PO Form and save [{products:1, qty: 5, batch: asdads, products:2, qty: 5, batch: asdads}] ***
+- - validation form (fail when vendor firts time good and second time no good) anyway do submit
+- If fail refill values ( No priority)
+- Disable Button Save or Message why not submit 
+- Update PO Fomr
 - Update Stock when update PO  
+- add Flash Message  
+
 
 - RMA IN, 
 - Order OUT 
+
 - Create Crud Couries
 - Create Crud Vendors
 - Create Crud ProductDimensions

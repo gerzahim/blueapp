@@ -1,22 +1,3 @@
-## TODO
-
-- Create RMA IN
-- Update PO
-- Update Stock
-
-- Check OUT
-
-- Create Crud Couries
-- Create Crud ProductDimensions
-- Create Crud PO
-- Fix Menu Icons
-- Fix Home Logo
-- Replace Blue App Name
-
-- Implement on Hold
-
-
-
 
 ## About Laravel
 

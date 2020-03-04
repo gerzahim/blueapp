@@ -91,11 +91,25 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
+
         $this->validate($request, [
-            'name'                => 'required|unique:po|max:50',
+            'name'                => 'required|unique:purchases|max:50',
             'transaction_type_id' => 'required',
             'vendor_id'           => 'required'
         ]);
+        
+        /*        
+        $validator = $this->validate($request, [
+            'name'                => 'required|unique:purchases|max:50',
+            'transaction_type_id' => 'required',
+            'vendor_id'           => 'required'
+        ]);
+
+        dd($validator);
+
+        if ($validator->fails()) {
+            return response()->json(['errors'=>$validator->errors()], 401);
+        }*/
 
         $time_now     = date('Y-m-d H:i:s');
 
