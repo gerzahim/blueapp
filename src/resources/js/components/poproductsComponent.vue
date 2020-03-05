@@ -196,9 +196,14 @@
         },
         methods: {
             checkForm:function(e) {
+                console.log( 'name =>', this.name, 'error_name =>',this.error_name,'vendor_selected =>',this.vendor_selected,
+                'error_vendor =>',this.error_vendor,'vars =>',this.vars,'error_vars =>',this.error_vars, 'errors.length =>',this.errors.length)
+
                 this.checkErrors()
+                
                 if (!this.errors.length) {
                     return true;
+                    alert('Form is Not Good')
                 }
                 e.preventDefault();
             },
@@ -208,7 +213,7 @@
                     this.error_name = true
                     this.errors.push('Name required.');
                 }
-                if (!this.vendor_selected) {
+                if (this.vendor_selected == 0) {
                     this.error_vendor = true
                     this.errors.push('No Vender Selected')
                 }

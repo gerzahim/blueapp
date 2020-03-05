@@ -3,24 +3,26 @@ Custom Inventory Management System HUAHAI
 
 
 ## TODO
-- Validate all PO Form ( validate PO Name has Value, Validate there is vars value, Check No PO Name Duplicated) ***
-- Make submit PO Form and save [{products:1, qty: 5, batch: asdads, products:2, qty: 5, batch: asdads}] ***
-- - validation form (fail when vendor firts time good and second time no good) anyway do submit
-- If fail refill values ( No priority)
-- Disable Button Save or Message why not submit 
-- Update PO Fomr
+- Save Component an Controller Files to Resources
+- Clean Component an Controller
+- Update PO Form
 - Update Stock when update PO  
 - add Flash Message  
-
-
-- RMA IN, 
-- Order OUT 
+- Create Crud PO
+- Create Order OUT 
+- Update Order OUT 
 
 - Create Crud Couries
 - Create Crud Vendors
 - Create Crud ProductDimensions
-- Create Crud PO
 - Create User Login
+- RMA IN, 
+
+## Improves 
+- If fail refill values ( No priority)
+- Delete fail mark
+- Disable Button Save or Message why not submit 
+
 
 
 ## About Laravel

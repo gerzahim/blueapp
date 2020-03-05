@@ -199,6 +199,47 @@ class PurchaseController extends Controller
         // qty
         // Update PO type po
         // Update Stock
+
+        //public function updatePO(Request $request, Purchases $purchases, $id){
+            // Select PO
+            // Edit PO and ProductItems
+            // qty
+            // Update PO type po
+            // Update Stock
+    /*
+            $this->validate($request, [
+                'name'                => 'required|unique:po|max:50',
+                'email'               => "required|email|unique:db_users,email,$id",
+                'address'             => 'required|string|min:10|unique:clients,address,'.$id,
+                $address  = 'required|string|min:10|unique:clients,address,'.$this->id;
+                'transaction_type_id' => 'required',
+                'vendor_id'           => 'required'
+            ]);
+
+            // add and update same method
+            public function rules()
+            {
+            if($this->method() == 'POST')
+                $address = 'required|string|min:10|unique:clients,address';
+            else
+                $address  = 'required|string|min:10|unique:clients,address,'.$this->id;
+            //put a hidden input field named id with value on your edit view and catch it here; 
+                return [
+                'nameEN'   => 'required|string',
+                'nameHE'   => 'required|string',
+                'address'  => $address
+                ];
+            }
+
+            $user = User::findOrFail($id);
+            $user->name = trim($request->name);
+            $user->email = trim($request->email);
+            $user->save();
+
+            Session::flash('success','USer information was successfully updated.');
+
+            return redirect()->route('users.show',$user->id);
+            */
     }
 
     public function storeRMA(){
