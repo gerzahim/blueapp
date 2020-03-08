@@ -3,11 +3,12 @@ Custom Inventory Management System HUAHAI
 
 
 ## TODO
-- Save Component an Controller Files to Resources
+- Save Component an Controller Files to Resources ****
 - Clean Component an Controller
+- Delete PO
 - Update PO Form
 - Update Stock when update PO  
-- add Flash Message  
+- add Flash Message Toast
 - Create Crud PO
 - Create Order OUT 
 - Update Order OUT 

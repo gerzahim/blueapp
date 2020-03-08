@@ -47,7 +47,7 @@
                             </ul>
                         </div>
                         @endif
-                        <po-component></po-component>
+                        <createpo-component></createpo-component>
                     </div>
                 </div>
             </div>

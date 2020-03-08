@@ -97,6 +97,19 @@ class PurchaseController extends Controller
             'transaction_type_id' => 'required',
             'vendor_id'           => 'required'
         ]);
+        
+        /*        
+        $validator = $this->validate($request, [
+            'name'                => 'required|unique:purchases|max:50',
+            'transaction_type_id' => 'required',
+            'vendor_id'           => 'required'
+        ]);
+
+        dd($validator);
+
+        if ($validator->fails()) {
+            return response()->json(['errors'=>$validator->errors()], 401);
+        }*/
 
         $time_now     = date('Y-m-d H:i:s');
 
@@ -153,6 +166,29 @@ class PurchaseController extends Controller
 
             }
 
+            /*
+            $product_id   = $request->product_id;
+            $qty          = $request->qty;
+            $batch_number = $request->batch_number;
+
+
+            for($count = 0; $count < count($product_id); $count++) {
+                $data = array(
+                    'purchases_id' => $purchases_id,
+                    'product_id'   => $product_id[$count],
+                    'qty'          => $qty[$count],
+                    'batch_number' => $batch_number[$count],
+                    'created_at'   => $time_now,
+                    'updated_at'   => $time_now
+                );
+
+                // Insert PO Items Associated to PO
+                PurchasesItem::insert($data);
+
+                // Saving Stock
+                $stock = new StockController();
+                $stock->registerProductStock($purchases_id, $product_id[$count], $qty[$count]);
+            }*/
         }
         return redirect()->route('po.index')->with('success', 'PO created successfully.');
     }
