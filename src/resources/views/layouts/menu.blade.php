@@ -15,12 +15,12 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link sidebar-link" href="#" aria-expanded="false">
                                 <i data-feather="users" class="feather-icon"></i>
-                                <span class="hide-menu">Clients</span></a>
+                                <span class="hide-menu">Customers</span></a>
                         </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link sidebar-link" href="#" aria-expanded="false">
                                 <i data-feather="globe" class="feather-icon"></i>
-                                <span class="hide-menu">Vendors</span></a>
+                                <span class="hide-menu">Suppliers</span></a>
                         </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
@@ -50,13 +50,13 @@
                                 <span class="hide-menu">Check IN </span></a>
                                     <!-- SubMenu -->
                                     <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                                        <li class="sidebar-item"><a href="{{ route('po.index') }}" class="sidebar-link">
+                                        <li class="sidebar-item"><a href="{{ route('purchases.index') }}" class="sidebar-link">
                                             <span class="hide-menu">Purchases - PO</span></a>
                                         </li>
-                                        <li class="sidebar-item"><a href="{{ route('po.index') }}" class="sidebar-link">
+                                        <li class="sidebar-item"><a href="{{ route('purchases.index') }}" class="sidebar-link">
                                             <span class="hide-menu">RMA</span></a>
                                         </li>
-                                        <li class="sidebar-item"><a href="{{ route('po.index') }}" class="sidebar-link">
+                                        <li class="sidebar-item"><a href="{{ route('purchases.index') }}" class="sidebar-link">
                                                 <span class="hide-menu">Return Borrowed</span></a>
                                         </li>
                                     </ul>
@@ -67,13 +67,13 @@
                                 <span class="hide-menu">Check OUT </span></a>
                             <!-- SubMenu -->
                             <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                                <li class="sidebar-item"><a href="{{ route('po.index') }}" class="sidebar-link">
+                                <li class="sidebar-item"><a href="{{ route('purchases.index') }}" class="sidebar-link">
                                         <span class="hide-menu">Sales</span></a>
                                 </li>
-                                <li class="sidebar-item"><a href="{{ route('po.index') }}" class="sidebar-link">
+                                <li class="sidebar-item"><a href="{{ route('purchases.index') }}" class="sidebar-link">
                                         <span class="hide-menu">Lend</span></a>
                                 </li>
-                                <li class="sidebar-item"><a href="{{ route('po.index') }}" class="sidebar-link">
+                                <li class="sidebar-item"><a href="{{ route('purchases.index') }}" class="sidebar-link">
                                         <span class="hide-menu">Refurbishment</span></a>
                                 </li>
                             </ul>

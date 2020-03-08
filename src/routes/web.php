@@ -23,7 +23,13 @@ Route::resource('product_dimensions', 'ProductDimensionsController');
 Route::resource('product', 'ProductController');
 Route::resource('client', 'ClientController');
 
-Route::resource('po', 'PurchaseController');
+Route::resource('purchases', 'PurchaseController');
+Route::get('/editPurchase/{id}', [
+    'uses' => 'PurchaseController@editPurchase',
+    'as' => 'purchases.editPurchase'
+]);
+
+
 Route::get('/get_products', 'PurchaseController@getProductsbyAjax');
 Route::get('/get_vendors', 'PurchaseController@getVendorsbyAjax');
 Route::get('/get_clients', 'PurchaseController@getClientsbyAjax');

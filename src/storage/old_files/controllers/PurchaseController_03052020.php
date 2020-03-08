@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\StockController;
 
-class PurchaseController extends Controller
+class PurchaseControllerOld extends Controller
 {
     /**
      * Display a listing of POs
@@ -97,8 +97,8 @@ class PurchaseController extends Controller
             'transaction_type_id' => 'required',
             'vendor_id'           => 'required'
         ]);
-        
-        /*        
+
+        /*
         $validator = $this->validate($request, [
             'name'                => 'required|unique:purchases|max:50',
             'transaction_type_id' => 'required',
@@ -207,7 +207,7 @@ class PurchaseController extends Controller
             // Update PO type po
             // Update Stock
     /*
-            $this->validate($request, [
+            $this->validate8989($request, [
                 'name'                => 'required|unique:po|max:50',
                 'email'               => "required|email|unique:db_users,email,$id",
                 'address'             => 'required|string|min:10|unique:clients,address,'.$id,
@@ -223,7 +223,7 @@ class PurchaseController extends Controller
                 $address = 'required|string|min:10|unique:clients,address';
             else
                 $address  = 'required|string|min:10|unique:clients,address,'.$this->id;
-            //put a hidden input field named id with value on your edit view and catch it here; 
+            //put a hidden input field named id with value on your edit view and catch it here;
                 return [
                 'nameEN'   => 'required|string',
                 'nameHE'   => 'required|string',
@@ -284,5 +284,24 @@ class PurchaseController extends Controller
     public function destroy(Purchases $purchases)
     {
         //
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroyb($id) {
+        $res = User::destroy($id);
+        if ($res) {
+            return response()->json([
+                'status' => '1',
+                'msg' => 'success'
+            ]);
+        } else {
+            return response()->json([
+                'status' => '0',
+                'msg' => 'fail'
+            ]);
+        }
     }
 }

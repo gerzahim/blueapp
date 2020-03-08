@@ -1,4 +1,4 @@
-@extends('layouts.master') 
+@extends('layouts.master')
 
 @section('content')
 
@@ -42,10 +42,10 @@
                             <!-- Column -->
                             <div class="col-md-6">
                                 <div class="float-right">
-                                    <a href="{{ route('po.create') }}" class="btn btn-success btn-sm">Add</a>
+                                    <a href="{{ route('purchases.create') }}" class="btn btn-success btn-sm">Add</a>
                                 </div>
                             </div>
-                        </div>   
+                        </div>
 
                         @if ($message = Session::get('success'))
                         <div class="alert alert-success">
@@ -60,47 +60,45 @@
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            @foreach ($pos as $key => $po)
+                            @foreach ($purchases as $key => $purchase)
                             <tbody>
                                 <tr>
                                     <td>
                                         {{ $key + 1 }}
                                     </td>
                                     <td>
-                                        <a href="{{ route('po.show',$po->id) }}">
-                                        {{ $po->name }}
+                                        <a href="{{ route('purchases.show',$purchase->id) }}">
+                                        {{ $purchase->name }}
                                         </a>
                                     </td>
                                     <td>
                                         <!-- Edit button -->
                                         <a
                                         class="btn btn-primary btn-sm"
-                                        href="{{ route('po.edit',$po->id) }}"
+                                        href="{{ route('purchases.editPurchase', $purchase->id ) }}"
                                         >Edit</a>
 
                                         <!-- Delete button -->
                                         <form
-                                            action="{{ route('po.destroy',$po->id) }}"
+                                            action="{{ route('purchases.destroy', $purchase->id) }}"
                                             method="POST"
                                             style="display: inline;"
                                         >
                                             @csrf @method('DELETE')
-                                            
+                                            <input type='hidden' name='id' value='{{ $purchase->id }}'>
                                             <button type="submit" class="btn btn-danger btn-sm">
                                                 Delete
                                             </button>
                                         </form>
+
                                     </td>
                                 </tr>
                             </tbody>
                             @endforeach
                         </table>
-                        {!! $pos->links() !!}
-
-
-
+                        {!! $purchases->links() !!}
                     </div>
-                </div> 
+                </div>
             </div>
         </div>
     </div>

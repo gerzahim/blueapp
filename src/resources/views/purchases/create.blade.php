@@ -29,7 +29,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="float-right">
-                            <a href="{{ route('po.index') }}" class="btn btn-primary btn-sm">Back to PO list</a>
+                            <a href="{{ route('purchases.index') }}" class="btn btn-primary btn-sm">Back to PO list</a>
                         </div>
                         Create PO
                     </div>

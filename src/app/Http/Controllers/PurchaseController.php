@@ -8,28 +8,35 @@ use App\PurchasesItem;
 use App\Vendor;
 use App\Product;
 use App\Courier;
+use App\Stock;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
+
 use App\Http\Controllers\StockController;
+
 
 class PurchaseController extends Controller
 {
+
     /**
-     * Display a listing of POs
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * Display a listing of purchases
+     * @return Factory|View
      */
     public function index()
     {
-        $pos = Purchases::latest()->paginate(10);
-        return view('po.index', compact('pos'));
+        $purchases = Purchases::latest()->paginate(10);
+        return view('purchases.index', compact('purchases'));
     }
 
     /**
      * Get List of Products by Json
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getProductsbyAjax() {
         $products = Product::all();
@@ -39,7 +46,7 @@ class PurchaseController extends Controller
     /**
      * Get List of Products by Json
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getClientsbyAjax() {
         $clients = Client::all();
@@ -49,7 +56,7 @@ class PurchaseController extends Controller
     /**
      * Get List of Products by Json
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getVendorsbyAjax() {
         $vendors = Vendor::all();
@@ -59,7 +66,7 @@ class PurchaseController extends Controller
     /**
      * Get List of Products by Json
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function getCouriersbyAjax() {
         $couriers = Courier::all();
@@ -70,7 +77,7 @@ class PurchaseController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -78,16 +85,15 @@ class PurchaseController extends Controller
         $products = Product::all();
         $couriers = Courier::all();
 
-        return view('po.create', compact('vendors','products','couriers'));
+        return view('purchases.create', compact('vendors','products','couriers'));
     }
 
 
     /**
      * Create New PO and Stock
-     *
      * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     * @throws \Illuminate\Validation\ValidationException
+     * @return RedirectResponse
+     * @throws ValidationException
      */
     public function store(Request $request)
     {
@@ -154,10 +160,10 @@ class PurchaseController extends Controller
             }
 
         }
-        return redirect()->route('po.index')->with('success', 'PO created successfully.');
+        return redirect()->route('purchases.index')->with('success', 'PO created successfully.');
     }
 
-    public function updatePO(){
+    public function updateRMAPO(){
         // Select PO
         // Edit PO and ProductItems
         // qty
@@ -187,7 +193,7 @@ class PurchaseController extends Controller
                 $address = 'required|string|min:10|unique:clients,address';
             else
                 $address  = 'required|string|min:10|unique:clients,address,'.$this->id;
-            //put a hidden input field named id with value on your edit view and catch it here; 
+            //put a hidden input field named id with value on your edit view and catch it here;
                 return [
                 'nameEN'   => 'required|string',
                 'nameHE'   => 'required|string',
@@ -224,11 +230,30 @@ class PurchaseController extends Controller
     }
 
     /**
+     * @param Request $request
      * @param Purchases $purchases
      */
-    public function edit(Purchases $purchases)
+    public function edit(Request $request, Purchases $purchases)
     {
-        //
+        dd($request);
+    }
+
+    public function editPurchase($id)
+    {
+        $purchase = Purchases::where('id',$id)->first();
+
+        $products_po = PurchasesItem::where('purchases_id',$id)->get();
+        foreach($products_po as $product_po){
+            $product_po->name = Product::where('id', $product_po->id)->first()->name;
+        }
+        $products_po = json_encode($products_po, true);
+
+        $vendors = Vendor::all();
+        $products = Product::all();
+        $couriers = Courier::all();
+
+        return view('purchases.edit', compact('vendors','products','couriers', 'purchase', 'products_po'));
+
     }
 
     /**
@@ -239,14 +264,26 @@ class PurchaseController extends Controller
     public function update(Request $request, Purchases $purchases)
     {
         //
+        dd('Te pica el culo ');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @param Request $request
      * @param Purchases $purchases
+     * @return RedirectResponse
      */
-    public function destroy(Purchases $purchases)
+    public function destroy(Request $request, Purchases $purchases)
     {
-        //
+        $purchases->id = $request->id;
+        //$purchases->delete();
+        Purchases::where('id',$purchases->id)->delete();
+        $stock = Stock::where('purchases_id',$purchases->id)->delete();
+        $purchasesItems = PurchasesItem::where('purchases_id',$purchases->id)->delete();
+        //Pending// Delete Order associated to PO
+        return redirect()->route('purchases.index')->with('success', 'Purchase - PO has been deleted successfully!');
     }
+
+
+
+
 }

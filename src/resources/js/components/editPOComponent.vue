@@ -1,27 +1,28 @@
 <template>
     <div class="col-12">
-        <form method="POST" @submit="checkForm" action="/purchases">
+        <form method="POST" @submit="checkForm" v-bind:action="computedAction">
             <input type="hidden" name="_token" :value="csrf">
+            <input type="hidden" name="_method" value="PUT">
             <div class="form-body">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0" ><small>PO Name</small></label>
-                            <input type="text" class="form-control form-control-sm" id="name" name="name" v-bind:class="[error_name ? 'is-invalid' : '']" v-model="name" placeholder="MIA-ZHE011..">
+                            <input type="text" class="form-control form-control-sm" id="name" name="name" v-bind:class="[error_name ? 'is-invalid' : '']" v-model="purchase.name" placeholder="MIA-ZHE011..">
                             <div v-show="error_name" class="invalid-feedback">Please Indicate unique PO Name !</div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group-po">
-                            <label class="mb-0"><small>Vendor</small></label>
+                            <label class="mb-0"><small>Supplier</small></label>
                             <div class="input-group input-group-sm">
-                                <select id="vendor_id" name="vendor_id" class="form-control form-control-sm" v-bind:class="[error_vendor ? 'is-invalid' : '']" v-model="vendor_selected">
-                                    <option value="0" selected>Select Vendor</option>
+                                <select id="vendor_id" name="vendor_id" class="form-control form-control-sm" v-bind:class="[error_vendor ? 'is-invalid' : '']" v-model="purchase.contact_id">
+                                    <option value="0" selected>Select Supplier</option>
                                     <option v-for="vendor in vendors" :value="vendor.id" :key="vendor.id">
                                         {{ vendor.name }}
                                     </option>
                                 </select>
-                                <div v-show="error_vendor" class="invalid-feedback">Please Select a Vendor!</div>
+                                <div v-show="error_vendor" class="invalid-feedback">Please Select a Supplier!</div>
                             </div>
                         </div>
                     </div>
@@ -31,7 +32,7 @@
                         <div class="form-group-po">
                             <label class="mb-0"><small>Courier</small></label>
                             <div class="input-group input-group-sm">
-                                <select id="courier_id" name="courier_id" class="form-control form-control-sm" v-bind:class="[error_courier ? 'is-invalid' : '']" v-model="courier_selected">
+                                <select id="courier_id" name="courier_id" class="form-control form-control-sm" v-bind:class="[error_courier ? 'is-invalid' : '']" v-model="purchase.courier_id">
                                     <option value="0" selected>Select Courier</option>
                                     <option v-for="courier in couriers" :value="courier.id" :key="courier.id">
                                         {{ courier.name }}
@@ -43,7 +44,7 @@
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0" ><small>Tracking Number</small></label>
-                            <input type="text" class="form-control form-control-sm" id="tracking" name="tracking" placeholder="...">
+                            <input type="text" class="form-control form-control-sm" id="tracking" name="tracking" v-model="purchase.tracking" placeholder="...">
                         </div>
                     </div>
                 </div>
@@ -60,7 +61,7 @@
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0" ><small>Bill of Landing</small></label>
-                            <input type="text" class="form-control form-control-sm" id="bol" name="bol" placeholder="...">
+                            <input type="text" class="form-control form-control-sm" id="bol" name="bol" v-model="purchase.bol" placeholder="...">
                         </div>
                     </div>
                 </div>
@@ -68,13 +69,13 @@
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0" ><small>Package List</small></label>
-                            <input type="text" class="form-control form-control-sm" id="package_list" name="package_list" placeholder="...">
+                            <input type="text" class="form-control form-control-sm" id="package_list" name="package_list" v-model="purchase.package_list" placeholder="...">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0" ><small>Reference</small></label>
-                            <input type="text" class="form-control form-control-sm" id="reference" name="reference" min="1" placeholder="...">
+                            <input type="text" class="form-control form-control-sm" id="reference" name="reference" min="1" v-model="purchase.reference" placeholder="...">
                         </div>
                     </div>
                 </div>
@@ -132,7 +133,7 @@
                             <li v-for="(variable, key) in vars" :key="key" class="list-group-po-item py-1 px-1 mx-1 bg-light">
                                 <div class="row mx-1 h-100">
                                     <div class="col-sm-12 col-lg-12 col-xl-6 my-auto px-1">
-                                        {{variable.product_name}}
+                                        {{ variable.name }}
                                         <span class="badge badge-primary badge-pill"><b>{{variable.qty}}</b></span>
                                     </div>
                                     <div class="col-sm-12 col-lg-12 col-xl-5 my-auto px-1">
@@ -169,8 +170,10 @@
 
 <script>
     export default {
+        props: ["post_purchase", "post_products"],
         data: function () {
             return {
+                purchase:[],
                 errors:[],
                 error_name: false,
                 error_qty: false,
@@ -191,8 +194,14 @@
                 vendors: [],
                 couriers: [],
                 vars: [],
+                post_vars: [],
             }
         },
+        computed: {
+           computedAction: function() {
+               return `/purchases/${this.purchase.id}`
+           }
+       },
         methods: {
             checkForm:function(e) {
 
@@ -205,13 +214,13 @@
             },
             checkErrors() {
                 this.cleanFormErrors ()
-                if (!this.name) {
+                if (!this.purchase.name) {
                     this.error_name = true
                     this.errors.push('Name required.');
                 }
-                if (this.vendor_selected == 0) {
+                if (this.purchase.contact_id == 0) {
                     this.error_vendor = true
-                    this.errors.push('No Vender Selected')
+                    this.errors.push('No Supplier Selected')
                 }
                 if (!this.vars.length) {
                     this.error_vars = true
@@ -272,10 +281,19 @@
                         variables.push({'product_id': this.product_selected.id,'product_name': this.product_selected.name, 'qty': this.qty, 'batch_number': this.batch_number})
                     }
                 }
-                console.log(this.vars)
                 this.resetAddProducts()
                 this.checkErrors()
             },
+            insertPostProduct() {
+                let variables = this.post_vars
+
+                for (var key in variables) {
+                    if (variables.hasOwnProperty(key)) {
+                        variables.push({'product_id': variables[key]["id"],'product_name': variables[key]["name"], 'qty': variables[key]["qty"], 'batch_number': variables[key]["batch_number"]})
+                    }
+                }
+                this.vars = this.post_vars
+            },            
             fetchProducts() {
                 axios
                     .get('/get_products')
@@ -313,7 +331,10 @@
             this.fetchVendors()
             this.fetchCouries()
             this.fetchClients()
-            
+            this.purchase = JSON.parse(this.post_purchase);
+            this.post_vars = JSON.parse(this.post_products);
+            this.insertPostProduct()
+            console.log('Component mounted.', this.vars)
         }
     }
 </script>

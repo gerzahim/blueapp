@@ -3,13 +3,15 @@ Custom Inventory Management System HUAHAI
 
 
 ## TODO
-- Save Component an Controller Files to Resources ****
-- Clean Component an Controller
-- Delete PO
-- Update PO Form
+
+- Delete PO ***
+- FIX __Obj__ convert observer 
+2: {…}
+3: {__ob__: Observer}
+- Update PO Form  backend (validation ignore same value)
 - Update Stock when update PO  
 - add Flash Message Toast
-- Create Crud PO
+- Crud PO
 - Create Order OUT 
 - Update Order OUT 
 
@@ -18,6 +20,10 @@ Custom Inventory Management System HUAHAI
 - Create Crud ProductDimensions
 - Create User Login
 - RMA IN, 
+
+## pending 
+- get Name Product
+- Delete Order when delete PO associated
 
 ## Improves 
 - If fail refill values ( No priority)

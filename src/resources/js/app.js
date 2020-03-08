@@ -21,6 +21,7 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('createpo-component', require('./components/createPOComponent.vue').default);
+Vue.component('editpo-component', require('./components/editPOComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
