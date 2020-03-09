@@ -243,10 +243,13 @@ class PurchaseController extends Controller
         $purchase = Purchases::where('id',$id)->first();
 
         $products_po = PurchasesItem::where('purchases_id',$id)->get();
+        $products_pos = [];
         foreach($products_po as $product_po){
             $product_po->name = Product::where('id', $product_po->id)->first()->name;
+            $products_pos[] = array('product_id' => $product_po->id, 'product_name' => $product_po->name, 'qty' => $product_po->qty, 'batch_number' => $product_po->batch_number);
         }
-        $products_po = json_encode($products_po, true);
+
+        $products_po = json_encode($products_pos, true);
 
         $vendors = Vendor::all();
         $products = Product::all();

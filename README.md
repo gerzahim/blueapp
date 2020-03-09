@@ -5,9 +5,10 @@ Custom Inventory Management System HUAHAI
 ## TODO
 
 - Delete PO ***
-- FIX __Obj__ convert observer 
-2: {…}
-3: {__ob__: Observer}
+- FIX __Obj__ convert observer ** map to has the same info in both object
+2: {…} ****
+3: {__ob__: Observer} ***
+
 - Update PO Form  backend (validation ignore same value)
 - Update Stock when update PO  
 - add Flash Message Toast
@@ -24,6 +25,13 @@ Custom Inventory Management System HUAHAI
 ## pending 
 - get Name Product
 - Delete Order when delete PO associated
+- Edit instead splice try 
+ "words":[ "I", "am", "Good" ] 
+ myObj.words[2] = "bad";  
+ "words":[ "I", "am", "bad" ] 
+  
+// modifying the value present at index 2 
+myObj.words[2] = "bad";  
 
 ## Improves 
 - If fail refill values ( No priority)

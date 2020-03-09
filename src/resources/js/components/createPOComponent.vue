@@ -262,7 +262,6 @@
                 if( this.isProductGoodToAdd() ) {
                     let variables = this.vars
                     let getInfoArray = this.areTheseValuesInArray(this.vars, this.product_selected.id, this.batch_number)
-                    console.log(this.vars, getInfoArray, variables)
                     let previousQty = getInfoArray[0]
                     let product_array_key = getInfoArray[1]
                     if (getInfoArray[0] > 0){
@@ -271,8 +270,8 @@
                     }else {
                         variables.push({'product_id': this.product_selected.id,'product_name': this.product_selected.name, 'qty': this.qty, 'batch_number': this.batch_number})
                     }
+                    console.log('Component mounted.', typeof(this.vars), this.vars)
                 }
-                console.log(this.vars)
                 this.resetAddProducts()
                 this.checkErrors()
             },
@@ -313,6 +312,7 @@
             this.fetchVendors()
             this.fetchCouries()
             this.fetchClients()
+            
             
         }
     }

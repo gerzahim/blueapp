@@ -133,7 +133,7 @@
                             <li v-for="(variable, key) in vars" :key="key" class="list-group-po-item py-1 px-1 mx-1 bg-light">
                                 <div class="row mx-1 h-100">
                                     <div class="col-sm-12 col-lg-12 col-xl-6 my-auto px-1">
-                                        {{ variable.name }}
+                                        {{ variable.product_name }}
                                         <span class="badge badge-primary badge-pill"><b>{{variable.qty}}</b></span>
                                     </div>
                                     <div class="col-sm-12 col-lg-12 col-xl-5 my-auto px-1">
@@ -271,11 +271,12 @@
                 if( this.isProductGoodToAdd() ) {
                     let variables = this.vars
                     let getInfoArray = this.areTheseValuesInArray(this.vars, this.product_selected.id, this.batch_number)
-                    console.log(this.vars, getInfoArray, variables)
+                    
                     let previousQty = getInfoArray[0]
                     let product_array_key = getInfoArray[1]
                     if (getInfoArray[0] > 0){
                         variables.splice(product_array_key,1)
+                        console.log('product_array_key', product_array_key)
                         variables.push({'product_id': this.product_selected.id,'product_name': this.product_selected.name, 'qty': parseInt(this.qty)+parseInt(previousQty), 'batch_number': this.batch_number})
                     }else {
                         variables.push({'product_id': this.product_selected.id,'product_name': this.product_selected.name, 'qty': this.qty, 'batch_number': this.batch_number})
@@ -283,17 +284,7 @@
                 }
                 this.resetAddProducts()
                 this.checkErrors()
-            },
-            insertPostProduct() {
-                let variables = this.post_vars
-
-                for (var key in variables) {
-                    if (variables.hasOwnProperty(key)) {
-                        variables.push({'product_id': variables[key]["id"],'product_name': variables[key]["name"], 'qty': variables[key]["qty"], 'batch_number': variables[key]["batch_number"]})
-                    }
-                }
-                this.vars = this.post_vars
-            },            
+            },           
             fetchProducts() {
                 axios
                     .get('/get_products')
@@ -332,9 +323,7 @@
             this.fetchCouries()
             this.fetchClients()
             this.purchase = JSON.parse(this.post_purchase);
-            this.post_vars = JSON.parse(this.post_products);
-            this.insertPostProduct()
-            console.log('Component mounted.', this.vars)
+            this.vars = JSON.parse(this.post_products);
         }
     }
 </script>
