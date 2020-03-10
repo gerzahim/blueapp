@@ -17,6 +17,7 @@ use Illuminate\Http\Response;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Illuminate\Validation\Rule;
 
 use App\Http\Controllers\StockController;
 
@@ -242,16 +243,17 @@ class PurchaseController extends Controller
     {
         $purchase = Purchases::where('id',$id)->first();
 
-        $products_po = PurchasesItem::where('purchases_id',$id)->get();
+        $po_lines  = PurchasesItem::where('purchases_id',$id)->get();
         $products_pos = [];
-        foreach($products_po as $product_po){
-            $product_po->name = Product::where('id', $product_po->id)->first()->name;
-            $products_pos[] = array('product_id' => $product_po->id, 'product_name' => $product_po->name, 'qty' => $product_po->qty, 'batch_number' => $product_po->batch_number);
+
+        foreach($po_lines as $po_line){
+            $po_line->name  = Product::where('id', $po_line->product_id)->first()->name;
+            $products_pos[] = array('product_id' => $po_line->product_id, 'product_name' => $po_line->name, 'qty' => $po_line->qty, 'batch_number' => $po_line->batch_number);
         }
 
         $products_po = json_encode($products_pos, true);
 
-        $vendors = Vendor::all();
+        $vendors  = Vendor::all();
         $products = Product::all();
         $couriers = Courier::all();
 
@@ -263,11 +265,62 @@ class PurchaseController extends Controller
      * Update the specified resource in storage.
      * @param Request $request
      * @param Purchases $purchases
+     * @return RedirectResponse
+     * @throws ValidationException
      */
     public function update(Request $request, Purchases $purchases)
     {
-        //
-        dd('Te pica el culo ');
+
+        $this->validate($request, [
+            //'name' => 'required|unique:purchases,name,'.$request->name,
+            'transaction_type_id' => 'required',
+            'vendor_id'           => 'required'
+        ]);
+
+        $time_now     = date('Y-m-d H:i:s');
+
+        $data = array(
+            'name'                => $request->name,
+            'contact_type_id'     => 1,
+            'contact_id'          => $request->vendor_id,
+            'courier_id'          => $request->courier_id,
+            'tracking'            => $request->tracking,
+            'transaction_type_id' => $request->transaction_type_id,
+            'bol'                 => $request->bol,
+            'package_list'        => $request->package_list,
+            'reference'           => $request->reference,
+            'updated_at'          => $time_now
+        );
+
+        $purchases = Purchases::find($request->id);
+        $purchases->fill($data)->save();
+
+        $po_lines = json_decode($request->vars);
+
+        PurchasesItem::where('purchases_id',$request->id)->delete();
+        Stock::where('purchases_id',$request->id)->delete();
+
+        foreach ($po_lines as $po_line )
+        {
+            $data_po = array(
+                'purchases_id' => $request->id,
+                'product_id'   => $po_line->product_id,
+                'qty'          => $po_line->qty,
+                'batch_number' => $po_line->batch_number,
+                'created_at'   => $time_now,
+                'updated_at'   => $time_now
+            );
+
+            // Insert PO Items Associated to PO
+            PurchasesItem::insert($data_po);
+
+            // Saving Stock
+            $stock = new StockController();
+            $stock->registerProductStock($request->id, $po_line->product_id, $po_line->qty);
+
+        }
+
+        return redirect()->route('purchases.index')->with('success', 'PO updated successfully.');
     }
 
     /**

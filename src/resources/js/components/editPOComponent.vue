@@ -8,6 +8,7 @@
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0" ><small>PO Name</small></label>
+                            <input type="hidden" name="id" v-model="purchase.id">
                             <input type="text" class="form-control form-control-sm" id="name" name="name" v-bind:class="[error_name ? 'is-invalid' : '']" v-model="purchase.name" placeholder="MIA-ZHE011..">
                             <div v-show="error_name" class="invalid-feedback">Please Indicate unique PO Name !</div>
                         </div>

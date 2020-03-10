@@ -4,16 +4,11 @@ Custom Inventory Management System HUAHAI
 
 ## TODO
 
-- Delete PO ***
-- FIX __Obj__ convert observer ** map to has the same info in both object
-2: {…} ****
-3: {__ob__: Observer} ***
-
 - Update PO Form  backend (validation ignore same value)
-- Update Stock when update PO  
 - add Flash Message Toast
-- Crud PO
+
 - Create Order OUT 
+- Update Stock when update Order  
 - Update Order OUT 
 
 - Create Crud Couries
@@ -21,6 +16,8 @@ Custom Inventory Management System HUAHAI
 - Create Crud ProductDimensions
 - Create User Login
 - RMA IN, 
+- Update RMA when update Order
+
 
 ## pending 
 - get Name Product
