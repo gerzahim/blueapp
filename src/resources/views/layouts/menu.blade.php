@@ -67,13 +67,13 @@
                                 <span class="hide-menu">Check OUT </span></a>
                             <!-- SubMenu -->
                             <ul aria-expanded="false" class="collapse  first-level base-level-line">
-                                <li class="sidebar-item"><a href="{{ route('purchases.index') }}" class="sidebar-link">
+                                <li class="sidebar-item"><a href="{{ route('order.index') }}" class="sidebar-link">
                                         <span class="hide-menu">Sales</span></a>
                                 </li>
-                                <li class="sidebar-item"><a href="{{ route('purchases.index') }}" class="sidebar-link">
+                                <li class="sidebar-item"><a href="{{ route('order.index') }}" class="sidebar-link">
                                         <span class="hide-menu">Lend</span></a>
                                 </li>
-                                <li class="sidebar-item"><a href="{{ route('purchases.index') }}" class="sidebar-link">
+                                <li class="sidebar-item"><a href="{{ route('order.index') }}" class="sidebar-link">
                                         <span class="hide-menu">Refurbishment</span></a>
                                 </li>
                             </ul>

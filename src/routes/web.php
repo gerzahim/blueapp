@@ -23,20 +23,24 @@ Route::resource('product_dimensions', 'ProductDimensionsController');
 Route::resource('product', 'ProductController');
 Route::resource('client', 'ClientController');
 
+/** Purchases  **/
 Route::resource('purchases', 'PurchaseController');
 Route::get('/editPurchase/{id}', [
     'uses' => 'PurchaseController@editPurchase',
     'as' => 'purchases.editPurchase'
 ]);
-
-
 Route::get('/get_products', 'PurchaseController@getProductsbyAjax');
 Route::get('/get_vendors', 'PurchaseController@getVendorsbyAjax');
 Route::get('/get_clients', 'PurchaseController@getClientsbyAjax');
 Route::get('/get_couriers', 'PurchaseController@getCouriersbyAjax');
 
+/** Orders  **/
+Route::resource('order', 'OrderController');
+
 Route::resource('courier', 'CourierController');
 Route::resource('stock', 'StockController');
+
+
 
 
 

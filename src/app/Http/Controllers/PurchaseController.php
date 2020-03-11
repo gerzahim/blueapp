@@ -18,6 +18,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 use App\Http\Controllers\StockController;
 
@@ -99,11 +100,17 @@ class PurchaseController extends Controller
     public function store(Request $request)
     {
 
+        $messages = [
+            'name.unique'    => 'The PO Name attribute has already been taken.',
+            'transaction_type_id.required'    => 'The Transaction Type must be Selected.',
+            'vendor_id.required' => 'Must Select a Supplier',
+        ];
+
         $this->validate($request, [
             'name'                => 'required|unique:purchases|max:50',
             'transaction_type_id' => 'required',
             'vendor_id'           => 'required'
-        ]);
+        ], $messages);
 
         $time_now     = date('Y-m-d H:i:s');
 
@@ -270,12 +277,25 @@ class PurchaseController extends Controller
      */
     public function update(Request $request, Purchases $purchases)
     {
-
-        $this->validate($request, [
-            //'name' => 'required|unique:purchases,name,'.$request->name,
+        $rules = [
+            'name'                => 'required|max:50|unique:purchases,name,'.$request->id,
             'transaction_type_id' => 'required',
             'vendor_id'           => 'required'
-        ]);
+        ];
+        $messages = [
+            'name.unique'                     => 'The PO Name attribute has already been taken.',
+            'transaction_type_id.required'    => 'The Transaction Type must be Selected.',
+            'vendor_id.required'              => 'Must Select a Supplier',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return redirect('editPurchase/'.$request->id)
+                ->withErrors($validator)
+                ->withInput();
+        }
+
 
         $time_now     = date('Y-m-d H:i:s');
 
