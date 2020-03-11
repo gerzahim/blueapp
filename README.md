@@ -4,12 +4,16 @@ Custom Inventory Management System HUAHAI
 
 ## TODO
 
-- Update PO Form  backend (validation ignore same value)
 - add Flash Message Toast
+    https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css
+    https://codeseven.github.io/toastr/demo.html
+    https://www.itsolutionstuff.com/post/laravel-notification-message-popup-using-toastr-js-pluginexample.html
 
 - Create Order OUT 
-- Update Stock when update Order  
+- Update Stock when create Order  
 - Update Order OUT 
+- Update Stock when update Order
+
 
 - Create Crud Couries
 - Create Crud Vendors
@@ -20,15 +24,14 @@ Custom Inventory Management System HUAHAI
 
 
 ## pending 
-- get Name Product
+
 - Delete Order when delete PO associated
-- Edit instead splice try 
+- Edit instead splice try, Components 
  "words":[ "I", "am", "Good" ] 
- myObj.words[2] = "bad";  
+  myObj.words[2] = "bad";  
  "words":[ "I", "am", "bad" ] 
-  
-// modifying the value present at index 2 
-myObj.words[2] = "bad";  
+ // modifying the value present at index 2 
+  myObj.words[2] = "bad";  
 
 ## Improves 
 - If fail refill values ( No priority)
