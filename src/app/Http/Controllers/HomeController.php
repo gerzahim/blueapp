@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Home;
 use Illuminate\Http\Request;
+use Session;
 
 class HomeController extends Controller
 {
@@ -14,6 +15,8 @@ class HomeController extends Controller
      */
     public function index()
     {
+        Session::flash('success', 'Welcome to Blue App');
+
         return view('layouts.home');
     }
 

@@ -18,6 +18,10 @@
     <!-- Custom CSS -->
     <link href="{{ asset('/adminmart/css/style.css') }}" rel="stylesheet">
 
+    <!-- Toastr CSS -->
+    <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}">
+
+
     <!-- Laravel-MIX CSS
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     -->
@@ -115,7 +119,6 @@
     <!-- Laravel-MIX JS -->
     <script src="{{asset('js/app.js')}}"></script>
 
-
     <!-- Adminmart JS -->
     <!--
     <script src="{{asset('/adminmart/js/libs/jquery/dist/jquery.min.js')}}"></script>
@@ -123,8 +126,12 @@
     <script src="{{asset('/adminmart/js/libs/bootstrap/dist/js/bootstrap.min.js')}}"></script>
     -->
 
-    <!-- apps -->
+    <!-- Toastr JS -->
+    <script src="{{asset('js/toastr/toastr.min.js')}}"></script>
+    <script src="{{asset('js/toastr/helper_toastr.js')}}"></script>
+    @include('layouts.alert')
 
+    <!-- apps -->
     <script src="{{asset('/adminmart/js/app-style-switcher.js')}}"></script>
     <script src="{{asset('/adminmart/js/feather.min.js')}}"></script>
     <script src="{{asset('/adminmart/js/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js')}}"></script>
