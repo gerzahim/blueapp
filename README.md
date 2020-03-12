@@ -4,10 +4,6 @@ Custom Inventory Management System HUAHAI
 
 ## TODO
 
-- add Flash Message Toast
-    https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css
-    https://codeseven.github.io/toastr/demo.html
-    https://www.itsolutionstuff.com/post/laravel-notification-message-popup-using-toastr-js-pluginexample.html
 
 - Create Order OUT 
 - Update Stock when create Order  
