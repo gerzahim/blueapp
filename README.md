@@ -3,7 +3,7 @@ Custom Inventory Management System HUAHAI
 
 
 ## TODO
-- Create Order OUT 
+- Create Order OUT ( Datepick , Select2, copy as Waveapp )
 - Update Stock when create Order  
 - Update Order OUT 
 - Update Stock when update Order
@@ -28,7 +28,8 @@ Custom Inventory Management System HUAHAI
   myObj.words[2] = "bad";  
 
 ## Improves 
-- If fail refill values ( No priority)
+- Fix submenu
+- If fail refill values ( No priority) on Vue component
 - Delete fail mark
 - Disable Button Save or Message why not submit 
 

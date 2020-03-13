@@ -3,7 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Order;
+use App\Purchases;
+use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Validation\ValidationException;
+use Illuminate\View\View;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
@@ -14,7 +24,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+
+        $orders = Order::latest()->paginate(10);
+        return view('orders.index', compact('orders'));
     }
 
     /**
