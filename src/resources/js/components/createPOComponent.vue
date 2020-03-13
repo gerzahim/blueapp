@@ -16,7 +16,7 @@
                             <label class="mb-0"><small>Vendor</small></label>
                             <div class="input-group input-group-sm">
                                 <select id="vendor_id" name="vendor_id" class="form-control form-control-sm" v-bind:class="[error_vendor ? 'is-invalid' : '']" v-model="vendor_selected">
-                                    <option value="0" selected>Select Vendor</option>
+                                    <option value="0" disabled selected>Select Vendor</option>
                                     <option v-for="vendor in vendors" :value="vendor.id" :key="vendor.id">
                                         {{ vendor.name }}
                                     </option>
@@ -32,7 +32,7 @@
                             <label class="mb-0"><small>Courier</small></label>
                             <div class="input-group input-group-sm">
                                 <select id="courier_id" name="courier_id" class="form-control form-control-sm" v-bind:class="[error_courier ? 'is-invalid' : '']" v-model="courier_selected">
-                                    <option value="0" selected>Select Courier</option>
+                                    <option value="0" disabled selected>Select Courier</option>
                                     <option v-for="courier in couriers" :value="courier.id" :key="courier.id">
                                         {{ courier.name }}
                                     </option>
@@ -90,7 +90,7 @@
                                     <div class="form-group-po">
                                         <label class="mb-0"><small>Products</small></label>
                                         <select id="product_id" name="product_id" class="form-control form-control-sm" v-bind:class="[error_product ? 'is-invalid' : '']" v-model="product_selected">
-                                            <option value="0" selected>Select Product</option>
+                                            <option value="0" disabled selected>Select Product</option>
                                             <option v-for="product in products" v-bind:value="{ id: product.id, name: product.name }" :key="product.id">
                                                 {{ product.name }}
                                             </option>

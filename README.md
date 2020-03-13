@@ -3,8 +3,6 @@ Custom Inventory Management System HUAHAI
 
 
 ## TODO
-
-
 - Create Order OUT 
 - Update Stock when create Order  
 - Update Order OUT 
