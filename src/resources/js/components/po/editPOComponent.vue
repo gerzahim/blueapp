@@ -80,7 +80,42 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12">
+
+                <!-- List Products added -->
+                <div class="row">
+                    <div class="col-12">
+                        <h6 class="text-muted">Products</h6>
+                        <input type="hidden" name="vars" :value="JSON.stringify(vars)">
+                        <ul class="list-group-po nobull px-1">
+                            <li v-for="(variable, key) in vars" :key="key" class="list-group-po-item py-1 px-1 mx-1 bg-light">
+                                <div class="row mx-1 h-100">
+                                    <div class="col-sm-12 col-lg-12 col-xl-6 my-auto px-1">
+                                        {{ variable.product_name }}
+                                        <span class="badge badge-primary badge-pill"><b>{{variable.qty}}</b></span>
+                                    </div>
+                                    <div class="col-sm-12 col-lg-12 col-xl-5 my-auto px-1">
+                                        <h6>
+                                            <span class="badge badge-dark">{{variable.batch_number}}</span>
+                                        </h6>
+                                    </div>
+                                    <div class="col-sm-12 col-lg-12 col-xl-1 my-auto px-1 text-right">
+                                        <button type="button" class="btn-danger pull-right" @click="$delete(vars, key)"><i class="fa fa-times-circle"></i></button>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul v-show="error_vars">
+                            <div class="alert alert-danger">
+                                <p>
+                                    <strong><li>Please Add a Product to PO !</li></strong>
+                                </p>
+                            </div>                            
+                        </ul>                  
+                    </div>
+                </div>
+
+                <!-- Add Products -->                
+                <div class="col-md-12 px-0">
                     <div class="card border-success pb-1 mb-2 mt-2">
                         <div class="card-header bg-success pb-0 pt-1">
                             <h6 class="mb-1 mt-1 text-white text-sm-left">Add Products to PO</h6>
@@ -124,37 +159,6 @@
                             </div>
                         </div>
 
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <h6 class="text-muted">Products</h6>
-                        <input type="hidden" name="vars" :value="JSON.stringify(vars)">
-                        <ul class="list-group-po nobull px-1">
-                            <li v-for="(variable, key) in vars" :key="key" class="list-group-po-item py-1 px-1 mx-1 bg-light">
-                                <div class="row mx-1 h-100">
-                                    <div class="col-sm-12 col-lg-12 col-xl-6 my-auto px-1">
-                                        {{ variable.product_name }}
-                                        <span class="badge badge-primary badge-pill"><b>{{variable.qty}}</b></span>
-                                    </div>
-                                    <div class="col-sm-12 col-lg-12 col-xl-5 my-auto px-1">
-                                        <h6>
-                                            <span class="badge badge-dark">{{variable.batch_number}}</span>
-                                        </h6>
-                                    </div>
-                                    <div class="col-sm-12 col-lg-12 col-xl-1 my-auto px-1 text-right">
-                                        <button type="button" class="btn-danger pull-right" @click="$delete(vars, key)"><i class="fa fa-times-circle"></i></button>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <ul v-show="error_vars">
-                            <div class="alert alert-danger">
-                                <p>
-                                    <strong><li>Please Add a Product to PO !</li></strong>
-                                </p>
-                            </div>                            
-                        </ul>                  
                     </div>
                 </div>
             </div>

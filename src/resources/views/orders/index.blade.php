@@ -56,7 +56,7 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Name</th>
+                                    <th>Order Number</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>

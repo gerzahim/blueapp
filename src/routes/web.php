@@ -36,6 +36,7 @@ Route::get('/get_couriers', 'PurchaseController@getCouriersbyAjax');
 
 /** Orders  **/
 Route::resource('order', 'OrderController');
+Route::get('/get_purchases_items', 'OrderController@getPurchasesItemsbyAjax');
 
 Route::resource('courier', 'CourierController');
 Route::resource('stock', 'StockController');

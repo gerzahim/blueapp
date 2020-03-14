@@ -19,7 +19,7 @@ class CreatePurchasesTable extends Migration
             $table->string('name')->unique();
             $table->integer('contact_type_id');
             $table->integer('contact_id');
-            $table->integer('courier_id');
+            $table->integer('courier_id')->nullable();
             $table->string('tracking')->nullable();
             $table->integer('transaction_type_id');
             $table->string('bol')->nullable();

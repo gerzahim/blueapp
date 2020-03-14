@@ -115,17 +115,17 @@ class PurchaseController extends Controller
         $time_now     = date('Y-m-d H:i:s');
 
         $data = array(
-            'name' => $request->name,
-            'contact_type_id' => 1,
-            'contact_id' => $request->vendor_id,
-            'courier_id' => $request->courier_id,
-            'tracking' => $request->tracking,
+            'name'                => $request->name,
+            'contact_type_id'     => 1,
+            'contact_id'          => $request->vendor_id,
+            'courier_id'          => $request->courier_id,
+            'tracking'            => $request->tracking,
             'transaction_type_id' => $request->transaction_type_id,
-            'bol' => $request->bol,
-            'package_list' => $request->package_list,
-            'reference' => $request->reference,
-            'created_at'   => $time_now,
-            'updated_at'   => $time_now
+            'bol'                 => $request->bol,
+            'package_list'        => $request->package_list,
+            'reference'           => $request->reference,
+            'created_at'          => $time_now,
+            'updated_at'          => $time_now
         );
 
         $purchases = Purchases::create([
@@ -159,11 +159,13 @@ class PurchaseController extends Controller
                     'updated_at'   => $time_now
                 );
                 // Insert PO Items Associated to PO
-                PurchasesItem::insert($data_po);
+                $purchases_item = PurchasesItem::create($data_po);
+                $lastInsertedId = $purchases_item->id;
+                $purchases_item_id = $lastInsertedId;
 
                 // Saving Stock
                 $stock = new StockController();
-                $stock->registerProductStock($purchases_id, $po_line->product_id, $po_line->qty);
+                $stock->registerProductStock($purchases_id, $purchases_item_id, $po_line->product_id, $po_line->qty);
 
             }
 
@@ -332,12 +334,13 @@ class PurchaseController extends Controller
             );
 
             // Insert PO Items Associated to PO
-            PurchasesItem::insert($data_po);
+            $purchases_item = PurchasesItem::create($data_po);
+            $lastInsertedId = $purchases_item->id;
+            $purchases_item_id = $lastInsertedId;
 
             // Saving Stock
             $stock = new StockController();
-            $stock->registerProductStock($request->id, $po_line->product_id, $po_line->qty);
-
+            $stock->registerProductStock($request->id, $purchases_item_id, $po_line->product_id, $po_line->qty);
         }
 
         return redirect()->route('purchases.index')->with('success', 'PO updated successfully.');

@@ -20,8 +20,10 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('createpo-component', require('./components/createPOComponent.vue').default);
-Vue.component('editpo-component', require('./components/editPOComponent.vue').default);
+Vue.component('createpo-component', require('./components/po/createPOComponent.vue').default);
+Vue.component('editpo-component', require('./components/po/editPOComponent.vue').default);
+
+Vue.component('createorder-component', require('./components/order/createOrderComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

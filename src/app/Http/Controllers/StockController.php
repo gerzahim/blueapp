@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Purchases;
+use App\PurchasesItem;
 use App\Stock;
 use App\Product;
+use Debugbar;
 use Illuminate\Http\Request;
 
 
 class StockController extends Controller
 {
     public $purchases_id;
+    public $purchases_item_id;
     public $product_id;
     public $purchased;
     public $sold; //out
@@ -21,8 +24,9 @@ class StockController extends Controller
     public $refurbished; //in
     public $lended; //out
 
-    public $products = [];
-    public $purchases = [];
+    public $products_name  = [];
+    public $products_batch = [];
+    public $purchases_name = [];
 
 
     /**
@@ -34,20 +38,27 @@ class StockController extends Controller
     {
         $prods = Product::all();
         $prods->each(function ($item, $key) {
-            $this->products[$item->id]=$item->name;
+            $this->products_name[$item->id]=$item->name;
+            $this->products_batch[$item->id]=$item->batch_number;
         });
-
 
         $pos = Purchases::all();
         $pos->each(function ($item, $key) {
-            $this->purchases[$item->id]=$item->name;
+            $this->purchases_name[$item->id]=$item->name;
         });
 
-        $products  = $this->products;
-        $purchases = $this->purchases;
-        $stocks    = Stock::latest()->paginate(10);
+        $products_batch = PurchasesItem::all();
+        $products_batch->each(function ($item, $key) {
+            //Debugbar::info($item);
+            $this->products_batch[$item->id]=$item->batch_number;
+        });
 
-        return view('stock.index', compact('stocks','products', 'purchases'));
+        $products_name  = $this->products_name;
+        $products_batch = $this->products_batch;
+        $purchases_name = $this->purchases_name;
+        $stocks         = Stock::latest()->paginate(10);
+
+        return view('stock.index', compact('stocks','products_name', 'products_batch', 'purchases_name'));
     }
 
     /**
@@ -56,16 +67,17 @@ class StockController extends Controller
     public function saveStock() {
 
         $data = array(
-            'purchases_id'  => $this->purchases_id,
-            'product_id'    => $this->product_id,
-            'purchased'      => $this->purchased,
-            'sold'         => $this->sold,
-            'qoh'           => $this->qoh,
-            'on_hold'       => $this->on_hold,
-            'available'     => $this->available,
-            'rma'           => $this->rma,
-            'refurbished'   => $this->refurbished,
-            'lended'        => $this->lended
+            'purchases_id'       => $this->purchases_id,
+            'purchases_item_id'  => $this->purchases_item_id,
+            'product_id'         => $this->product_id,
+            'purchased'          => $this->purchased,
+            'sold'               => $this->sold,
+            'qoh'                => $this->qoh,
+            'on_hold'            => $this->on_hold,
+            'available'          => $this->available,
+            'rma'                => $this->rma,
+            'refurbished'        => $this->refurbished,
+            'lended'             => $this->lended
         );
         Stock::insert($data);
 
@@ -78,8 +90,9 @@ class StockController extends Controller
      * @param $product
      * @param $qty
      */
-    public function registerProductStock($po, $product, $qty) {
+    public function registerProductStock($po, $purchases_item_id, $product, $qty) {
         $this->purchases_id = $po;
+        $this->purchases_item_id = $purchases_item_id;
         $this->product_id   = $product;
         $this->purchased    = $qty;
         $this->sold         = 0;
@@ -91,6 +104,22 @@ class StockController extends Controller
         $this->lended       = 0;
 
         $this->saveStock();
+    }
+
+
+    /**
+     * Make calculation when create a PO
+     *
+     * @param $po
+     * @param $product
+     * @param $qty
+     */
+    public function reduceProductStock($purchases_item_id, $qty) {
+        $stock = Stock::where('purchases_item_id',$purchases_item_id)->first();
+        $stock->sold = ($stock->sold + $qty);
+        $stock->qoh = ($stock->qoh - $qty);
+        $stock->available = ($stock->available - $qty);
+        $stock->save();
     }
 
     /**

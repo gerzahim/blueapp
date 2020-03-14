@@ -44,6 +44,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Product</th>
+                                    <th>Batch</th>
                                     <th>PO</th>
                                     <th>Purchased</th>
                                     <th>Sold</th>
@@ -63,12 +64,13 @@
                                         </td>
                                         <td>
                                             <a href="{{ route('stock.show',$stock->id) }}">
-                                                {{ $products[$stock->product_id] }}
+                                                {{ $products_name[$stock->product_id] }}
                                             </a>
                                         </td>
+                                        <td>{{ $products_batch[$stock->purchases_item_id] }}</td>
                                         <td>
                                             <a href="{{ route('stock.show',$stock->id) }}">
-                                                {{ $purchases[$stock->purchases_id] }}
+                                                {{ $purchases_name[$stock->purchases_id] }}
                                             </a>
                                         </td>
                                         <td>{{ $stock->purchased }}</td>

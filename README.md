@@ -1,10 +1,16 @@
 # BlueApp
 Custom Inventory Management System HUAHAI
 
+## RUN
+- Run Compose Install
+- Run Migrations 
+
 
 ## TODO
-- Create Order OUT ( Datepick , Select2, copy as Waveapp )
-- Update Stock when create Order  
+- Delete Order
+- Create Order OUT ( Datepick copy as Waveapp )
+- Create Order ( Select2, copy as Waveapp )
+- Validate Max Value depend available in Order line
 - Update Order OUT 
 - Update Stock when update Order
 
@@ -18,7 +24,8 @@ Custom Inventory Management System HUAHAI
 
 
 ## pending 
-
+- BATCH nUMBER Capital Letter
+- Stock List, wrong id show
 - Delete Order when delete PO associated
 - Edit instead splice try, Components 
  "words":[ "I", "am", "Good" ] 
