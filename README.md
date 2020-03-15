@@ -7,7 +7,7 @@ Custom Inventory Management System HUAHAI
 
 
 ## TODO
-- Delete Order
+- Delete Order ****
 - Create Order OUT ( Datepick copy as Waveapp )
 - Create Order ( Select2, copy as Waveapp )
 - Validate Max Value depend available in Order line

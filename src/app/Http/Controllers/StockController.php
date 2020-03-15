@@ -108,10 +108,9 @@ class StockController extends Controller
 
 
     /**
-     * Make calculation when create a PO
+     * * Make calculation when create a New Order
      *
-     * @param $po
-     * @param $product
+     * @param $purchases_item_id
      * @param $qty
      */
     public function reduceProductStock($purchases_item_id, $qty) {
@@ -119,6 +118,21 @@ class StockController extends Controller
         $stock->sold = ($stock->sold + $qty);
         $stock->qoh = ($stock->qoh - $qty);
         $stock->available = ($stock->available - $qty);
+        $stock->save();
+    }
+
+
+    /**
+     * * Make calculation when create a New Order
+     *
+     * @param $purchases_item_id
+     * @param $qty
+     */
+    public function reverseReduceProductStock($purchases_item_id, $qty) {
+        $stock = Stock::where('purchases_item_id',$purchases_item_id)->first();
+        $stock->sold = ($stock->sold - $qty);
+        $stock->qoh = ($stock->qoh + $qty);
+        $stock->available = ($stock->available + $qty);
         $stock->save();
     }
 

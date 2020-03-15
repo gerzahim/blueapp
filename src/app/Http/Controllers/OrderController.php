@@ -164,13 +164,26 @@ class OrderController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Order  $order
-     * @return \Illuminate\Http\Response
+     * @param Order $order
+     * @return RedirectResponse
+     * @throws \Exception
      */
     public function destroy(Order $order)
     {
-        //
+        //Get All Order Lines associated to the Order
+        $OrderItems = OrderItems::where('order_id',$order->id)->get();
+        foreach ($OrderItems as $OrderItem){
+            // Updating Stock
+            $stock = new StockController();
+            $stock->reverseReduceProductStock($OrderItem->purchases_id, $OrderItem->qty);
+        }
+        // Delete Order Lines
+        $OrderItems = OrderItems::where('order_id',$order->id)->delete();
+
+        //Delete Order
+        $order->delete();
+
+        return redirect()->route('order.index')->with('success', 'Order has been deleted successfully!');
     }
 
     /**
