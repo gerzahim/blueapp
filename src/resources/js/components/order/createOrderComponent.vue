@@ -14,8 +14,9 @@
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0" ><small>Date </small></label>
-                            <b-form-datepicker id="example-datepicker" v-model="date" size="sm" class="form-control form-control-sm mb-2"></b-form-datepicker>
+                            <b-form-datepicker id="example-datepicker" v-bind:class="[error_date ? 'is-invalid' : '']" v-model="date" size="sm" class="form-control form-control-sm mb-2"></b-form-datepicker>
                             <input type="hidden" name="date" id="date" :value="date">
+                            <div v-show="error_date" class="invalid-feedback">Please Pick a Date !</div>
                         </div>
                     </div>
                 </div>
@@ -168,6 +169,7 @@
             return {
                 errors:[],
                 error_name: false,
+                error_date: false,
                 error_qty: false,
                 error_product: false,
                 error_courier: false,
@@ -181,7 +183,6 @@
                 vendor_selected: 0,
                 client_selected: 0,
                 qty: 1,
-                batch_number: '',
                 csrf: document.head.querySelector('meta[name="csrf-token"]').content,
                 products: [],
                 vendors: [],
@@ -212,6 +213,10 @@
                     this.error_client = true
                     this.errors.push('No Customer Selected')
                 }
+                if (this.date == '') {
+                    this.error_date = true
+                    this.errors.push('No Date Selected')
+                }                
                 if (!this.vars.length) {
                     this.error_vars = true
                     this.errors.push('No products Added!');
@@ -219,12 +224,12 @@
             },
             resetAddProducts() {
                 this.product_id=0,
-                this.qty= 1,
-                this.batch_number= ''
+                this.qty= 1
             },
             cleanFormErrors () {
                 this.errors = [];
                 this.error_name = false
+                this.error_date = false
                 this.error_client = false
                 this.error_vars = false
             },

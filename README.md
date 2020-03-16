@@ -7,7 +7,7 @@ Custom Inventory Management System HUAHAI
 
 
 ## TODO
-- Validate Datepick on vue
+- Validate Datepick on vue ****
 - Create Order ( Select2, copy as Waveapp )
 - Validate Max Value depend available in Order line
 - Update Order OUT 
