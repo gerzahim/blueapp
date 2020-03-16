@@ -13,16 +13,9 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group-po">
-                            <label class="mb-0"><small>Supplier</small></label>
-                            <div class="input-group input-group-sm">
-                                <select id="client_id" name="client_id" class="form-control form-control-sm" v-bind:class="[error_client ? 'is-invalid' : '']" v-model="client_selected">
-                                    <option value="0" disabled selected>Select Customer</option>
-                                    <option v-for="client in clients" :value="client.id" :key="client.id">
-                                        {{ client.name }}
-                                    </option>
-                                </select>
-                                <div v-show="error_client" class="invalid-feedback">Please Select a Customer!</div>
-                            </div>
+                            <label class="mb-0" ><small>Date </small></label>
+                            <b-form-datepicker id="example-datepicker" v-model="date" size="sm" class="form-control form-control-sm mb-2"></b-form-datepicker>
+                            <input type="hidden" name="date" id="date" :value="date">
                         </div>
                     </div>
                 </div>
@@ -53,7 +46,7 @@
                         <div class="form-group-po">
                             <label class="mb-0" ><small>Transaction Type</small></label>
                             <select id="transaction_type_id" name="transaction_type_id" class="form-control form-control-sm" >
-                                <option value="3">Sale</option>
+                                <option value="3">Sales</option>
                             </select>
                         </div>
                     </div>
@@ -67,11 +60,18 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group-po">
-                            <label class="mb-0" ><small>Date</small></label>
-                            <input type="text" class="form-control form-control-sm" id="date" name="date" placeholder="...">
+                            <label class="mb-0"><small>Customer</small></label>
+                            <div class="input-group input-group-sm">
+                                <select id="client_id" name="client_id" class="form-control form-control-sm" v-bind:class="[error_client ? 'is-invalid' : '']" v-model="client_selected">
+                                    <option value="0" disabled selected>Select Customer</option>
+                                    <option v-for="client in clients" :value="client.id" :key="client.id">
+                                        {{ client.name }}
+                                    </option>
+                                </select>
+                                <div v-show="error_client" class="invalid-feedback">Please Select a Customer!</div>
+                            </div>
                         </div>
                     </div>
-
                 </div>
 
                 <!-- List Products added -->
@@ -160,6 +160,8 @@
 </template>
 
 <script>
+    import datepicker from 'vue-date-picker'
+
     export default {
         props: ["post_name"],
         data: function () {
@@ -173,6 +175,7 @@
                 error_client: false,
                 error_vars: false,
                 name: null,
+                date: '',
                 product_selected: 0,
                 courier_selected: 0,
                 vendor_selected: 0,
@@ -187,6 +190,9 @@
             }
         },
         methods: {
+            disabledDate (date) {
+                return date.getTime() < Date.now()
+            },
             checkForm:function(e) {
 
                 this.checkErrors()                

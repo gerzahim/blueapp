@@ -70,19 +70,20 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $messages = [
-            'name.required'    => 'The Orden Number attribute has already been taken.',
+            'name.required'    => 'The Order Number attribute has already been taken.',
+            'date.required'    => 'Must Select a Date',
             'transaction_type_id.required'    => 'The Transaction Type must be Selected.',
             'client_id.required' => 'Must Select a Customer',
         ];
 
         $this->validate($request, [
             'name'                => 'required',
+            'date'                => 'required',
             'transaction_type_id' => 'required',
             'client_id'           => 'required'
         ], $messages);
 
         $time_now     = date('Y-m-d H:i:s');
-        $today     = date('Y-m-d');
 
         $data = array(
             'name' => $request->name,
@@ -90,8 +91,7 @@ class OrderController extends Controller
             'courier_id' => $request->courier_id,
             'tracking' => $request->tracking,
             'transaction_type_id' => $request->transaction_type_id,
-            //'date' => $request->date,
-            'date' => $today,
+            'date' => $request->date,
             'reference' => $request->reference,
             'created_at'   => $time_now,
             'updated_at'   => $time_now

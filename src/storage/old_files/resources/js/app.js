@@ -8,14 +8,26 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-import Vue from 'vue'
 
+import Vue from 'vue'
 import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
+
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
 
+
+//import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
+//import BootstrapVue from 'bootstrap-vue' //Importing
+//Vue.use(BootstrapVue) // Telling Vue to use this in whole application
+//Vue.use(require('bootstrap-vue'));
+
+
+//import { BootstrapVueIcons } from 'bootstrap-vue'
+
+
 import 'bootstrap-vue/dist/bootstrap-vue.css' // Importing CSS Style
 import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
+
 
 /**
  * The following block of code may be used to automatically register your
@@ -29,12 +41,9 @@ import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
-//Component for PO
 Vue.component('createpo-component', require('./components/po/createPOComponent.vue').default);
 Vue.component('editpo-component', require('./components/po/editPOComponent.vue').default);
 
-//Component for Order
 Vue.component('createorder-component', require('./components/order/createOrderComponent.vue').default);
 
 /**
