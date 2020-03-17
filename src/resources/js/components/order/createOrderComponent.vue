@@ -74,6 +74,17 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="typo__label mb-0"><small>Search Client</small></label>
+                            <multiselect v-model="value" deselect-label="Can't remove this value" track-by="name" label="name" placeholder="Select one" :options="options" :searchable="false" :allow-empty="false">
+                                <template slot="singleLabel" slot-scope="{ option }"><strong>{{ option.name }}</strong> is written in<strong>  {{ option.language }}</strong></template>
+                            </multiselect>
+                            <pre class="language-json"><code>{{ value  }}</code></pre>
+                        </div>
+                    </div>                    
+                </div>
 
                 <!-- List Products added -->
                 <div class="row">
@@ -161,9 +172,9 @@
 </template>
 
 <script>
-    import datepicker from 'vue-date-picker'
 
     export default {
+
         props: ["post_name"],
         data: function () {
             return {
@@ -185,9 +196,28 @@
                 qty: 1,
                 csrf: document.head.querySelector('meta[name="csrf-token"]').content,
                 products: [],
-                vendors: [],
+                clients: [],
                 couriers: [],
                 vars: [],
+                value: null,
+                options: [
+                    { name: 'Vue.js', language: 'JavaScript' },
+                    { name: 'Rails', language: 'Ruby' },
+                    { name: 'Sinatra', language: 'Ruby' },
+                    { name: 'Laravel', language: 'PHP', $isDisabled: true },
+                    { name: 'Phoenix', language: 'Elixir' }
+                ],
+                options2: [{
+                    text: "name1",
+                    value: "value1"
+                    }, {
+                    text: "name2",
+                    value: "value2"
+                    }, {
+                    text: "name3",
+                    value: "value3"
+                }],
+                result2: "",
             }
         },
         methods: {

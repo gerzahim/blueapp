@@ -8,11 +8,11 @@ Custom Inventory Management System HUAHAI
 
 ## TODO
 - Validate Datepick on vue ****
-- Create Order ( Select2, copy as Waveapp )
+- Create Order ( Select2, copy as Waveapp ) ****
+- integrate Select2 to List of Products 
 - Validate Max Value depend available in Order line
-- Update Order OUT 
-- Update Stock when update Order
-
+- Update Order  
+- Update Stock when Update Order
 
 - Create Crud Couries
 - Create Crud Vendors
@@ -23,7 +23,7 @@ Custom Inventory Management System HUAHAI
 
 
 ## pending 
-- BATCH nUMBER Capital Letter
+- BATCH NUMBER Capital Letter
 - Stock List, wrong id show
 - Delete Order when delete PO associated
 - Edit instead splice try, Components 

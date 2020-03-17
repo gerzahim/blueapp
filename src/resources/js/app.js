@@ -14,8 +14,19 @@ import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
 
+
+// import Select2Component
+//import Select2 from 'vue-select';
+//Vue.component('Select2', Select2);
+
 import 'bootstrap-vue/dist/bootstrap-vue.css' // Importing CSS Style
 import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
+
+import Multiselect from 'vue-multiselect'
+// register globally
+Vue.component('multiselect', Multiselect)
+import 'vue-multiselect/dist/vue-multiselect.min.css'
+
 
 /**
  * The following block of code may be used to automatically register your
