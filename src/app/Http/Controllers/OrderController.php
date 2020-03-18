@@ -208,7 +208,7 @@ class OrderController extends Controller
         {
             $data2[$i]['id'] = $purchase_item->id;
             $data2[$i]['text'] = 'Product: '.$purchase_item->product_name.' | PO: '.$purchase_item->po_name.' | Available ('.$purchase_item->available.')';
-            $data2[$i]['product_id'] = $purchase_item->po_id;
+            $data2[$i]['product_id'] = $purchase_item->product_id;
             $data2[$i]['name'] = $purchase_item->product_name;
             $data2[$i]['batch'] = $purchase_item->batch;
             $data2[$i]['po_name'] = $purchase_item->po_name;

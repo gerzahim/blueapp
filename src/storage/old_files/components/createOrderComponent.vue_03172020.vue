@@ -74,6 +74,42 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div>
+                            <label class="typo__label">Select with search</label>
+                            <multiselect v-model="producta" :options="products" placeholder="Select Product" label="text" track-by="text" @select="dispatchAction">
+                            </multiselect>
+                            <pre class="language-json"><code>{{ producta }}</code></pre>
+                            </div>
+                        </div>
+                    </div>  
+                    <div class="col-md-6">
+                        <!--
+<div>
+  <label class="typo__label">Open console to see logs.</label>
+  <multiselect placeholder="Pick action" :options="actions" :searchable="false" :reset-after="true" @select="dispatchAction"></multiselect>
+</div>
+
+<div>
+  <label class="typo__label">Groups</label>
+  <multiselect v-model="value" :options="options" :multiple="true" group-values="libs" group-label="language" :group-select="true" placeholder="Type to search" track-by="name" label="name"><span slot="noResult">Oops! No elements found. Consider changing the search query.</span></multiselect>
+  <pre class="language-json"><code>{{ value  }}</code></pre>
+</div>
+
+                        <div class="form-group">
+                            <label class="typo__label mb-0"><small>Select Product</small></label>
+                            <multiselect v-model="value" deselect-label="Can't remove this value" track-by="text" label="text" placeholder="Select one" :options="products" :searchable="true" :allow-empty="false">
+                                <template slot="singleLabel" slot-scope="{ product }">{{ product.text }}</template>
+                            </multiselect>
+                            <pre class="language-json"><code>{{ value  }}</code></pre>
+                        </div>
+                        -->
+                    </div>                                     
+                </div>
+
+
 
 
                 <!-- List Products added -->
@@ -119,9 +155,13 @@
                             <div class="row">
                                 <div class="col-md-8">
                                     <div class="form-group-po">
-                                        <!-- <label class="typo__label"><small>Select with search</small></label> -->
-                                        <multiselect v-model="producta" :options="products" placeholder="Select Product" label="text" track-by="text" @select="dispatchAction">
-                                        </multiselect>
+                                        <label class="mb-0"><small>Products</small></label>
+                                        <select id="product_id" name="product_id" class="form-control form-control-sm" v-bind:class="[error_product ? 'is-invalid' : '']" v-model="product_selected">
+                                            <option value="0" disabled selected>Select a Product</option>
+                                            <option v-for="product in products" v-bind:value="{ id: product.id, text: product.text, name: product.name, batch: product.batch, po_name: product.po_name, available: product.available }" :key="product.id">
+                                                {{ product.text }}
+                                            </option>
+                                        </select>
                                         <div v-show="error_product" class="invalid-feedback">Please Select a Product!</div>
                                     </div>
                                 </div>
@@ -186,23 +226,43 @@
                 clients: [],
                 couriers: [],
                 vars: [],
+                value: [],
                 current_prod_po_id: 0,
                 current_prod_id: 0,
                 current_prod_name: '',
                 current_prod_batch: '',
                 current_prod_po_name: '',
                 current_prod_available: 0,
-                previousqty:0,
             }
         },
         methods: {
             dispatchAction (prodc) {
+                console.log('You just dispatched "console.log" action!', prodc)
                 this.current_prod_po_id = prodc.po_id
                 this.current_prod_id = prodc.product_id
                 this.current_prod_name = prodc.name
                 this.current_prod_batch = prodc.batch
                 this.current_prod_po_name = prodc.po_name
                 this.current_prod_available = prodc.available
+                console.log('You current_prod_po_id', this.current_prod_po_id)
+                console.log('You current_prod_id', this.current_prod_id)
+                console.log('You current_prod_name', this.current_prod_name)
+                console.log('You current_prod_batch', this.current_prod_batch)
+                console.log('You current_prod_po_name', this.current_prod_po_name)
+                console.log('You current_prod_available', this.current_prod_available)
+
+                /*
+                id: 5
+                text: "Product: Product 541 | PO: BBB7 | Available (10)"
+                product_id: 2
+                name: (...)
+                batch: (...)
+                po_name: (...)
+                po_id: (...)
+                po_item_id: (...)
+                available: (...)
+                */
+
                 
             },
             disabledDate (date) {
@@ -253,15 +313,7 @@
                 this.error_product = false;
 
             },
-            getQtyAvailable(array, id) {
-                for (var i = 0; i < array.length; i++) {
-                    if (array[i].product_id === id)
-                        return array[i].qty;
-                }
-                return 0;
-            },   
-            isProductSelectedGoodToAdd(){
-
+            isProductGoodToAdd() {
                 this.cleanErrors()
 
                 if(this.qty < 1) {
@@ -269,19 +321,29 @@
                     this.errors.push("Please Indicate Qty!");
                 }
 
-                this.previousqty = 0
-                this.previousqty = this.getQtyAvailable(this.vars, this.current_prod_id)
-                let newqty = this.qty
-
-                if(this.previousqty){
-                    newqty =  parseInt(this.previousqty)+parseInt(this.qty) 
+                if(typeof(this.product_selected.id) == 'undefined' || this.product_selected.id === null || this.product_selected.id === 0) {
+                    this.error_product = true;
+                    this.errors.push("Must Select a Product!");
                 }
 
-                if(newqty > this.current_prod_available) {
-                    toastr.error('Check Input Quantity is greater than the available!', 'Error Alert', {timeOut: 5000})
+                if(!this.errors.length) return true;
+                return false
+            },
+            isProductSelectedGoodToAdd(){
+                console.log('I entered Here  qty - current_prod_available', this.qty, this.current_prod_available)
+                this.cleanErrors()
+
+                if(this.qty < 1) {
+                    this.error_qty = true;
+                    this.errors.push("Please Indicate Qty!");
+                }
+                if(this.qty > this.current_prod_available) {
+                    this.error_qty = true;
                     this.errors.push("Please Select Qty <= to Available!");
                 }
+                console.log('I entered Here Main producta', this.producta)
                 if(typeof(this.producta) == 'undefined' || this.producta === null || this.producta === 0 || JSON.stringify(this.producta) === '{}') {
+                    console.log('I entered Here  producta', this.producta)
                     this.error_product = true;
                     this.errors.push("Must Select a Product!");
                 }
@@ -295,11 +357,11 @@
                         return [array[i].qty, i];
                 }
                 return 0;
-            },         
+            },
             insertNewProduct2() {
                 if( this.isProductSelectedGoodToAdd() ) {
                     let variables = this.vars
-                    let getInfoArray = this.isThisValueInArray(this.vars, this.current_prod_id)
+                    let getInfoArray = this.isThisValueInArray(this.vars, this.product_selected.id)
                     let previousQty = getInfoArray[0]
                     let product_array_key = getInfoArray[1]
                     if (getInfoArray[0] > 0){
@@ -326,6 +388,29 @@
                 this.resetAddProducts()
                 this.checkErrors()
             },            
+            insertNewProduct() {
+                if( this.isProductGoodToAdd() ) {
+                    let variables = this.vars
+                    let getInfoArray = this.isThisValueInArray(this.vars, this.product_selected.id)
+                    let previousQty = getInfoArray[0]
+                    let product_array_key = getInfoArray[1]
+                    if (getInfoArray[0] > 0){
+                        variables.splice(product_array_key,1)
+                        variables.push({'po_id': this.product_selected.po_id,'product_id': this.product_selected.id,'product_name': this.product_selected.name,'batch': this.product_selected.batch,'po_name': this.product_selected.po_name,'available': this.product_selected.available, 'qty': parseInt(this.qty)+parseInt(previousQty)})
+                    }else {
+                        variables.push({'po_id': this.product_selected.po_id,'product_id': this.product_selected.id,'product_name': this.product_selected.name,'batch': this.product_selected.batch,'po_name': this.product_selected.po_name,'available': this.product_selected.available, 'qty': this.qty})
+                    }
+                }
+                this.resetAddProducts()
+                this.checkErrors()
+            },
+            fetchProducts() {
+                axios
+                    .get('/get_products')
+                    .then(response => {
+                        //this.products = response.data.products
+                    })
+            },
             fetchVendors() {
                 axios
                     .get('/get_vendors')
