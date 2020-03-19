@@ -5,20 +5,29 @@ Custom Inventory Management System HUAHAI
 - Run Compose Install
 - Run Migrations 
 
-
 ## TODO
-- Fix Order Secuencia
 - Update Order
-- Update Stock when Update Order
+- Update Purchase Item when Update Order
+- Update Stock Update Order
+- Check validation when update Order
+- Create unique route ( message On Construction)
 - Create Crud Couries
 - Create Crud Vendors
 - Create Crud ProductDimensions
 - Create User Login
-- RMA IN, 
+- RMA IN 
 - Update RMA when update Order
 
+#Posible Error 
+- vendor_id on blade when should be contact_id edit.blade PO
 
-## pending 
+## pending
+- style Stock
+<td style="font-weight: bold; text-align:right;background-color:red; color:white">+11 </td>
+<td style="font-weight: bold; text-align:right;background-color:#FFEEAA;"> +1,192 </td>
+
+
+- Fix Order Secuencia 
 - Fix Style Select 2 
 - BATCH NUMBER Capital Letter
 - Stock List, wrong id show

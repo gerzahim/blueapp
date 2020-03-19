@@ -213,7 +213,7 @@
                 this.checkErrors()                
                 if (!this.errors.length) {
                     return true;
-                    alert('Form is Not Good')
+                    toastr.error('Form is Not Good!', 'Error Alert', {timeOut: 5000})
                 }
                 e.preventDefault();
             },

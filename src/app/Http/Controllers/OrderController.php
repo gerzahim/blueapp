@@ -53,12 +53,7 @@ class OrderController extends Controller
             $lastOrder = 1;
         }
 
-
-        $clients = Client::all();
-        $products = Product::all();
-        $couriers = Courier::all();
-
-        return view('orders.create', compact('lastOrder','clients','products','couriers') );
+        return view('orders.create', compact('lastOrder') );
     }
 
     /**
@@ -84,6 +79,7 @@ class OrderController extends Controller
         ], $messages);
 
         $time_now     = date('Y-m-d H:i:s');
+
 
         $data = array(
             'name' => $request->name,
@@ -118,7 +114,9 @@ class OrderController extends Controller
                 // Insert PO Items Associated to PO
                 OrderItems::insert($data_order_item);
 
-                // Saving Stock
+                // Reduce PurchaseItem ******
+
+                // Reduce Stock
                 $stock = new StockController();
                 $stock->reduceProductStock($purchases_item_id, $order_line->qty);
 
@@ -142,24 +140,144 @@ class OrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Order  $order
-     * @return \Illuminate\Http\Response
+     * @param \App\Order $order
+     * @return void
      */
     public function edit(Order $order)
     {
-        dd($order);
+        $order_lines  = OrderItems::where('order_id',$order->id)->get();
+        $products_order = [];
+        foreach($order_lines as $order_line){
+
+            $po_line  = PurchasesItem::where('id',$order_line->purchases_id)->first();
+            $po       = Purchases::where('id',$po_line->purchases_id)->first();
+            $product  = Product::where('id', $po_line->product_id)->first();
+            $stock    = Stock::where('purchases_item_id',$order_line->purchases_id)->first();
+
+
+            $products_order[] = array(
+                'po_id'        => $order_line->purchases_id,
+                'product_id'   => $product->id,
+                'product_name' => $product->name,
+                'batch'        => $po_line->batch_number,
+                'po_name'      => $po->name,
+                'available'    => $stock->available,
+                'qty'          => $order_line->qty
+            );
+        }
+
+        $products_order = json_encode($products_order, true);
+
+        return view('orders.edit', compact('order', 'products_order'));
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Order  $order
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Order $order
+     * @return RedirectResponse
+     * @throws ValidationException
      */
     public function update(Request $request, Order $order)
     {
-        //
+        $rules = [
+            'name'                => 'required|max:50|unique:orders,name,'.$request->id,
+            'date'                => 'required',
+            'transaction_type_id' => 'required',
+            'client_id'           => 'required'
+        ];
+        $messages = [
+            'name.required'    => 'The Order Number attribute has already been taken.',
+            'date.required'    => 'Must Select a Date',
+            'transaction_type_id.required'    => 'The Transaction Type must be Selected.',
+            'client_id.required' => 'Must Select a Customer'
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return redirect('order/'.$request->id.'/edit')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $time_now = date('Y-m-d H:i:s');
+
+        $data = array(
+            'name' => $request->name,
+            'client_id' => $request->client_id,
+            'courier_id' => $request->courier_id,
+            'tracking' => $request->tracking,
+            'transaction_type_id' => $request->transaction_type_id,
+            'date' => $request->date,
+            'reference' => $request->reference,
+            'created_at'   => $time_now,
+            'updated_at'   => $time_now
+        );
+        //$order->fill($data)->save();
+
+        //$po_lines = json_decode($request->vars);
+        //OrderItems::where('order_id',$order->id)->delete();
+        //Saving Stock
+        //$stock = new StockController();
+        //$stock->reduceProductStock($purchases_item_id, $order_line->qty);
+        //Stock::where('purchases_id',$order->id)->delete();
+        /*
+        foreach ($po_lines as $po_line )
+        {
+            $data_po = array(
+                'purchases_id' => $request->id,
+                'product_id'   => $po_line->product_id,
+                'qty'          => $po_line->qty,
+                'batch_number' => $po_line->batch_number,
+                'created_at'   => $time_now,
+                'updated_at'   => $time_now
+            );
+
+            // Insert PO Items Associated to PO
+            $purchases_item = PurchasesItem::create($data_po);
+            $lastInsertedId = $purchases_item->id;
+            $purchases_item_id = $lastInsertedId;
+
+            // Saving Stock
+            $stock = new StockController();
+            $stock->registerProductStock($request->id, $purchases_item_id, $po_line->product_id, $po_line->qty);
+        }*/
+
+        $order_lines = json_decode($request->vars);
+
+        foreach ($order_lines as $order_line )
+        {
+            $purchases_item_id = $order_line->product_id;
+            $data_order_item = array(
+                'order_id'     => $order->id,
+                'purchases_id' => $order_line->po_id,
+                'qty'          => $order_line->qty,
+                'created_at'   => $time_now,
+                'updated_at'   => $time_now
+            );
+
+            $or_line  = OrderItems::where('purchases_id',$order_line->po_id)->first();
+
+            if ($or_line){
+                // Update OrderItem
+                $or_line->fill($data_order_item)->save();
+
+                // Update PurchaseItem *********
+                // Update Stock  **********
+            }else{
+
+                // Insert PO Items Associated to PO
+                OrderItems::insert($data_order_item);
+
+                // Reduce PurchaseItem ******
+
+                // Saving Stock
+                $stock = new StockController();
+                $stock->reduceProductStock($purchases_item_id, $order_line->qty);
+            }
+        }
+        return redirect()->route('order.index')->with('success', 'Post has been updated successfully!');
     }
 
     /**

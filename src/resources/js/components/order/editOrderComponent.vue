@@ -1,13 +1,15 @@
 <template>
     <div class="col-12">
-        <form method="POST" @submit="checkForm" action="/order">
+        <form method="POST" @submit="checkForm" v-bind:action="computedAction">
             <input type="hidden" name="_token" :value="csrf">
+            <input type="hidden" name="_method" value="PUT">            
             <div class="form-body">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0" ><small>Order Number</small></label>
-                            <input type="text" class="form-control form-control-sm" id="name" name="name" v-bind:class="[error_name ? 'is-invalid' : '']" v-model="name" readonly>
+                            <input type="hidden" name="id" v-model="order.id">
+                            <input type="text" class="form-control form-control-sm" id="name" name="name" v-bind:class="[error_name ? 'is-invalid' : '']" v-model="order.name" readonly>
                             <div v-show="error_name" class="invalid-feedback">Please Indicate Order Number !</div>
                         </div>
                     </div>
@@ -25,7 +27,7 @@
                         <div class="form-group-po">
                             <label class="mb-0"><small>Courier</small></label>
                             <div class="input-group input-group-sm">
-                                <select id="courier_id" name="courier_id" class="form-control form-control-sm" v-bind:class="[error_courier ? 'is-invalid' : '']" v-model="courier_selected">
+                                <select id="courier_id" name="courier_id" class="form-control form-control-sm" v-bind:class="[error_courier ? 'is-invalid' : '']" v-model="order.courier_id">
                                     <option value="0" disabled selected>Select Courier</option>
                                     <option v-for="courier in couriers" :value="courier.id" :key="courier.id">
                                         {{ courier.name }}
@@ -37,7 +39,7 @@
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0" ><small>Tracking Number</small></label>
-                            <input type="text" class="form-control form-control-sm" id="tracking" name="tracking" placeholder="...">
+                            <input type="text" class="form-control form-control-sm" id="tracking" name="tracking" v-model="order.tracking" placeholder="...">
                         </div>
                     </div>
                 </div>
@@ -54,7 +56,7 @@
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0" ><small>Reference</small></label>
-                            <input type="text" class="form-control form-control-sm" id="reference" name="reference" min="1" placeholder="...">
+                            <input type="text" class="form-control form-control-sm" id="reference" name="reference" min="1" v-model="order.reference" placeholder="...">
                         </div>
                     </div>
                 </div>
@@ -103,11 +105,11 @@
                                 <p>
                                     <strong><li>Please Add a Product to Order !</li></strong>
                                 </p>
-                            </div>                            
-                        </ul>                  
+                            </div>
+                        </ul>
                     </div>
                 </div>
-                
+
                 <!-- Add Products -->
                 <div class="col-md-12 px-0">
                     <div class="card border-success pb-1 mb-2 mt-2">
@@ -144,7 +146,7 @@
                         </div>
 
                     </div>
-                </div>                
+                </div>
             </div>
 
             <div class="form-actions mt-2">
@@ -161,7 +163,7 @@
 
     export default {
 
-        props: ["post_name"],
+        props: ["post_order", "post_products"],
         data: function () {
             return {
                 errors:[],
@@ -195,6 +197,11 @@
                 previousqty:0,
             }
         },
+        computed: {
+           computedAction: function() {
+               return `/order/${this.order.id}`
+           }
+       },
         methods: {
             dispatchAction (prodc) {
                 this.current_prod_po_id = prodc.po_id
@@ -203,14 +210,14 @@
                 this.current_prod_batch = prodc.batch
                 this.current_prod_po_name = prodc.po_name
                 this.current_prod_available = prodc.available
-                
+
             },
             disabledDate (date) {
                 return date.getTime() < Date.now()
             },
             checkForm:function(e) {
 
-                this.checkErrors()                
+                this.checkErrors()
                 if (!this.errors.length) {
                     return true;
                     alert('Form is Not Good')
@@ -219,10 +226,6 @@
             },
             checkErrors() {
                 this.cleanFormErrors ()
-                if (!this.name) {
-                    this.error_name = true
-                    this.errors.push('Name required.');
-                }
                 if (this.client_selected == 0) {
                     this.error_client = true
                     this.errors.push('No Customer Selected')
@@ -230,7 +233,7 @@
                 if (this.date == '') {
                     this.error_date = true
                     this.errors.push('No Date Selected')
-                }                
+                }
                 if (!this.vars.length) {
                     this.error_vars = true
                     this.errors.push('No products Added!');
@@ -259,7 +262,7 @@
                         return array[i].qty;
                 }
                 return 0;
-            },   
+            },
             isProductSelectedGoodToAdd(){
 
                 this.cleanErrors()
@@ -274,7 +277,7 @@
                 let newqty = this.qty
 
                 if(this.previousqty){
-                    newqty =  parseInt(this.previousqty)+parseInt(this.qty) 
+                    newqty =  parseInt(this.previousqty)+parseInt(this.qty)
                 }
 
                 if(newqty > this.current_prod_available) {
@@ -295,7 +298,7 @@
                         return [array[i].qty, i];
                 }
                 return 0;
-            },         
+            },
             insertNewProduct2() {
                 if( this.isProductSelectedGoodToAdd() ) {
                     let variables = this.vars
@@ -310,7 +313,7 @@
                         'product_name': this.current_prod_name,
                         'batch': this.current_prod_batch,
                         'po_name': this.current_prod_po_name,
-                        'available': this.current_prod_available, 
+                        'available': this.current_prod_available,
                         'qty': parseInt(this.qty)+parseInt(previousQty)})
                     }else {
                         variables.push({
@@ -319,13 +322,13 @@
                         'product_name': this.current_prod_name,
                         'batch': this.current_prod_batch,
                         'po_name': this.current_prod_po_name,
-                        'available': this.current_prod_available, 
+                        'available': this.current_prod_available,
                         'qty': this.qty})
                     }
                 }
                 this.resetAddProducts()
                 this.checkErrors()
-            },            
+            },
             fetchVendors() {
                 axios
                     .get('/get_vendors')
@@ -353,7 +356,7 @@
                     .then(response => {
                         this.products = response.data.products
                     })
-            } 
+            }
         },
         mounted() {
 
@@ -363,7 +366,10 @@
             this.fetchCouries()
             this.fetchClients()
             this.fetchPurchasesItems()
-            this.name = this.post_name;            
+            this.order = JSON.parse(this.post_order);
+            this.vars = JSON.parse(this.post_products);
+            this.date = this.order.date
+            this.client_selected = this.order.client_id
         }
     }
 </script>

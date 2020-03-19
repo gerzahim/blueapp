@@ -29,7 +29,7 @@ class CategoryController extends Controller
     {
         return view('categories.create');
     }
-    
+
 
 
     /**
@@ -43,9 +43,9 @@ class CategoryController extends Controller
         $this->validate($request, [
             'name' => 'required'
         ]);
- 
+
         Category::create($request->only(['name']));
- 
+
         return redirect()->route('category.index')->with('success', 'Category created successfully.');
     }
 
@@ -85,16 +85,16 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required'
         ]);
- 
+
         $category->update($request->only(['name']));
         return redirect()->route('category.index')->with('success', 'Category has been updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param Category $category
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function destroy(Category $category)
     {
