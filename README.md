@@ -13,31 +13,26 @@ Custom Inventory Management System HUAHAI
 - RMA IN 
 - Update RMA when update Order
 
-#Posible Error 
-
-
-## pending
-- style Stock
-<td style="font-weight: bold; text-align:right;background-color:red; color:white">+11 </td>
-<td style="font-weight: bold; text-align:right;background-color:#FFEEAA;"> +1,192 </td>
-
+## pending Error
 
 - Fix Order Secuencia 
 - Fix Style Select 2 
 - BATCH NUMBER Capital Letter
 - Stock List, wrong id show
 
+## Improves
+- style Stock
+<td style="font-weight: bold; text-align:right;background-color:red; color:white">+11 </td>
+<td style="font-weight: bold; text-align:right;background-color:#FFEEAA;"> +1,192 </td>
+ 
+- If fail refill values ( No priority) on Vue component
+- Disable Button Save or Message why not submit
 - Edit instead splice try, Components 
  "words":[ "I", "am", "Good" ] 
   myObj.words[2] = "bad";  
  "words":[ "I", "am", "bad" ] 
  // modifying the value present at index 2 
-  myObj.words[2] = "bad";  
-
-## Improves 
-- Fix submenu
-- If fail refill values ( No priority) on Vue component
-- Disable Button Save or Message why not submit 
+  myObj.words[2] = "bad";   
 
 
 
