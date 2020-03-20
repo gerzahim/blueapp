@@ -53,10 +53,10 @@
                                         <li class="sidebar-item"><a href="{{ route('purchases.index') }}" class="sidebar-link">
                                             <span class="hide-menu">Purchases - PO</span></a>
                                         </li>
-                                        <li class="sidebar-item"><a href="{{ route('purchases.index') }}" class="sidebar-link">
+                                        <li class="sidebar-item"><a href="/rma" class="sidebar-link">
                                             <span class="hide-menu">RMA</span></a>
                                         </li>
-                                        <li class="sidebar-item"><a href="{{ route('purchases.index') }}" class="sidebar-link">
+                                        <li class="sidebar-item"><a href="/borrow" class="sidebar-link">
                                                 <span class="hide-menu">Return Borrowed</span></a>
                                         </li>
                                     </ul>
@@ -70,10 +70,10 @@
                                 <li class="sidebar-item"><a href="{{ route('order.index') }}" class="sidebar-link">
                                         <span class="hide-menu">Sales</span></a>
                                 </li>
-                                <li class="sidebar-item"><a href="{{ route('order.index') }}" class="sidebar-link">
+                                <li class="sidebar-item"><a href="/lend" class="sidebar-link">
                                         <span class="hide-menu">Lend</span></a>
                                 </li>
-                                <li class="sidebar-item"><a href="{{ route('order.index') }}" class="sidebar-link">
+                                <li class="sidebar-item"><a href="/refurbishment" class="sidebar-link">
                                         <span class="hide-menu">Refurbishment</span></a>
                                 </li>
                             </ul>

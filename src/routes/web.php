@@ -42,6 +42,7 @@ Route::resource('courier', 'CourierController');
 Route::resource('stock', 'StockController');
 
 
-
-
-
+Route::get('/rma', 'HomeController@getUnderConstruction');
+Route::get('/borrow', 'HomeController@getUnderConstruction');
+Route::get('/lend', 'HomeController@getUnderConstruction');
+Route::get('/refurbishment', 'HomeController@getUnderConstruction');

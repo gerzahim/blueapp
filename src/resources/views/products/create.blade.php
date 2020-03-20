@@ -1,4 +1,4 @@
-@extends('layouts.master') 
+@extends('layouts.master')
 
 
 @section('content')
@@ -9,15 +9,7 @@
     <div class="page-breadcrumb">
         <div class="row">
             <div class="col-12 align-self-center">
-                <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Applications</h4>
-                <div class="d-flex align-items-center">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb m-0 p-0">
-                            <li class="breadcrumb-item text-muted active" aria-current="page">Product</li>
-                            <li class="breadcrumb-item text-muted">Create</li>
-                        </ol>
-                    </nav>
-                </div>
+                <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Create Product</h4>
             </div>
         </div>
     </div>
@@ -79,20 +71,20 @@
                                         <div class="form-group">
                                             <label>Dimensions</label>
                                             <select id="dimensions_id" name="dimensions_id" class="selectpicker form-control" >
-                                                @foreach($dimensions as $dimension)                     
+                                                @foreach($dimensions as $dimension)
                                                 <option value="{{ $dimension['id'] }}">{{ $dimension['name'] }}</option>
                                                 @endforeach
-                                            </select>  
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Category</label>
                                             <select id="category_id" name="category_id" class="selectpicker form-control">
-                                                @foreach($categories as $category)                     
+                                                @foreach($categories as $category)
                                                 <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
                                                 @endforeach
-                                            </select>  
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -106,11 +98,11 @@
                             </div>
                         </form>
                     </div>
-                </div> 
+                </div>
             </div>
         </div>
-    
-    
+
+
     </div>
     <!-- ============================================================== -->
     <!-- End Container fluid  -->

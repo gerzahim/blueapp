@@ -1,4 +1,4 @@
-@extends('layouts.master') 
+@extends('layouts.master')
 
 @section('content')
 
@@ -8,14 +8,7 @@
     <div class="page-breadcrumb">
         <div class="row">
             <div class="col-12 align-self-center">
-                <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Applications</h4>
-                <div class="d-flex align-items-center">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb m-0 p-0">
-                            <li class="breadcrumb-item text-muted active" aria-current="page">Product Dimensions</li>
-                        </ol>
-                    </nav>
-                </div>
+                <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Product Dimensions</h4>
             </div>
         </div>
     </div>
@@ -45,7 +38,7 @@
                                     <a href="{{ route('product_dimensions.create') }}" class="btn btn-success btn-sm">Add</a>
                                 </div>
                             </div>
-                        </div>   
+                        </div>
 
                         @if ($message = Session::get('success'))
                         <div class="alert alert-success">
@@ -85,7 +78,7 @@
                                             style="display: inline;"
                                         >
                                             @csrf @method('DELETE')
-                                            
+
                                             <button type="submit" class="btn btn-danger btn-sm">
                                                 Delete
                                             </button>
@@ -100,7 +93,7 @@
 
 
                     </div>
-                </div> 
+                </div>
             </div>
         </div>
     </div>

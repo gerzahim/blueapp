@@ -1,4 +1,4 @@
-@extends('layouts.master') 
+@extends('layouts.master')
 
 
 @section('content')
@@ -9,15 +9,7 @@
     <div class="page-breadcrumb">
         <div class="row">
             <div class="col-12 align-self-center">
-                <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Applications</h4>
-                <div class="d-flex align-items-center">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb m-0 p-0">
-                            <li class="breadcrumb-item text-muted active" aria-current="page">Category</li>
-                            <li class="breadcrumb-item text-muted active" aria-current="page">Create</li>
-                        </ol>
-                    </nav>
-                </div>
+                <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Create Category</h4>
             </div>
         </div>
     </div>
@@ -65,7 +57,7 @@
 
                         </form>
                     </div>
-                </div> 
+                </div>
             </div>
         </div>
     </div>

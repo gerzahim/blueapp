@@ -8,7 +8,7 @@
     <div class="page-breadcrumb">
         <div class="row">
             <div class="col-12 align-self-center">
-                <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Inventory</h4>
+                <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Inventory - Stock</h4>
             </div>
         </div>
     </div>

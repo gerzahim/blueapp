@@ -6,17 +6,7 @@ Custom Inventory Management System HUAHAI
 - Run Migrations 
 
 ## TODO
-- Update Order
--  Consider Map 
-   if exits update 
-   if not create
-   remain from previous delete
-- Update Purchase Item when Update Order
-- Update Stock Update Order
-- Delete Order associated to PO Delete
-- Check validation when update Order
-- Create unique route ( message On Construction)
-- Create Crud Couries
+- Create Crud Couriers
 - Create Crud Vendors
 - Create Crud ProductDimensions
 - Create User Login
@@ -24,7 +14,7 @@ Custom Inventory Management System HUAHAI
 - Update RMA when update Order
 
 #Posible Error 
-- vendor_id on blade when should be contact_id edit.blade PO
+
 
 ## pending
 - style Stock
@@ -36,7 +26,7 @@ Custom Inventory Management System HUAHAI
 - Fix Style Select 2 
 - BATCH NUMBER Capital Letter
 - Stock List, wrong id show
-- Delete Order when delete PO associated
+
 - Edit instead splice try, Components 
  "words":[ "I", "am", "Good" ] 
   myObj.words[2] = "bad";  
@@ -47,7 +37,6 @@ Custom Inventory Management System HUAHAI
 ## Improves 
 - Fix submenu
 - If fail refill values ( No priority) on Vue component
-- Delete fail mark
 - Disable Button Save or Message why not submit 
 
 

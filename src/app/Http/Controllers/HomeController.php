@@ -20,6 +20,12 @@ class HomeController extends Controller
         return view('layouts.home');
     }
 
+    public function getUnderConstruction()
+    {
+        Session::flash('warning', 'Sorry, this page is Under Construction');
+        return view('layouts.on_construction');
+    }
+
     /**
      * Show the form for creating a new resource.
      *

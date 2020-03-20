@@ -31,7 +31,7 @@
                         <div class="float-right">
                             <a href="{{ route('order.index') }}" class="btn btn-primary btn-sm">Back to Order list</a>
                         </div>
-                        Edit PO
+                        Edit Order
                     </div>
                     <div class="card-body">
 
