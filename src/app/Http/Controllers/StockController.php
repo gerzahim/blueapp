@@ -107,6 +107,7 @@ class StockController extends Controller
     }
 
 
+
     /**
      * * Make calculation when create a New Order
      *
@@ -118,6 +119,21 @@ class StockController extends Controller
         $stock->sold = ($stock->sold + $qty);
         $stock->qoh = ($stock->qoh - $qty);
         $stock->available = ($stock->available - $qty);
+        $stock->save();
+    }
+
+    /**
+     * * Make calculation when create a New Order
+     *
+     * @param $purchases_item_id
+     * @param $qty_previous
+     * @param $qty_new
+     */
+    public function adjustProductStock($purchases_item_id, $qty_previous, $qty_new) {
+        $stock = Stock::where('purchases_item_id',$purchases_item_id)->first();
+        $stock->sold = ($stock->sold - $qty_previous) + $qty_new;
+        $stock->qoh = ($stock->qoh + $qty_previous) - $qty_new;
+        $stock->available = ($stock->available + $qty_previous) - $qty_new;
         $stock->save();
     }
 

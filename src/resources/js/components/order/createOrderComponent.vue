@@ -187,6 +187,7 @@
                 couriers: [],
                 vars: [],
                 current_prod_po_id: 0,
+                current_prod_po_item_id: 0,
                 current_prod_id: 0,
                 current_prod_name: '',
                 current_prod_batch: '',
@@ -198,6 +199,7 @@
         methods: {
             dispatchAction (prodc) {
                 this.current_prod_po_id = prodc.po_id
+                this.current_prod_po_item_id = prodc.po_item_id                
                 this.current_prod_id = prodc.product_id
                 this.current_prod_name = prodc.name
                 this.current_prod_batch = prodc.batch
@@ -306,6 +308,7 @@
                         variables.splice(product_array_key,1)
                         variables.push({
                         'po_id': this.current_prod_po_id,
+                        'po_item_id': this.current_prod_po_item_id,
                         'product_id': this.current_prod_id,
                         'product_name': this.current_prod_name,
                         'batch': this.current_prod_batch,
@@ -315,6 +318,7 @@
                     }else {
                         variables.push({
                         'po_id': this.current_prod_po_id,
+                        'po_item_id': this.current_prod_po_item_id,
                         'product_id': this.current_prod_id,
                         'product_name': this.current_prod_name,
                         'batch': this.current_prod_batch,

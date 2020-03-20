@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\OrderItems;
 use App\Purchases;
 use App\PurchasesItem;
 use App\Vendor;
 use App\Product;
 use App\Courier;
 use App\Stock;
-use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,10 +17,8 @@ use Illuminate\Http\Response;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
-
-use App\Http\Controllers\StockController;
+use MongoDB\Driver\Session;
 
 
 class PurchaseController extends Controller
@@ -334,8 +332,8 @@ class PurchaseController extends Controller
             );
 
             // Insert PO Items Associated to PO
-            $purchases_item = PurchasesItem::create($data_po);
-            $lastInsertedId = $purchases_item->id;
+            $purchases_item    = PurchasesItem::create($data_po);
+            $lastInsertedId    = $purchases_item->id;
             $purchases_item_id = $lastInsertedId;
 
             // Saving Stock
@@ -353,12 +351,22 @@ class PurchaseController extends Controller
      */
     public function destroy(Request $request, Purchases $purchases)
     {
-        $purchases->id = $request->id;
-        //$purchases->delete();
+        $purchases->id      = $request->id;
+        $purchases_items    = PurchasesItem::where('purchases_id',$purchases->id)->get();
+        $purchases_items_id = [];
+        foreach ( $purchases_items as $purchase_item) {
+            $purchases_items_id[] = $purchase_item->id;
+        }
+        //Verify if have Order Associated
+        $order_items = OrderItems::where('purchases_id', $purchases_items_id)->first();
+        if($order_items){
+            return redirect()->route('purchases.index')->with('warning', 'Can Not Delete this PO, have Orders Associated');
+        }
+
         Purchases::where('id',$purchases->id)->delete();
-        $stock = Stock::where('purchases_id',$purchases->id)->delete();
-        $purchasesItems = PurchasesItem::where('purchases_id',$purchases->id)->delete();
-        //Pending// Delete Order associated to PO
+        Stock::where('purchases_id',$purchases->id)->delete();
+        PurchasesItem::where('purchases_id',$purchases->id)->delete();
+
         return redirect()->route('purchases.index')->with('success', 'Purchase - PO has been deleted successfully!');
     }
 

@@ -28,28 +28,29 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
-        $dimensions = ProductDimensions::all();           
+        $dimensions = ProductDimensions::all();
         return view('products.create', compact('categories'), compact('dimensions'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
         $this->validate($request, [
             'name' => 'required',
-            'description' => 'required|min:10',
+            'description' => 'required|min:1',
             'dimensions_id' => 'required',
             'category_id' => 'required'
         ]);
- 
-        Category::create($request->only(['name']));
- 
-        return redirect()->route('category.index')->with('success', 'Category created successfully.');
+
+        Product::create($request->only(['name','description','dimensions_id','category_id']));
+
+        return redirect()->route('product.index')->with('success', 'Product created successfully.');
     }
 
     /**

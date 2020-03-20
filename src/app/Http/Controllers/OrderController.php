@@ -23,7 +23,6 @@ use Illuminate\View\View;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 
-
 class OrderController extends Controller
 {
     /**
@@ -33,7 +32,6 @@ class OrderController extends Controller
      */
     public function index()
     {
-
         $orders = Order::latest()->paginate(10);
         return view('orders.index', compact('orders'));
     }
@@ -52,7 +50,6 @@ class OrderController extends Controller
         }else{
             $lastOrder = 1;
         }
-
         return view('orders.create', compact('lastOrder') );
     }
 
@@ -65,12 +62,11 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $messages = [
-            'name.required'    => 'The Order Number attribute has already been taken.',
-            'date.required'    => 'Must Select a Date',
+            'name.required'      => 'The Order Number attribute has already been taken.',
+            'date.required'      => 'Must Select a Date',
             'transaction_type_id.required'    => 'The Transaction Type must be Selected.',
             'client_id.required' => 'Must Select a Customer',
         ];
-
         $this->validate($request, [
             'name'                => 'required',
             'date'                => 'required',
@@ -78,23 +74,21 @@ class OrderController extends Controller
             'client_id'           => 'required'
         ], $messages);
 
-        $time_now     = date('Y-m-d H:i:s');
-
+        $time_now = date('Y-m-d H:i:s');
 
         $data = array(
-            'name' => $request->name,
-            'client_id' => $request->client_id,
-            'courier_id' => $request->courier_id,
-            'tracking' => $request->tracking,
+            'name'                => $request->name,
+            'client_id'           => $request->client_id,
+            'courier_id'          => $request->courier_id,
+            'tracking'            => $request->tracking,
             'transaction_type_id' => $request->transaction_type_id,
-            'date' => $request->date,
-            'reference' => $request->reference,
-            'created_at'   => $time_now,
-            'updated_at'   => $time_now
+            'date'                => $request->date,
+            'reference'           => $request->reference,
+            'created_at'          => $time_now,
+            'updated_at'          => $time_now
         );
 
         $order = Order::create($data);
-
         $lastInsertedId= $order->id;
 
         if($order){
@@ -103,10 +97,9 @@ class OrderController extends Controller
             $order_lines = json_decode($request->vars);
             foreach ($order_lines as $order_line )
             {
-                $purchases_item_id = $order_line->product_id;
                 $data_order_item = array(
                     'order_id'     => $order_id,
-                    'purchases_id' => $purchases_item_id,
+                    'purchases_id' => $order_line->po_item_id,
                     'qty'          => $order_line->qty,
                     'created_at'   => $time_now,
                     'updated_at'   => $time_now
@@ -114,12 +107,9 @@ class OrderController extends Controller
                 // Insert PO Items Associated to PO
                 OrderItems::insert($data_order_item);
 
-                // Reduce PurchaseItem ******
-
                 // Reduce Stock
                 $stock = new StockController();
-                $stock->reduceProductStock($purchases_item_id, $order_line->qty);
-
+                $stock->reduceProductStock($order_line->po_item_id, $order_line->qty);
             }
 
         }
@@ -128,9 +118,7 @@ class OrderController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  \App\Order  $order
-     * @return \Illuminate\Http\Response
+     * @param Order $order
      */
     public function show(Order $order)
     {
@@ -154,9 +142,9 @@ class OrderController extends Controller
             $product  = Product::where('id', $po_line->product_id)->first();
             $stock    = Stock::where('purchases_item_id',$order_line->purchases_id)->first();
 
-
             $products_order[] = array(
-                'po_id'        => $order_line->purchases_id,
+                'po_id'        => $po->id,
+                'po_item_id'   => $po_line->id,
                 'product_id'   => $product->id,
                 'product_name' => $product->name,
                 'batch'        => $po_line->batch_number,
@@ -165,7 +153,6 @@ class OrderController extends Controller
                 'qty'          => $order_line->qty
             );
         }
-
         $products_order = json_encode($products_order, true);
 
         return view('orders.edit', compact('order', 'products_order'));
@@ -175,28 +162,24 @@ class OrderController extends Controller
      * Update the specified resource in storage.
      * @param Request $request
      * @param Order $order
-     * @return RedirectResponse
-     * @throws ValidationException
+     * @return RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function update(Request $request, Order $order)
     {
         $rules = [
-            'name'                => 'required|max:50|unique:orders,name,'.$request->id,
             'date'                => 'required',
             'transaction_type_id' => 'required',
             'client_id'           => 'required'
         ];
         $messages = [
-            'name.required'    => 'The Order Number attribute has already been taken.',
-            'date.required'    => 'Must Select a Date',
-            'transaction_type_id.required'    => 'The Transaction Type must be Selected.',
-            'client_id.required' => 'Must Select a Customer'
+            'date.required'                => 'Must Select a Date',
+            'transaction_type_id.required' => 'The Transaction Type must be Selected.',
+            'client_id.required'           => 'Must Select a Customer'
         ];
-
         $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
-            return redirect('order/'.$request->id.'/edit')
+            return redirect('order/'.$order->id.'/edit')
                 ->withErrors($validator)
                 ->withInput();
         }
@@ -204,80 +187,62 @@ class OrderController extends Controller
         $time_now = date('Y-m-d H:i:s');
 
         $data = array(
-            'name' => $request->name,
-            'client_id' => $request->client_id,
-            'courier_id' => $request->courier_id,
-            'tracking' => $request->tracking,
+            'client_id'           => $request->client_id,
+            'courier_id'          => $request->courier_id,
+            'tracking'            => $request->tracking,
             'transaction_type_id' => $request->transaction_type_id,
-            'date' => $request->date,
-            'reference' => $request->reference,
-            'created_at'   => $time_now,
-            'updated_at'   => $time_now
+            'date'                => $request->date,
+            'reference'           => $request->reference,
+            'created_at'          => $time_now,
+            'updated_at'          => $time_now
         );
-        //$order->fill($data)->save();
-
-        //$po_lines = json_decode($request->vars);
-        //OrderItems::where('order_id',$order->id)->delete();
-        //Saving Stock
-        //$stock = new StockController();
-        //$stock->reduceProductStock($purchases_item_id, $order_line->qty);
-        //Stock::where('purchases_id',$order->id)->delete();
-        /*
-        foreach ($po_lines as $po_line )
-        {
-            $data_po = array(
-                'purchases_id' => $request->id,
-                'product_id'   => $po_line->product_id,
-                'qty'          => $po_line->qty,
-                'batch_number' => $po_line->batch_number,
-                'created_at'   => $time_now,
-                'updated_at'   => $time_now
-            );
-
-            // Insert PO Items Associated to PO
-            $purchases_item = PurchasesItem::create($data_po);
-            $lastInsertedId = $purchases_item->id;
-            $purchases_item_id = $lastInsertedId;
-
-            // Saving Stock
-            $stock = new StockController();
-            $stock->registerProductStock($request->id, $purchases_item_id, $po_line->product_id, $po_line->qty);
-        }*/
+        $order->fill($data)->save();
 
         $order_lines = json_decode($request->vars);
+        $stock = new StockController();
+        $orders_items_updated = [];
 
-        foreach ($order_lines as $order_line )
+        foreach ( $order_lines as $order_line )
         {
-            $purchases_item_id = $order_line->product_id;
             $data_order_item = array(
                 'order_id'     => $order->id,
-                'purchases_id' => $order_line->po_id,
+                'purchases_id' => $order_line->po_item_id,
                 'qty'          => $order_line->qty,
                 'created_at'   => $time_now,
                 'updated_at'   => $time_now
             );
 
-            $or_line  = OrderItems::where('purchases_id',$order_line->po_id)->first();
-
+            // If Exist
+            $or_line  = OrderItems::where('order_id',$order->id)->where('purchases_id',$order_line->po_item_id)->first();
             if ($or_line){
-                // Update OrderItem
+                // Update Stock
+                $stock->adjustProductStock($order_line->po_item_id, $or_line->qty, $order_line->qty);
+
+                // Update OrderItem Values
                 $or_line->fill($data_order_item)->save();
-
-                // Update PurchaseItem *********
-                // Update Stock  **********
+                $orders_items_updated[] = $or_line->id;
             }else{
-
-                // Insert PO Items Associated to PO
-                OrderItems::insert($data_order_item);
-
-                // Reduce PurchaseItem ******
+                // Insert Order Items Associated to Order
+                $order_item = OrderItems::create($data_order_item);
+                $lastInsertedId = $order_item->id;
+                $orders_items_updated[] = $lastInsertedId;
 
                 // Saving Stock
-                $stock = new StockController();
-                $stock->reduceProductStock($purchases_item_id, $order_line->qty);
+                $stock->reduceProductStock($order_line->po_item_id, $order_line->qty);
             }
         }
-        return redirect()->route('order.index')->with('success', 'Post has been updated successfully!');
+
+        // Update Stock for Items_no_longer_used
+        $order_items_no_longer_used = OrderItems::where('order_id', $order->id)->whereNotIn('id', $orders_items_updated)->get();
+        foreach ($order_items_no_longer_used as $order_item_no_longer_used){
+            $stock->reverseReduceProductStock($order_item_no_longer_used->purchases_id, $order_item_no_longer_used->qty);
+        }
+
+        // Delete OrderItems No_longer_used
+        OrderItems::where('order_id', $order->id)->whereNotIn('id', $orders_items_updated)->delete();
+
+
+        return redirect()->route('order.index')->with('success', 'Order has been updated successfully!');
     }
 
     /**
@@ -296,7 +261,7 @@ class OrderController extends Controller
             $stock->reverseReduceProductStock($OrderItem->purchases_id, $OrderItem->qty);
         }
         // Delete Order Lines
-        $OrderItems = OrderItems::where('order_id',$order->id)->delete();
+        OrderItems::where('order_id',$order->id)->delete();
 
         //Delete Order
         $order->delete();
@@ -316,9 +281,6 @@ class OrderController extends Controller
             ->rightjoin('stocks', 'purchases_items.id', '=', 'stocks.purchases_item_id')
             ->select('products.id AS product_id','products.name AS product_name', 'purchases_items.batch_number AS batch', 'purchases.name AS po_name', 'stocks.available AS  available', 'purchases_items.id', 'purchases.id AS po_id')
             ->get();
-
-        // Get all unique items.
-        //$purchases_items = $purchases_items->unique('id');
 
         $data2 = [];
         $i=0;

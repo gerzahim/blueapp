@@ -7,8 +7,13 @@ Custom Inventory Management System HUAHAI
 
 ## TODO
 - Update Order
+-  Consider Map 
+   if exits update 
+   if not create
+   remain from previous delete
 - Update Purchase Item when Update Order
 - Update Stock Update Order
+- Delete Order associated to PO Delete
 - Check validation when update Order
 - Create unique route ( message On Construction)
 - Create Crud Couries
