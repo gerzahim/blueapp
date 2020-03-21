@@ -31,17 +31,16 @@ class CategoryController extends Controller
     }
 
 
-
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required'
+            'name' => 'required|unique:categories|max:50'
         ]);
 
         Category::create($request->only(['name']));
@@ -83,7 +82,7 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $request->validate([
-            'name' => 'required'
+            'name' => 'required|unique:categories|max:50'
         ]);
 
         $category->update($request->only(['name']));

@@ -2,22 +2,28 @@
 Custom Inventory Management System HUAHAI
 
 ## RUN
-- Run Compose Install
+- Run Compose Install / compose update
 - Run Migrations 
+- Npm Install 
 
 ## TODO
-- Create Crud Couriers
+- Fix Crud Categories ****
+- Create Crud Couriers ****
+- Create Crud Customers 
+- //pending// No delete Client if has Orders Opened 
 - Create Crud Vendors
+- Create Crud Products
 - Create Crud ProductDimensions
+- BATCH NUMBER Capital Letter
+- feathericons delete PO
 - Create User Login
 - RMA IN 
 - Update RMA when update Order
 
 ## pending Error
-
-- Fix Order Secuencia 
-- Fix Style Select 2 
 - BATCH NUMBER Capital Letter
+- Fix Order Secuencia Name
+- Fix Style Select 2 
 - Stock List, wrong id show
 
 ## Improves

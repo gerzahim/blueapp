@@ -14,7 +14,8 @@ class CourierController extends Controller
      */
     public function index()
     {
-        //
+        $couriers = Courier::latest()->paginate(10);
+        return view('couriers.index', compact('couriers'));
     }
 
     /**
@@ -24,7 +25,7 @@ class CourierController extends Controller
      */
     public function create()
     {
-        //
+        return view('couriers.create');
     }
 
     /**
@@ -35,7 +36,13 @@ class CourierController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|unique:couriers|max:50'
+        ]);
+
+        Courier::create($request->only(['name']));
+
+        return redirect()->route('courier.index')->with('success', 'Courier created successfully.');
     }
 
     /**
@@ -46,7 +53,7 @@ class CourierController extends Controller
      */
     public function show(Courier $courier)
     {
-        //
+        return view('couriers.show', compact('courier'));
     }
 
     /**
@@ -57,7 +64,7 @@ class CourierController extends Controller
      */
     public function edit(Courier $courier)
     {
-        //
+        return view('couriers.edit', compact('courier'));
     }
 
     /**
@@ -69,7 +76,12 @@ class CourierController extends Controller
      */
     public function update(Request $request, Courier $courier)
     {
-        //
+        $request->validate([
+            'name' => 'required|unique:couriers|max:50'
+        ]);
+
+        $courier->update($request->only(['name']));
+        return redirect()->route('courier.index')->with('success', 'Courier has been updated successfully!');
     }
 
     /**
@@ -80,6 +92,7 @@ class CourierController extends Controller
      */
     public function destroy(Courier $courier)
     {
-        //
+        $courier->delete();
+        return redirect()->route('courier.index')->with('success', 'Courier has been deleted successfully!');
     }
 }

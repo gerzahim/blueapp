@@ -13,18 +13,23 @@
                         <li class="list-divider"></li>
                         <li class="nav-small-cap"><span class="hide-menu">Applications</span></li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link sidebar-link" href="#" aria-expanded="false">
+                            <a class="sidebar-link sidebar-link" href="{{ route('client.index') }}" aria-expanded="false">
                                 <i data-feather="users" class="feather-icon"></i>
                                 <span class="hide-menu">Customers</span></a>
                         </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link sidebar-link" href="#" aria-expanded="false">
-                                <i data-feather="globe" class="feather-icon"></i>
+                                <i data-feather="shopping-cart" class="feather-icon"></i>
                                 <span class="hide-menu">Suppliers</span></a>
                         </li>
                         <li class="sidebar-item">
+                            <a class="sidebar-link sidebar-link" href="{{ route('courier.index') }}" aria-expanded="false">
+                                <i data-feather="truck" class="feather-icon"></i>
+                                <span class="hide-menu">Couriers</span></a>
+                        </li>
+                        <li class="sidebar-item">
                             <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
-                                <i data-feather="tag" class="feather-icon"></i>
+                                <i data-feather="grid" class="feather-icon"></i>
                                 <span class="hide-menu">Products</span></a>
                             <!-- SubMenu -->
                             <ul aria-expanded="false" class="collapse  first-level base-level-line">
@@ -53,10 +58,10 @@
                                         <li class="sidebar-item"><a href="{{ route('purchases.index') }}" class="sidebar-link">
                                             <span class="hide-menu">Purchases - PO</span></a>
                                         </li>
-                                        <li class="sidebar-item"><a href="/rma" class="sidebar-link">
+                                        <li class="sidebar-item"><a href="{{ url('/rma') }}" class="sidebar-link">
                                             <span class="hide-menu">RMA</span></a>
                                         </li>
-                                        <li class="sidebar-item"><a href="/borrow" class="sidebar-link">
+                                        <li class="sidebar-item"><a href="{{ url('/borrow') }}" class="sidebar-link">
                                                 <span class="hide-menu">Return Borrowed</span></a>
                                         </li>
                                     </ul>
@@ -70,17 +75,17 @@
                                 <li class="sidebar-item"><a href="{{ route('order.index') }}" class="sidebar-link">
                                         <span class="hide-menu">Sales</span></a>
                                 </li>
-                                <li class="sidebar-item"><a href="/lend" class="sidebar-link">
+                                <li class="sidebar-item"><a href="{{ url('/lend') }}" class="sidebar-link">
                                         <span class="hide-menu">Lend</span></a>
                                 </li>
-                                <li class="sidebar-item"><a href="/refurbishment" class="sidebar-link">
+                                <li class="sidebar-item"><a href="{{ url('/refurbishment') }}" class="sidebar-link">
                                         <span class="hide-menu">Refurbishment</span></a>
                                 </li>
                             </ul>
                         </li>
                         <li class="nav-small-cap"><span class="hide-menu">Extra</span></li>
                         <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="#" aria-expanded="false">
-                            <i data-feather="user-minus" class="feather-icon"></i>
+                            <i data-feather="power" class="feather-icon"></i>
                             <span class="hide-menu">Logout</span></a>
                         </li>
                     </ul>
