@@ -10,12 +10,11 @@ Custom Inventory Management System HUAHAI
 - Fix Crud Categories ****
 - Create Crud Couriers ****
 - BATCH NUMBER Capital Let ********
-- Create Crud Customers 
+- Create Crud Customers *******
 - //pending// No delete Client if has Orders Opened 
-- Create Crud Vendors
+- Create Crud Vendors *******
 - Create Crud Products
 - Create Crud ProductDimensions
-- BATCH NUMBER Capital Letter
 - feathericons delete PO
 - Create User Login
 - RMA IN 

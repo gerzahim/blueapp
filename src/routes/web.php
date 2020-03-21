@@ -22,6 +22,7 @@ Route::resource('category', 'CategoryController');
 Route::resource('product_dimensions', 'ProductDimensionsController');
 Route::resource('product', 'ProductController');
 Route::resource('client', 'ClientController');
+Route::resource('vendor', 'VendorController');
 
 /** Purchases  **/
 Route::resource('purchases', 'PurchaseController');

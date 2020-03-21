@@ -18,7 +18,7 @@
                                 <span class="hide-menu">Customers</span></a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link sidebar-link" href="#" aria-expanded="false">
+                            <a class="sidebar-link sidebar-link" href="{{ route('vendor.index') }}" aria-expanded="false">
                                 <i data-feather="shopping-cart" class="feather-icon"></i>
                                 <span class="hide-menu">Suppliers</span></a>
                         </li>

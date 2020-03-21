@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\Order;
+use App\OrderItems;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
@@ -90,8 +92,14 @@ class ClientController extends Controller
      */
     public function destroy(Client $client)
     {
+        //Verify if have Order Associated
+        $order = Order::where('client_id', $client->id)->first();
+        if($order){
+            return redirect()->route('client.index')->with('warning', 'Can Not Delete this Customer, have at least 1 Order Associated');
+        }
+
         $client->delete();
-        //pending// No delete Client if has Orders Opened
+
         return redirect()->route('client.index')->with('success', 'Customer has been deleted successfully!');
     }
 }
