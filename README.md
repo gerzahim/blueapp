@@ -7,21 +7,16 @@ Custom Inventory Management System HUAHAI
 - Npm Install 
 
 ## TODO
-- Fix Crud Categories ****
-- Create Crud Couriers ****
-- BATCH NUMBER Capital Let ********
-- Create Crud Customers *******
-- //pending// No delete Client if has Orders Opened 
-- Create Crud Vendors *******
-- Create Crud Products
+- Create Crud Products  ******
 - Create Crud ProductDimensions
-- feathericons delete PO
+- feathericons delete PO (Only 15 minutes if not skip)
 - Create User Login
+- Migrate Data
+- Update Server
 - RMA IN 
 - Update RMA when update Order
 
 ## pending Error
-
 - Fix Order Secuencia Name
 - Fix Style Select 2 
 - Stock List, wrong id show

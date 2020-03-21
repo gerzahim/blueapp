@@ -43,7 +43,6 @@ class ProductController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'description' => 'required|min:1',
             'dimensions_id' => 'required',
             'category_id' => 'required'
         ]);
@@ -61,7 +60,9 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        $categories = Category::all();
+        $dimensions = ProductDimensions::all();
+        return view('products.show', compact('categories','dimensions','product'));
     }
 
     /**
@@ -72,19 +73,27 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        $categories = Category::all();
+        $dimensions = ProductDimensions::all();
+        return view('products.edit', compact('categories','dimensions','product'));
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Product $product
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|max:100|unique:products,name,'.$product->id,
+            'dimensions_id' => 'required',
+            'category_id' => 'required'
+        ]);
+        $product->update($request->only(['name','description','dimensions_id','category_id']));
+        return redirect()->route('product.index')->with('success', 'Product updated successfully.');
     }
 
     /**
