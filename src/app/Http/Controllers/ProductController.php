@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\OrderItems;
 use App\Product;
 use App\Category;
 use App\ProductDimensions;
+use App\Purchases;
+use App\PurchasesItem;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -98,12 +101,22 @@ class ProductController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
+     * @param Product $product
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function destroy(Product $product)
     {
-        //
+        //Verify if have Order Associated
+        $purchase_item_associated = PurchasesItem::where('product_id', $product->id)->first();
+
+        if($purchase_item_associated){
+            $purchase_associated = Purchases::where('id', $purchase_item_associated->purchases_id)->first();
+            return redirect()->route('product.index')->with('warning', 'Can Not Delete this Product, have this PO Associated : '.$purchase_associated->name);
+        }
+
+        $product->delete();
+
+        return redirect()->route('product.index')->with('success', 'Product has been deleted successfully!');
     }
 }
