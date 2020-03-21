@@ -78,7 +78,7 @@
                                             style="display: inline;"
                                         >
                                             @csrf @method('DELETE')
-
+                                            <input type="hidden" name="id" id="id" value="{{ $pro_dimension->id }}">
                                             <button type="submit" class="btn btn-danger btn-sm">
                                                 Delete
                                             </button>

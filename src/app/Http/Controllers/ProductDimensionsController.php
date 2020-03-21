@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ProductDimensions;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProductDimensionsController extends Controller
 {
@@ -30,15 +31,18 @@ class ProductDimensionsController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
+        $messages = [
+            'name.unique'    => 'The Product Dimension is already exist.'
+        ];
         $this->validate($request, [
-            'name' => 'required'
-        ]);
+            'name'                => 'required|unique:product_dimensions|max:50',
+        ], $messages);
 
         ProductDimensions::create($request->only(['name']));
         return redirect()->route('product_dimensions.index')->with('success', 'Product Dimensions created successfully.');
@@ -50,9 +54,10 @@ class ProductDimensionsController extends Controller
      * @param  \App\ProductDimensions  $productDimensions
      * @return \Illuminate\Http\Response
      */
-    public function show(ProductDimensions $productDimensions)
+    public function show($id)
     {
-        //
+        $productDimensions = ProductDimensions::where('id',$id)->first();
+        return view('product_dimensions.show', compact('productDimensions'));
     }
 
     /**
@@ -61,9 +66,10 @@ class ProductDimensionsController extends Controller
      * @param  \App\ProductDimensions  $productDimensions
      * @return \Illuminate\Http\Response
      */
-    public function edit(ProductDimensions $productDimensions)
+    public function edit($id)
     {
-        //
+        $productDimensions = ProductDimensions::where('id',$id)->first();
+        return view('product_dimensions.edit', compact('productDimensions'));
     }
 
     /**
@@ -75,17 +81,38 @@ class ProductDimensionsController extends Controller
      */
     public function update(Request $request, ProductDimensions $productDimensions)
     {
-        //
+        $rules = [
+            'name' => 'required|unique:product_dimensions,name,'.$request->id,
+        ];
+        $messages = [
+            'name.unique' => 'The Product Dimensions is already Exist.',
+        ];
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return redirect('product_dimensions/'.$request->id.'/edit/')
+                ->withErrors($validator)
+                ->withInput();
+        }
+        $data = array(
+            'name'                => $request->name
+        );
+
+        $productDimensions = ProductDimensions::find($request->id);
+        $productDimensions->fill($data)->save();
+
+        return redirect()->route('product_dimensions.index')->with('success', 'Product Dimension has been updated successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\ProductDimensions  $productDimensions
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param ProductDimensions $productDimensions
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(ProductDimensions $productDimensions)
+    public function destroy(Request $request, ProductDimensions $productDimensions)
     {
-        //
+        ProductDimensions::where('id',$request->id)->delete();
+        return redirect()->route('product_dimensions.index')->with('success', 'Product Dimension has been deleted successfully!');
     }
 }
