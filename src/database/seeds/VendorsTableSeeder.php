@@ -16,7 +16,9 @@ class VendorsTableSeeder extends Seeder
         foreach (range(1,10) as $index) {
             DB::table('vendors')->insert([
                 'name' => $faker->name,
-                'email' => $faker->unique()->freeEmail,
+                'email' => $faker->unique()->freeEmail ,
+                'contact_person' => $faker->name,
+                'notes' => $faker->text($maxNbChars = 100),
                 'address1' => $faker->address,
                 'address2' => $faker->buildingNumber,
                 'city' => $faker->city,
@@ -24,13 +26,11 @@ class VendorsTableSeeder extends Seeder
                 'postal_code' => $faker->postcode,
                 'country' => $faker->country,
                 'phone' => $faker->phoneNumber,
-                'mobile' => $faker->phoneNumber,  
-                'notes' => $faker->text($maxNbChars = 100),
-                'contact_person' => $faker->name,
-                'created_at' => $faker->date($format = 'Y-m-d ', $max = 'now').$faker->time($format = 'H:i:s', $max = 'now'),                                
+                'mobile' => $faker->phoneNumber,
+                'created_at' => $faker->date($format = 'Y-m-d ', $max = 'now').$faker->time($format = 'H:i:s', $max = 'now'),
                 'updated_at' => $faker->dateTime($max = 'now', $timezone = null)
             ]);
         }
-     
+
     }
 }

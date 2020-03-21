@@ -79118,7 +79118,8 @@ var render = function() {
                             expression: "batch_number"
                           }
                         ],
-                        staticClass: "form-control form-control-sm",
+                        staticClass:
+                          "form-control form-control-sm text-uppercase",
                         attrs: {
                           type: "text",
                           id: "batch_number",

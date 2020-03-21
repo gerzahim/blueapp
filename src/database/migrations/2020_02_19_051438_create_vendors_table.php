@@ -17,17 +17,16 @@ class CreateVendorsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('email')->nullable();
-            $table->string('address1')->nullable();
-			$table->string('address2')->nullable();
-			$table->string('city')->nullable();
-			$table->string('state')->nullable();
-			$table->string('postal_code')->nullable();
-			$table->string('country')->nullable();
-			$table->string('phone')->nullable();
-			$table->string('mobile')->nullable();
-			$table->string('website')->nullable();
+            $table->string('contact_person')->nullable();
             $table->text('notes', 65535)->nullable();
-            $table->string('contact_person')->nullable();            
+            $table->string('address1')->nullable();
+            $table->string('address2')->nullable();
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('postal_code')->nullable();
+            $table->string('country')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('mobile')->nullable();
             $table->timestamps();
         });
     }

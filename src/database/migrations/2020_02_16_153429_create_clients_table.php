@@ -17,6 +17,8 @@ class CreateClientsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('email')->nullable();
+            $table->string('contact_person')->nullable();
+            $table->text('notes', 65535)->nullable();
             $table->string('address1')->nullable();
 			$table->string('address2')->nullable();
 			$table->string('city')->nullable();
@@ -25,9 +27,6 @@ class CreateClientsTable extends Migration
 			$table->string('country')->nullable();
 			$table->string('phone')->nullable();
 			$table->string('mobile')->nullable();
-			$table->string('website')->nullable();
-            $table->text('notes', 65535)->nullable();
-            $table->string('contact_person')->nullable();
             $table->string('ein_number')->nullable();
             $table->string('resale_tax')->nullable();
             $table->timestamps();

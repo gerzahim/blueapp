@@ -9,6 +9,7 @@ Custom Inventory Management System HUAHAI
 ## TODO
 - Fix Crud Categories ****
 - Create Crud Couriers ****
+- BATCH NUMBER Capital Let ********
 - Create Crud Customers 
 - //pending// No delete Client if has Orders Opened 
 - Create Crud Vendors
@@ -21,7 +22,7 @@ Custom Inventory Management System HUAHAI
 - Update RMA when update Order
 
 ## pending Error
-- BATCH NUMBER Capital Letter
+
 - Fix Order Secuencia Name
 - Fix Style Select 2 
 - Stock List, wrong id show

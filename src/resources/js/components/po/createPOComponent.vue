@@ -143,7 +143,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group-po">
                                         <label class="mb-0" ><small>Batch</small></label>
-                                        <input type="text" class="form-control form-control-sm" id="batch_number" name="batch_number" v-model="batch_number" placeholder="XFR4487...">
+                                        <input type="text" class="form-control form-control-sm text-uppercase" id="batch_number" name="batch_number" v-model="batch_number" placeholder="XFR4487...">
                                     </div>
                                 </div>
                                 <div class="col-md-2">
