@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Product;
 use App\ProductDimensions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -112,6 +113,12 @@ class ProductDimensionsController extends Controller
      */
     public function destroy(Request $request, ProductDimensions $productDimensions)
     {
+        //Verify if have Order Associated
+        $product = Product::where('dimensions_id', $request->id)->first();
+        if($product){
+            return redirect()->route('product_dimensions.index')->with('warning', 'Can Not Delete this Product Dimensions, have this Product Associated => '.$product->name);
+        }
+
         ProductDimensions::where('id',$request->id)->delete();
         return redirect()->route('product_dimensions.index')->with('success', 'Product Dimension has been deleted successfully!');
     }

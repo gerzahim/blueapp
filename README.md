@@ -7,8 +7,9 @@ Custom Inventory Management System HUAHAI
 - Npm Install 
 
 ## TODO
-- Validate No delete Product with PO associated (try to get PO NAME)
-- Create Crud ProductDimensions
+
+- Create Crud ProductDimensions ****
+- Validate Product No associated to ProductDimensions   
 - feathericons delete PO (Only 15 minutes if not skip)
 - Create User Login
 - Migrate Data
