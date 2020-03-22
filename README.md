@@ -7,7 +7,6 @@ Custom Inventory Management System HUAHAI
 - Npm Install 
 
 ## TODO
-- Order by Name on Select *****
 - Search Client 
 - Create User Login
 - Migrate Data

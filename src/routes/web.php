@@ -33,6 +33,7 @@ Route::get('/editPurchase/{id}', [
 Route::get('/get_products', 'PurchaseController@getProductsbyAjax');
 Route::get('/get_vendors', 'PurchaseController@getVendorsbyAjax');
 Route::get('/get_clients', 'PurchaseController@getClientsbyAjax');
+Route::get('/get_clientsDT', 'PurchaseController@getClientsDT');
 Route::get('/get_couriers', 'PurchaseController@getCouriersbyAjax');
 
 /** Orders  **/

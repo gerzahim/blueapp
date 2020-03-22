@@ -346,6 +346,18 @@ class PurchaseController extends Controller
      *
      * @return JsonResponse
      */
+    public function getClientsDT() {
+        $clients  = Client::all();
+        $subset = $clients->map->only(['id','name']);
+        return response()->json(['data' => $subset]);
+    }
+
+
+    /**
+     * Get List of Products by Json
+     *
+     * @return JsonResponse
+     */
     public function getClientsbyAjax() {
         $clients  = Client::all();
         $sorted   = $clients->sortBy('name');
