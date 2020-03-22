@@ -22,6 +22,18 @@ class VendorController extends Controller
     }
 
     /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function sortedByName()
+    {
+        // Sort By Name
+        $vendors = Vendor::orderBy('name')->paginate(10);
+        // Append sort to pagination links
+        $links = $vendors ->appends(['sort' => 'name'])->links();
+        return view('vendors.sorted', compact('vendors', 'links'));
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response

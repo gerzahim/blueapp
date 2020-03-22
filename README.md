@@ -7,7 +7,7 @@ Custom Inventory Management System HUAHAI
 - Npm Install 
 
 ## TODO
-- Search Client 
+- Search Client *** solved by order by name 
 - Create User Login
 - Migrate Data
 - Update Server
@@ -23,7 +23,14 @@ Custom Inventory Management System HUAHAI
 - style Stock
 <td style="font-weight: bold; text-align:right;background-color:red; color:white">+11 </td>
 <td style="font-weight: bold; text-align:right;background-color:#FFEEAA;"> +1,192 </td>
- 
+
+- Add Vue Datatables
+  https://vuejsexamples.com/data-table-simplify-datatable-component-for-vue-2-x/
+     https://codepen.io/ratiw/pen/GmJayw
+     
+  https://vuejsexamples.com/a-vue-js-datatable-component-for-laravel-that-works-with-bootstrap/
+     https://github.com/jamesdordoy/laravel-vue-datatable
+          
 - If fail refill values ( No priority) on Vue component
 - Disable Button Save or Message why not submit
 - Edit instead splice try, Components 
@@ -33,6 +40,8 @@ Custom Inventory Management System HUAHAI
  // modifying the value present at index 2 
   myObj.words[2] = "bad";   
 
+## For check 
+https://docs.laravel-enso.com/
 
 
 ## About Laravel

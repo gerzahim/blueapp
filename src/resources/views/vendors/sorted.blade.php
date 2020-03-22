@@ -35,8 +35,6 @@
                             <!-- Column -->
                             <div class="col-md-6">
                                 <div class="float-right">
-                                    <a href="{{ url('/vendors_sorted') }}" class="btn btn-info btn-sm">Sort by Name</a>
-                                    &nbsp;
                                     <a href="{{ route('vendor.create') }}" class="btn btn-success btn-sm">Add</a>
                                 </div>
                             </div>
@@ -89,7 +87,7 @@
                                 </tbody>
                             @endforeach
                         </table>
-                        {!! $vendors->links() !!}
+                        {!! $links !!}
                     </div>
                 </div>
             </div>

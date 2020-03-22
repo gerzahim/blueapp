@@ -30,6 +30,14 @@ Route::get('/editPurchase/{id}', [
     'uses' => 'PurchaseController@editPurchase',
     'as' => 'purchases.editPurchase'
 ]);
+
+/** Sorted  **/
+Route::get('/clients_sorted', 'ClientController@sortedByName');
+Route::get('/vendors_sorted', 'VendorController@sortedByName');
+Route::get('/products_sorted', 'ProductController@sortedByName');
+
+
+/** JSON RESPONSE  **/
 Route::get('/get_products', 'PurchaseController@getProductsbyAjax');
 Route::get('/get_vendors', 'PurchaseController@getVendorsbyAjax');
 Route::get('/get_clients', 'PurchaseController@getClientsbyAjax');

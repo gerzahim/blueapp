@@ -20,6 +20,15 @@ class ClientController extends Controller
         return view('clients.index', compact('clients'));
     }
 
+    public function sortedByName()
+    {
+        // Sort By Name
+        $clients = Client::orderBy('name')->paginate(10);
+        // Append sort to pagination links
+        $links = $clients ->appends(['sort' => 'name'])->links();
+        return view('clients.sorted', compact('clients', 'links'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *

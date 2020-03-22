@@ -35,6 +35,8 @@
                             <!-- Column -->
                             <div class="col-md-6">
                                 <div class="float-right">
+                                    <a href="{{ url('/products_sorted') }}" class="btn btn-info btn-sm">Sort by Name</a>
+                                    &nbsp;
                                     <a href="{{ route('product.create') }}" class="btn btn-success btn-sm">Add</a>
                                 </div>
                             </div>

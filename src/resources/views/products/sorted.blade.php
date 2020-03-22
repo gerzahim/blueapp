@@ -8,7 +8,7 @@
     <div class="page-breadcrumb">
         <div class="row">
             <div class="col-12 align-self-center">
-                <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Suppliers</h4>
+                <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Products</h4>
             </div>
         </div>
     </div>
@@ -30,66 +30,68 @@
                         <div class="row">
                             <!-- Column -->
                             <div class="col-md-6">
-                                <h4 class="font-light">Suppliers List</h4>
+                                <h4 class="font-light">Products List</h4>
                             </div>
                             <!-- Column -->
                             <div class="col-md-6">
                                 <div class="float-right">
-                                    <a href="{{ url('/vendors_sorted') }}" class="btn btn-info btn-sm">Sort by Name</a>
-                                    &nbsp;
-                                    <a href="{{ route('vendor.create') }}" class="btn btn-success btn-sm">Add</a>
+                                    <a href="{{ route('product.create') }}" class="btn btn-success btn-sm">Add</a>
                                 </div>
                             </div>
                         </div>
 
                         @if ($message = Session::get('success'))
-                            <div class="alert alert-success">
-                                <p>{{ $message }}</p>
-                            </div>
+                        <div class="alert alert-success">
+                            <p>{{ $message }}</p>
+                        </div>
                         @endif
                         <table class="table table-bordered">
-                            <thead class="bg-primary text-white">
-                            <tr>
-                                <th>No</th>
-                                <th>Name</th>
-                                <th>Action</th>
-                            </tr>
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Name</th>
+                                    <th>Action</th>
+                                </tr>
                             </thead>
-                            @foreach ($vendors as $key => $vendor)
-                                <tbody>
+                            @foreach ($products as $key => $product)
+                            <tbody>
                                 <tr>
                                     <td>
                                         {{ $key + 1 }}
                                     </td>
                                     <td>
-                                        <a href="{{ route('vendor.show',$vendor->id) }}">
-                                            {{ $vendor->name }}
+                                        <a href="{{ route('product.show',$product->id) }}">
+                                        {{ $product->name }}
                                         </a>
                                     </td>
                                     <td>
                                         <!-- Edit button -->
                                         <a
-                                            class="btn btn-primary btn-sm"
-                                            href="{{ route('vendor.edit',$vendor->id) }}"
+                                        class="btn btn-primary btn-sm"
+                                        href="{{ route('product.edit',$product->id) }}"
                                         >Edit</a>
 
                                         <!-- Delete button -->
                                         <form
-                                            action="{{ route('vendor.destroy',$vendor->id) }}"
+                                            action="{{ route('product.destroy',$product->id) }}"
                                             method="POST"
                                             style="display: inline;"
                                         >
                                             @csrf @method('DELETE')
+
                                             <button type="submit" class="btn btn-danger btn-sm">
                                                 Delete
                                             </button>
                                         </form>
                                     </td>
                                 </tr>
-                                </tbody>
+                            </tbody>
                             @endforeach
                         </table>
-                        {!! $vendors->links() !!}
+                        {!! $links !!}
+
+
+
                     </div>
                 </div>
             </div>

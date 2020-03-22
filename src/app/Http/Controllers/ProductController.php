@@ -24,6 +24,18 @@ class ProductController extends Controller
     }
 
     /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function sortedByName()
+    {
+        // Sort By Name
+        $products = Product::orderBy('name')->paginate(10);
+        // Append sort to pagination links
+        $links = $products ->appends(['sort' => 'name'])->links();
+        return view('products.sorted', compact('products', 'links'));
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
