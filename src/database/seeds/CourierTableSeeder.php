@@ -16,9 +16,9 @@ class CourierTableSeeder extends Seeder
             'name'=> 'N/A'
         ]);
 
-    	foreach (range(1,10) as $index) {
+    	foreach (range(1,50) as $index) {
 	        DB::table('couriers')->insert([
-	            'name' => $faker->numerify('Courier ##')
+	            'name' => $faker->numerify('Courier ######')
 	        ]);
 	    }
     }

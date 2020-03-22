@@ -35,46 +35,6 @@ class PurchaseController extends Controller
     }
 
     /**
-     * Get List of Products by Json
-     * @return JsonResponse
-     */
-    public function getProductsbyAjax() {
-        $products = Product::all();
-        return response()->json(['products' => $products]);
-    }
-
-    /**
-     * Get List of Products by Json
-     *
-     * @return JsonResponse
-     */
-    public function getClientsbyAjax() {
-        $clients = Client::all();
-        return response()->json(['clients' => $clients]);
-    }
-
-    /**
-     * Get List of Products by Json
-     *
-     * @return JsonResponse
-     */
-    public function getVendorsbyAjax() {
-        $vendors = Vendor::all();
-        return response()->json(['vendors' => $vendors]);
-    }
-
-    /**
-     * Get List of Products by Json
-     *
-     * @return JsonResponse
-     */
-    public function getCouriersbyAjax() {
-        $couriers = Courier::all();
-        return response()->json(['couriers' => $couriers]);
-    }
-
-
-    /**
      * Show the form for creating a new resource.
      *
      * @return Response
@@ -368,6 +328,53 @@ class PurchaseController extends Controller
         PurchasesItem::where('purchases_id',$purchases->id)->delete();
 
         return redirect()->route('purchases.index')->with('success', 'Purchase - PO has been deleted successfully!');
+    }
+
+    /**
+     * Get List of Products by Json
+     * @return JsonResponse
+     */
+    public function getProductsbyAjax() {
+        $products = Product::all();
+        $sorted   = $products->sortBy('name');
+        $products = $sorted->values()->all();
+        return response()->json(['products' => $products]);
+    }
+
+    /**
+     * Get List of Products by Json
+     *
+     * @return JsonResponse
+     */
+    public function getClientsbyAjax() {
+        $clients  = Client::all();
+        $sorted   = $clients->sortBy('name');
+        $clients  = $sorted->values()->all();
+        return response()->json(['clients' => $clients]);
+    }
+
+    /**
+     * Get List of Products by Json
+     *
+     * @return JsonResponse
+     */
+    public function getVendorsbyAjax() {
+        $vendors = Vendor::all();
+        $sorted  = $vendors->sortBy('name');
+        $vendors = $sorted->values()->all();
+        return response()->json(['vendors' => $vendors]);
+    }
+
+    /**
+     * Get List of Products by Json
+     *
+     * @return JsonResponse
+     */
+    public function getCouriersbyAjax() {
+        $couriers = Courier::all();
+        $sorted   = $couriers->sortBy('name');
+        $couriers = $sorted->values()->all();
+        return response()->json(['couriers' => $couriers]);
     }
 
 

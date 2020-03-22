@@ -12,7 +12,7 @@ class ClientsTableSeeder extends Seeder
      */
     public function run(Generator $faker)
     {
-    	foreach (range(1,10) as $index) {
+    	foreach (range(1,150) as $index) {
 	        DB::table('clients')->insert([
                 'name' => $faker->name,
                 'email' => $faker->unique()->freeEmail ,

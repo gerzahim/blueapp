@@ -315,9 +315,7 @@
             this.fetchProducts()
             this.fetchVendors()
             this.fetchCouries()
-            this.fetchClients()
-            
-            
+            this.fetchClients()            
         }
     }
 </script>

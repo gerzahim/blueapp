@@ -12,9 +12,9 @@ class ProductDimensionsTableSeeder extends Seeder
      */
     public function run(Generator $faker)
     {
-    	foreach (range(1,10) as $index) {
+    	foreach (range(1,30) as $index) {
 	        DB::table('product_dimensions')->insert([
-	            'name' => $faker->numerify('#00x#00')              
+	            'name' => $faker->numerify('#00x#00')
 	        ]);
 	    }
     }

@@ -12,9 +12,9 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run(Generator $faker)
     {
-    	foreach (range(1,10) as $index) {
+    	foreach (range(1,50) as $index) {
 	        DB::table('categories')->insert([
-                'name' => $faker->numerify('Category ##')
+                'name' => $faker->numerify('Category ######')
 	        ]);
 	    }
     }
