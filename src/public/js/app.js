@@ -77523,12 +77523,12 @@ var render = function() {
                       staticClass: "list-group-po-item py-1 px-1 mx-1 bg-light"
                     },
                     [
-                      _c("div", { staticClass: "row mx-1 h-100" }, [
+                      _c("div", { staticClass: "row mx-1" }, [
                         _c(
                           "div",
                           {
                             staticClass:
-                              "col-sm-12 col-lg-12 col-xl-12 my-auto px-1"
+                              "col-sm-12 col-lg-12 col-xl-12 mt-1 px-1"
                           },
                           [
                             _vm._v(
@@ -77542,9 +77542,11 @@ var render = function() {
                               [_c("b", [_vm._v(_vm._s(variable.qty))])]
                             ),
                             _vm._v(" "),
-                            _c("span", { staticClass: "badge badge-dark" }, [
-                              _vm._v(_vm._s(variable.batch))
-                            ])
+                            _c(
+                              "span",
+                              { staticClass: "badge badge-secondary" },
+                              [_vm._v(_vm._s(variable.batch))]
+                            )
                           ]
                         ),
                         _vm._v(" "),
@@ -77552,7 +77554,7 @@ var render = function() {
                           "div",
                           {
                             staticClass:
-                              "col-sm-12 col-lg-11 col-xl-11 my-auto px-1"
+                              "col-sm-12 col-lg-11 col-xl-11 mt-1 px-1"
                           },
                           [
                             _vm._v(
@@ -77567,21 +77569,25 @@ var render = function() {
                           "div",
                           {
                             staticClass:
-                              "col-sm-12 col-lg-1 col-xl-1 my-auto px-1 text-right"
+                              "col-sm-12 col-lg-1 col-xl-1 mt-1 px-1 text-right"
                           },
                           [
                             _c(
-                              "button",
+                              "a",
                               {
-                                staticClass: "btn-danger pull-right",
-                                attrs: { type: "button" },
+                                attrs: { href: "#" },
                                 on: {
                                   click: function($event) {
                                     return _vm.$delete(_vm.vars, key)
                                   }
                                 }
                               },
-                              [_c("i", { staticClass: "fa fa-times-circle" })]
+                              [
+                                _c("i", {
+                                  staticClass: "fa fa-times-circle",
+                                  staticStyle: { color: "red" }
+                                })
+                              ]
                             )
                           ]
                         )
@@ -78290,12 +78296,12 @@ var render = function() {
                       staticClass: "list-group-po-item py-1 px-1 mx-1 bg-light"
                     },
                     [
-                      _c("div", { staticClass: "row mx-1 h-100" }, [
+                      _c("div", { staticClass: "row mx-1" }, [
                         _c(
                           "div",
                           {
                             staticClass:
-                              "col-sm-12 col-lg-12 col-xl-12 my-auto px-1"
+                              "col-sm-12 col-lg-12 col-xl-12 mt-1 px-1"
                           },
                           [
                             _vm._v(
@@ -78309,9 +78315,11 @@ var render = function() {
                               [_c("b", [_vm._v(_vm._s(variable.qty))])]
                             ),
                             _vm._v(" "),
-                            _c("span", { staticClass: "badge badge-dark" }, [
-                              _vm._v(_vm._s(variable.batch))
-                            ])
+                            _c(
+                              "span",
+                              { staticClass: "badge badge-secondary" },
+                              [_vm._v(_vm._s(variable.batch))]
+                            )
                           ]
                         ),
                         _vm._v(" "),
@@ -78319,7 +78327,7 @@ var render = function() {
                           "div",
                           {
                             staticClass:
-                              "col-sm-12 col-lg-11 col-xl-11 my-auto px-1"
+                              "col-sm-12 col-lg-11 col-xl-11 mt-1 px-1"
                           },
                           [
                             _vm._v(
@@ -78334,21 +78342,25 @@ var render = function() {
                           "div",
                           {
                             staticClass:
-                              "col-sm-12 col-lg-1 col-xl-1 my-auto px-1 text-right"
+                              "col-sm-12 col-lg-1 col-xl-1 mt-1 px-1 text-right"
                           },
                           [
                             _c(
-                              "button",
+                              "a",
                               {
-                                staticClass: "btn-danger pull-right",
-                                attrs: { type: "button" },
+                                attrs: { href: "#" },
                                 on: {
                                   click: function($event) {
                                     return _vm.$delete(_vm.vars, key)
                                   }
                                 }
                               },
-                              [_c("i", { staticClass: "fa fa-times-circle" })]
+                              [
+                                _c("i", {
+                                  staticClass: "fa fa-times-circle",
+                                  staticStyle: { color: "red" }
+                                })
+                              ]
                             )
                           ]
                         )
@@ -78889,12 +78901,12 @@ var render = function() {
                       staticClass: "list-group-po-item py-1 px-1 mx-1 bg-light"
                     },
                     [
-                      _c("div", { staticClass: "row mx-1 h-100" }, [
+                      _c("div", { staticClass: "row mx-1" }, [
                         _c(
                           "div",
                           {
                             staticClass:
-                              "col-sm-12 col-lg-12 col-xl-6 my-auto px-1"
+                              "col-sm-12 col-lg-12 col-xl-6 mt-1 px-1"
                           },
                           [
                             _vm._v(
@@ -78914,13 +78926,15 @@ var render = function() {
                           "div",
                           {
                             staticClass:
-                              "col-sm-12 col-lg-12 col-xl-5 my-auto px-1"
+                              "col-sm-12 col-lg-12 col-xl-5 mt-1 px-1"
                           },
                           [
-                            _c("h6", [
-                              _c("span", { staticClass: "badge badge-dark" }, [
-                                _vm._v(_vm._s(variable.batch_number))
-                              ])
+                            _c("h4", [
+                              _c(
+                                "span",
+                                { staticClass: "badge badge-secondary" },
+                                [_vm._v(_vm._s(variable.batch_number))]
+                              )
                             ])
                           ]
                         ),
@@ -78929,21 +78943,25 @@ var render = function() {
                           "div",
                           {
                             staticClass:
-                              "col-sm-12 col-lg-12 col-xl-1 my-auto px-1 text-right"
+                              "col-sm-12 col-lg-12 col-xl-1 mt-1 px-1 text-right"
                           },
                           [
                             _c(
-                              "button",
+                              "a",
                               {
-                                staticClass: "btn-danger pull-right",
-                                attrs: { type: "button" },
+                                attrs: { href: "#" },
                                 on: {
                                   click: function($event) {
                                     return _vm.$delete(_vm.vars, key)
                                   }
                                 }
                               },
-                              [_c("i", { staticClass: "fa fa-times-circle" })]
+                              [
+                                _c("i", {
+                                  staticClass: "fa fa-times-circle",
+                                  staticStyle: { color: "red" }
+                                })
+                              ]
                             )
                           ]
                         )
@@ -79791,12 +79809,12 @@ var render = function() {
                       staticClass: "list-group-po-item py-1 px-1 mx-1 bg-light"
                     },
                     [
-                      _c("div", { staticClass: "row mx-1 h-100" }, [
+                      _c("div", { staticClass: "row mx-1" }, [
                         _c(
                           "div",
                           {
                             staticClass:
-                              "col-sm-12 col-lg-12 col-xl-6 my-auto px-1"
+                              "col-sm-12 col-lg-12 col-xl-6 mt-1 px-1"
                           },
                           [
                             _vm._v(
@@ -79816,13 +79834,15 @@ var render = function() {
                           "div",
                           {
                             staticClass:
-                              "col-sm-12 col-lg-12 col-xl-5 my-auto px-1"
+                              "col-sm-12 col-lg-12 col-xl-5 mt-1 px-1"
                           },
                           [
-                            _c("h6", [
-                              _c("span", { staticClass: "badge badge-dark" }, [
-                                _vm._v(_vm._s(variable.batch_number))
-                              ])
+                            _c("h4", [
+                              _c(
+                                "span",
+                                { staticClass: "badge badge-secondary" },
+                                [_vm._v(_vm._s(variable.batch_number))]
+                              )
                             ])
                           ]
                         ),
@@ -79831,21 +79851,25 @@ var render = function() {
                           "div",
                           {
                             staticClass:
-                              "col-sm-12 col-lg-12 col-xl-1 my-auto px-1 text-right"
+                              "col-sm-12 col-lg-12 col-xl-1 mt-1 px-1 text-right"
                           },
                           [
                             _c(
-                              "button",
+                              "a",
                               {
-                                staticClass: "btn-danger pull-right",
-                                attrs: { type: "button" },
+                                attrs: { href: "#" },
                                 on: {
                                   click: function($event) {
                                     return _vm.$delete(_vm.vars, key)
                                   }
                                 }
                               },
-                              [_c("i", { staticClass: "fa fa-times-circle" })]
+                              [
+                                _c("i", {
+                                  staticClass: "fa fa-times-circle",
+                                  staticStyle: { color: "red" }
+                                })
+                              ]
                             )
                           ]
                         )
@@ -80020,7 +80044,8 @@ var render = function() {
                             expression: "batch_number"
                           }
                         ],
-                        staticClass: "form-control form-control-sm",
+                        staticClass:
+                          "form-control form-control-sm text-uppercase",
                         attrs: {
                           type: "text",
                           id: "batch_number",

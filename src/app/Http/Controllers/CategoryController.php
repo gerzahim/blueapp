@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Product;
 use Illuminate\Http\Request;
 use Faker\Generator;
 
@@ -97,6 +98,12 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        //Verify if have Order Associated
+        $product = Product::where('category_id', $category->id)->first();
+        if($product){
+            return redirect()->route('category.index')->with('warning', 'Can Not Delete this Category, have this Product Associated => '.$product->name);
+        }
+
         $category->delete();
         return redirect()->route('category.index')->with('success', 'Category has been deleted successfully!');
     }

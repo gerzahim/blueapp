@@ -83,17 +83,17 @@
                         <input type="hidden" name="vars" :value="JSON.stringify(vars)">
                         <ul class="list-group-po nobull px-1">
                             <li v-for="(variable, key) in vars" :key="key" class="list-group-po-item py-1 px-1 mx-1 bg-light">
-                                <div class="row mx-1 h-100">
-                                    <div class="col-sm-12 col-lg-12 col-xl-12 my-auto px-1">
+                                <div class="row mx-1">
+                                    <div class="col-sm-12 col-lg-12 col-xl-12 mt-1 px-1">
                                         {{variable.product_name}}
                                         <span class="badge badge-primary badge-pill"><b>{{variable.qty}}</b></span>
-                                        <span class="badge badge-dark">{{variable.batch}}</span>
+                                        <span class="badge badge-secondary">{{variable.batch}}</span>
                                     </div>
-                                    <div class="col-sm-12 col-lg-11 col-xl-11 my-auto px-1">
+                                    <div class="col-sm-12 col-lg-11 col-xl-11 mt-1 px-1">
                                         PO: {{variable.po_name}}
                                     </div>
-                                    <div class="col-sm-12 col-lg-1 col-xl-1 my-auto px-1 text-right">
-                                        <button type="button" class="btn-danger pull-right" @click="$delete(vars, key)"><i class="fa fa-times-circle"></i></button>
+                                    <div class="col-sm-12 col-lg-1 col-xl-1 mt-1 px-1 text-right">
+                                        <a href="#" @click="$delete(vars, key)"><i class="fa fa-times-circle" style="color:red"></i></a>
                                     </div>
                                 </div>
                             </li>
