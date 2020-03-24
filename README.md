@@ -7,19 +7,21 @@ Custom Inventory Management System HUAHAI
 - Npm Install 
 
 ## TODO
-- Search Client *** solved by order by name 
-- Create User Login
-- Migrate Data
-- Update Server
+- List N/A in the middle Couriers, etc...
+- Create User Login  https://www.adminmart.com/src/html/authentication-login1.html
 - RMA IN 
-- Update RMA when update Order
+- Update RMA when update Order 
+- report Filters
 
 ## pending Error
-- Fix Order Secuencia Name
-- Fix Style Select 2 
+- Fix Order Secuencia Name (create 2 and delete 3 and create 4)
 - Stock List, wrong id show
 
+
+
 ## Improves
+- Fix Style Select 2 (Select left and listgroup to the right)  https://www.adminmart.com/src/html/ui-list-media.html
+- Breadcrumbs https://www.adminmart.com/src/html/ui-breadcrumb.html
 - style Stock
 <td style="font-weight: bold; text-align:right;background-color:red; color:white">+11 </td>
 <td style="font-weight: bold; text-align:right;background-color:#FFEEAA;"> +1,192 </td>
@@ -39,6 +41,19 @@ Custom Inventory Management System HUAHAI
  "words":[ "I", "am", "bad" ] 
  // modifying the value present at index 2 
   myObj.words[2] = "bad";   
+
+## update Cpanel
+- update/replace src/app
+- update/replace src/public (file by file)
+- update/replace src/resources
+- update/replace src/routes
+
+- descomprim node_modules
+- descomprim vendor
+
+- any new variable on .ENV
+- import .sql 
+
 
 ## For check 
 https://docs.laravel-enso.com/
