@@ -7,7 +7,6 @@ Custom Inventory Management System HUAHAI
 - Npm Install 
 
 ## TODO
-- List N/A in the middle Couriers, etc...
 - Create User Login  https://www.adminmart.com/src/html/authentication-login1.html
 - RMA IN 
 - Update RMA when update Order 

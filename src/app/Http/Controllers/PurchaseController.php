@@ -383,10 +383,17 @@ class PurchaseController extends Controller
      * @return JsonResponse
      */
     public function getCouriersbyAjax() {
-        $couriers = Courier::all();
+
+        $courier_na = Courier::where('name', 'N/A')->get();
+
+        $couriers = Courier::whereNotIn('name', ['N/A'])->get();
         $sorted   = $couriers->sortBy('name');
         $couriers = $sorted->values()->all();
-        return response()->json(['couriers' => $couriers]);
+
+        // Merge Both Collection $merged = $original->merge($latest);
+        $merged = $courier_na->merge($couriers);
+
+        return response()->json(['couriers' => $merged]);
     }
 
 
