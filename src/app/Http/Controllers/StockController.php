@@ -30,6 +30,16 @@ class StockController extends Controller
 
 
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    /**
      * Display a listing of Stock
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
