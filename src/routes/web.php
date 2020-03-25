@@ -12,10 +12,12 @@
 */
 
 
+Auth::routes();
 
+Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('home', 'HomeController');
-Route::resource('/', 'HomeController');
+//Route::resource('home', 'HomeController');
+//Route::resource('/', 'HomeController');
 Route::resource('post', 'PostController');
 
 Route::resource('category', 'CategoryController');
@@ -56,3 +58,5 @@ Route::get('/rma', 'HomeController@getUnderConstruction');
 Route::get('/borrow', 'HomeController@getUnderConstruction');
 Route::get('/lend', 'HomeController@getUnderConstruction');
 Route::get('/refurbishment', 'HomeController@getUnderConstruction');
+
+

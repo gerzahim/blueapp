@@ -84,9 +84,15 @@
                             </ul>
                         </li>
                         <li class="nav-small-cap"><span class="hide-menu">Extra</span></li>
-                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="#" aria-expanded="false">
-                            <i data-feather="power" class="feather-icon"></i>
-                            <span class="hide-menu">Logout</span></a>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link sidebar-link" href="{{ route('logout') }}" aria-expanded="false"
+                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <i data-feather="power" class="svg-icon mr-2 ml-1"></i>
+                                <span class="hide-menu">Logout</span>
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
                         </li>
                     </ul>
                 </nav>

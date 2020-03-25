@@ -83,7 +83,7 @@
                 <!-- footer -->
                 <!-- ============================================================== -->
                 <footer class="footer text-center mb-0 mt-0 pt-0 pb-0">
-                    All Rights Reserved by Huahai. Designed and Developed by <a target="blank" href="http://gerzahim.com/">Gerza</a>.
+                    All Rights Reserved by Huahai. Developed by <a class="text-danger" target="blank" href="http://gerzahim.com/">Gerza</a>.
                 </footer>
                 <!-- ============================================================== -->
                 <!-- End footer -->

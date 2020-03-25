@@ -6,8 +6,11 @@ Custom Inventory Management System HUAHAI
 - Run Migrations 
 - Npm Install 
 
+user1@gmail.com/12345678
+
 ## TODO
-- Create User Login  https://www.adminmart.com/src/html/authentication-login1.html
+- Update Logo src\public\adminmart\images\big/3.jpg
+  Dimensions 711x625 
 - RMA IN 
 - Update RMA when update Order 
 - report Filters
@@ -17,8 +20,8 @@ Custom Inventory Management System HUAHAI
 - Stock List, wrong id show
 
 
-
 ## Improves
+- Turbolinks 
 - Fix Style Select 2 (Select left and listgroup to the right)  https://www.adminmart.com/src/html/ui-list-media.html
 - Breadcrumbs https://www.adminmart.com/src/html/ui-breadcrumb.html
 - style Stock
