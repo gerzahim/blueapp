@@ -53,7 +53,7 @@
     <div class="auth-wrapper d-flex no-block justify-content-center align-items-center position-relative"
          style="background:url({{ asset('/adminmart/images/big/auth-bg.jpg') }}) no-repeat center center;">
         <div class="auth-box row">
-            <div class="col-lg-7 col-md-5 modal-bg-img" style="background-image: url({{ asset('/adminmart/images/big/3.jpg') }});">
+            <div class="col-lg-7 col-md-5 modal-bg-img" style="background-image: url({{ asset('/adminmart/images/big/logo_login.png') }});">
             </div>
             <div class="col-lg-5 col-md-7 bg-white">
                 <div class="p-3">
