@@ -58,3 +58,7 @@ Route::get('/lend', 'HomeController@getUnderConstruction');
 Route::get('/refurbishment', 'HomeController@getUnderConstruction');
 
 
+Route::get('/getsample', 'HomeController@getSample');
+
+
+

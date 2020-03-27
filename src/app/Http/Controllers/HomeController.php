@@ -31,6 +31,16 @@ class HomeController extends Controller
 
     }
 
+    /**
+     * Get Sample File
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getSample()
+    {
+        return view('purchases.samplecreate');
+
+    }
+
     public function getUnderConstruction()
     {
         Session::flash('warning', 'Sorry, this page is Under Construction');

@@ -13,15 +13,15 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group-po">
-                            <label class="mb-0"><small>Vendor</small></label>
+                            <label class="mb-0"><small>Supplier</small></label>
                             <div class="input-group input-group-sm">
                                 <select id="vendor_id" name="vendor_id" class="form-control form-control-sm" v-bind:class="[error_vendor ? 'is-invalid' : '']" v-model="vendor_selected">
-                                    <option value="0" disabled selected>Select Vendor</option>
+                                    <option value="0" disabled selected>Select Supplier</option>
                                     <option v-for="vendor in vendors" :value="vendor.id" :key="vendor.id">
                                         {{ vendor.name }}
                                     </option>
                                 </select>
-                                <div v-show="error_vendor" class="invalid-feedback">Please Select a Vendor!</div>
+                                <div v-show="error_vendor" class="invalid-feedback">Please Select a Supplier!</div>
                             </div>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                         <div class="form-group-po">
                             <label class="mb-0" ><small>Transaction Type</small></label>
                             <select id="transaction_type_id" name="transaction_type_id" class="form-control form-control-sm" >
-                                <option value="1">Purchase - PO</option>
+                                <option value="1" selected>Purchase - PO</option>
                             </select>
                         </div>
                     </div>
@@ -79,86 +79,88 @@
                     </div>
                 </div>
 
-                <!-- List Products added -->
-                <div class="row">
-                    <div class="col-12">
-                        <h6 class="text-muted">Products</h6>
-                        <input type="hidden" name="vars" :value="JSON.stringify(vars)">
-                        <ul class="list-group-po nobull px-1">
-                            <li v-for="(variable, key) in vars" :key="key" class="list-group-po-item py-1 px-1 mx-1 bg-light">
-                                <div class="row mx-1">
-                                    <div class="col-sm-12 col-lg-12 col-xl-6 mt-1 px-1">
-                                        {{variable.product_name}}
-                                        <span class="badge badge-primary badge-pill"><b>{{variable.qty}}</b></span>
-                                    </div>
-                                    <div class="col-sm-12 col-lg-12 col-xl-5 mt-1 px-1">
-                                        <h4>
-                                            <span class="badge badge-secondary">{{variable.batch_number}}</span>
-                                        </h4>
-                                    </div>
-                                    <div class="col-sm-12 col-lg-12 col-xl-1 mt-1 px-1 text-right">
-                                        <a href="#" @click="$delete(vars, key)"><i class="fa fa-times-circle" style="color:red"></i></a>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <ul v-show="error_vars">
-                            <div class="alert alert-danger">
-                                <p>
-                                    <strong><li>Please Add a Product to PO !</li></strong>
-                                </p>
-                            </div>                            
-                        </ul>                  
-                    </div>
-                </div>
-                
-                <!-- Add Products -->
-                <div class="col-md-12 px-0">
-                    <div class="card border-success pb-1 mb-2 mt-2">
-                        <div class="card-header bg-success pb-0 pt-1">
-                            <h6 class="mb-1 mt-1 text-white text-sm-left">Add Products to PO</h6>
-                        </div>
 
-                        <div class="card-body bg-light pt-1 pb-1">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group-po">
-                                        <label class="mb-0"><small>Products</small></label>
-                                        <select id="product_id" name="product_id" class="form-control form-control-sm" v-bind:class="[error_product ? 'is-invalid' : '']" v-model="product_selected">
-                                            <option value="0" disabled selected>Select Product</option>
-                                            <option v-for="product in products" v-bind:value="{ id: product.id, name: product.name }" :key="product.id">
-                                                {{ product.name }}
-                                            </option>
-                                        </select>
-                                        <div v-show="error_product" class="invalid-feedback">Please Select a Product!</div>
-                                    </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group-po">
+                            <div class="card border-success pb-1 mb-2 mt-2">
+                                <div class="card-header bg-success pb-0 pt-1">
+                                    <h6 class="mb-1 mt-1 text-white text-sm-left">Add Products to PO</h6>
                                 </div>
-                                <div class="col-md-2">
-                                    <div class="form-group-po">
-                                        <label class="mb-0" ><small>Qty</small></label>
-                                        <input type="number" class="form-control form-control-sm" v-bind:class="[error_qty ? 'is-invalid' : '']" v-model="qty" min="1">
-                                        <div v-show="error_qty" class="invalid-feedback">Please Indicate Qty!</div>
+                                <div class="card-body bg-light pt-1 pb-1">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group-po">
+                                                <label class="mb-0"><small>Products</small></label>
+                                                <select id="product_id" name="product_id" class="form-control form-control-sm" v-bind:class="[error_product ? 'is-invalid' : '']" v-model="product_selected">
+                                                    <option value="0" disabled selected>Select Product</option>
+                                                    <option v-for="product in products" v-bind:value="{ id: product.id, name: product.name }" :key="product.id">
+                                                        {{ product.name }}
+                                                    </option>
+                                                </select>
+                                                <div v-show="error_product" class="invalid-feedback">Please Select a Product!</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group-po">
+                                                <label class="mb-0" ><small>Qty</small></label>
+                                                <input type="number" class="form-control form-control-sm" v-bind:class="[error_qty ? 'is-invalid' : '']" v-model="qty" min="1">
+                                                <div v-show="error_qty" class="invalid-feedback">Please Indicate Qty!</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group-po">
-                                        <label class="mb-0" ><small>Batch</small></label>
-                                        <input type="text" class="form-control form-control-sm text-uppercase" id="batch_number" name="batch_number" v-model="batch_number" placeholder="XFR4487...">
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="form-group-po">
-                                        <label class="mb-0"><small>Add</small></label>
-                                        <div class="input-group input-group-sm">
-                                            <button type="button" class="btn-success" @click="insertNewProduct()"><i class="fas fa-plus"></i></button>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group-po">
+                                                <label class="mb-0" ><small>Batch</small></label>
+                                                <input type="text" class="form-control form-control-sm text-uppercase" id="batch_number" name="batch_number" v-model="batch_number" placeholder="XFR4487...">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group-po">
+                                                <label class="mb-0"><small>Add</small></label>
+                                                <div class="input-group input-group-sm">
+                                                    <button type="button" class="btn-success" @click="insertNewProduct()"><i class="fas fa-plus"></i></button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
-                </div>                
+                    <div class="col-md-6">
+                        <div class="form-group-po">
+                            <label class="mb-0" ><small>List Products added</small></label>
+                            <input type="hidden" name="vars" :value="JSON.stringify(vars)">
+                            <ul class="list-group list-group-full">
+                                <li v-for="(variable, key) in vars" :key="key" class="list-group-item">
+                                    <div class="row" style="height: 25px;">
+                                        <div class="col-6 align-middle">
+                                            {{variable.product_name}}
+                                            <span class="badge badge-primary badge-pill"><b>{{variable.qty}}</b></span>
+                                        </div>
+                                        <div class="col-4 align-middle">
+                                            <h4>
+                                                <span class="badge badge-secondary">{{variable.batch_number}}</span>
+                                            </h4>
+                                        </div>
+                                        <div class="col-2 align-middle text-right">
+                                            <a href="#" @click="$delete(vars, key)"><i class="fa fa-times-circle" style="color:red"></i></a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul v-show="error_vars">
+                                <div class="alert alert-danger">
+                                    <p>
+                                        <strong><li>Please Add a Product to PO !</li></strong>
+                                    </p>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+                </div> <!-- END ROW -->
             </div>
 
             <div class="form-actions mt-2">
@@ -200,7 +202,7 @@
         methods: {
             checkForm:function(e) {
 
-                this.checkErrors()                
+                this.checkErrors()
                 if (!this.errors.length) {
                     return true;
                     alert('Form is Not Good')
@@ -315,7 +317,7 @@
             this.fetchProducts()
             this.fetchVendors()
             this.fetchCouries()
-            this.fetchClients()            
+            this.fetchClients()
         }
     }
 </script>

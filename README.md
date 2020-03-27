@@ -9,10 +9,10 @@ Custom Inventory Management System HUAHAI
 user1@gmail.com/12345678
 
 ## TODO
-- Update Logo src\public\adminmart\images\big/3.jpg
-  Dimensions 711x625 
 - RMA IN 
-- Update RMA when update Order 
+- Add Vue Datatables to RMA
+- Update RMA when update Order
+- comment holding and Lend
 - report Filters
 
 ## pending Error
