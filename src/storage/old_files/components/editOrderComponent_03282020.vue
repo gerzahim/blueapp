@@ -2,14 +2,13 @@
     <div class="col-12">
         <form method="POST" @submit="checkForm" v-bind:action="computedAction">
             <input type="hidden" name="_token" :value="csrf">
-            <input type="hidden" name="_method" value="PUT">
+            <input type="hidden" name="_method" value="PUT">            
             <div class="form-body">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0" ><small>Order Number</small></label>
                             <input type="hidden" name="id" v-model="order.id">
-                            <input type="hidden" name="transaction_type_id" value="3">
                             <input type="text" class="form-control form-control-sm" id="name" name="name" v-bind:class="[error_name ? 'is-invalid' : '']" v-model="order.name" readonly>
                             <div v-show="error_name" class="invalid-feedback">Please Indicate Order Number !</div>
                         </div>
@@ -45,6 +44,23 @@
                     </div>
                 </div>
                 <div class="row">
+
+                    <div class="col-md-6">
+                        <div class="form-group-po">
+                            <label class="mb-0" ><small>Transaction Type</small></label>
+                            <select id="transaction_type_id" name="transaction_type_id" class="form-control form-control-sm" >
+                                <option value="3">Sales</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group-po">
+                            <label class="mb-0" ><small>Reference</small></label>
+                            <input type="text" class="form-control form-control-sm" id="reference" name="reference" min="1" v-model="order.reference" placeholder="...">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0"><small>Customer</small></label>
@@ -59,95 +75,78 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group-po">
-                            <label class="mb-0" ><small>Reference</small></label>
-                            <input type="text" class="form-control form-control-sm" id="reference" name="reference" min="1" v-model="order.reference" placeholder="...">
-                        </div>
+                </div>
+
+
+                <!-- List Products added -->
+                <div class="row">
+                    <div class="col-12">
+                        <h6 class="text-muted">Products</h6>
+                        <input type="hidden" name="vars" :value="JSON.stringify(vars)">
+                        <ul class="list-group-po nobull px-1">
+                            <li v-for="(variable, key) in vars" :key="key" class="list-group-po-item py-1 px-1 mx-1 bg-light">
+                                <div class="row mx-1">
+                                    <div class="col-sm-12 col-lg-12 col-xl-12 mt-1 px-1">
+                                        {{variable.product_name}}
+                                        <span class="badge badge-primary badge-pill"><b>{{variable.qty}}</b></span>
+                                        <span class="badge badge-secondary">{{variable.batch}}</span>
+                                    </div>
+                                    <div class="col-sm-12 col-lg-11 col-xl-11 mt-1 px-1">
+                                        PO: {{variable.po_name}}
+                                    </div>
+                                    <div class="col-sm-12 col-lg-1 col-xl-1 mt-1 px-1 text-right">
+                                        <a href="#" @click="$delete(vars, key)"><i class="fa fa-times-circle" style="color:red"></i></a>
+                                    </div>
+                                </div> 
+                            </li>
+                        </ul>
+                        <ul v-show="error_vars">
+                            <div class="alert alert-danger">
+                                <p>
+                                    <strong><li>Please Add a Product to Order !</li></strong>
+                                </p>
+                            </div>
+                        </ul>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group-po">
-                            <div class="card border-success pb-1 mb-2 mt-2">
-                                <div class="card-header bg-success pb-0 pt-1">
-                                    <h6 class="mb-1 mt-1 text-white text-sm-left">Add Products to PO</h6>
-                                </div>
-                                <div class="card-body bg-light pt-1 pb-1">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group-po">
-                                                <label class="typo__label mb-0"><small>List Products</small></label>
-                                                <multiselect v-model="producta" :options="products" placeholder="Select Product" label="text" track-by="text" @select="dispatchAction">
-                                                </multiselect>
-                                                <div v-show="error_product" class="invalid-feedback">Please Select a Product!</div>
-                                            </div>
-                                        </div>
+                <!-- Add Products -->
+                <div class="col-md-12 px-0">
+                    <div class="card border-success pb-1 mb-2 mt-2">
+                        <div class="card-header bg-success pb-0 pt-1">
+                            <h6 class="mb-1 mt-1 text-white text-sm-left">Add Products to Order</h6>
+                        </div>
+
+                        <div class="card-body bg-light pt-1 pb-1">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group-po">
+                                        <label class="typo__label mb-0"><small>List Products</small></label>
+                                        <multiselect v-model="producta" :options="products" placeholder="Select Product" label="text" track-by="text" @select="dispatchAction">
+                                        </multiselect>
+                                        <div v-show="error_product" class="invalid-feedback">Please Select a Product!</div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="form-group-po">
-                                                <label class="mb-0" ><small>Qty</small></label>
-                                                <input type="number" class="form-control form-control-sm" v-bind:class="[error_qty ? 'is-invalid' : '']" v-model="qty" min="1">
-                                                <div v-show="error_qty" class="invalid-feedback">Please Indicate Qty!</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="form-group-po">
-                                                <label class="mb-0"><small>Add</small></label>
-                                                <div class="input-group input-group-sm">
-                                                    <button type="button" class="btn-success" @click="insertNewProduct2()"><i class="fas fa-plus"></i></button>
-                                                </div>
-                                            </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group-po">
+                                        <label class="mb-0" ><small>Qty</small></label>
+                                        <input type="number" class="form-control form-control-sm" v-bind:class="[error_qty ? 'is-invalid' : '']" v-model="qty" min="1">
+                                        <div v-show="error_qty" class="invalid-feedback">Please Indicate Qty!</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group-po">
+                                        <label class="mb-0"><small>Add</small></label>
+                                        <div class="input-group input-group-sm">
+                                            <button type="button" class="btn-success" @click="insertNewProduct2()"><i class="fas fa-plus"></i></button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group-po">
-                            <label class="mb-0" ><small>List Products added</small></label>
-                            <input type="hidden" name="vars" :value="JSON.stringify(vars)">
-                            <ul class="list-group list-group-full">
-                                <li v-for="(variable, key) in vars" :key="key" class="list-group-item">
-                                    <div class="row" style="height: 50px;">
-                                        <div class="col-10 align-middle">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    {{variable.product_name}}
-                                                    <span class="badge badge-primary badge-pill"><b>{{variable.qty}}</b></span>
-                                                </div>
-                                                <div class="col-12">
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <span class="badge badge-success">{{variable.po_name}}</span>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <span class="badge badge-secondary">{{variable.batch}}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-2 align-middle text-right mt-1">
-                                            <a href="#" @click="$delete(vars, key)"><h3><i class="fa fa-times-circle" style="color:red"></i></h3></a>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                            <ul v-show="error_vars">
-                                <div class="alert alert-danger">
-                                    <p>
-                                        <strong><li>Please Add a Product to Order !</li></strong>
-                                    </p>
-                                </div>
-                            </ul>
-                        </div>
-                    </div>
-                </div> <!-- END ROW -->
 
+                    </div>
+                </div>
             </div>
 
             <div class="form-actions mt-2">

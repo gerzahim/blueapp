@@ -9,6 +9,7 @@ Custom Inventory Management System HUAHAI
 user1@gmail.com/12345678
 
 ## TODO
+
 - RMA IN 
 - Add Vue Datatables to RMA
 - Update RMA when update Order
@@ -16,14 +17,15 @@ user1@gmail.com/12345678
 - report Filters
 
 ## pending Error
+- Fix Style on Order vue-multiselect ******
 - Fix Order Secuencia Name (create 2 and delete 3 and create 4)
 - Stock List, wrong id show
-
+- Breadcrumbs https://www.adminmart.com/src/html/ui-breadcrumb.html
+- fix Error Variable in components ( list Selected empty, available 0 or 1 and try to insert 2, boom )
 
 ## Improves
-- Turbolinks 
+- formatPadString , Replace - by spaces
 - Fix Style Select 2 (Select left and listgroup to the right)  https://www.adminmart.com/src/html/ui-list-media.html
-- Breadcrumbs https://www.adminmart.com/src/html/ui-breadcrumb.html
 - style Stock
 <td style="font-weight: bold; text-align:right;background-color:red; color:white">+11 </td>
 <td style="font-weight: bold; text-align:right;background-color:#FFEEAA;"> +1,192 </td>
@@ -43,6 +45,8 @@ user1@gmail.com/12345678
  "words":[ "I", "am", "bad" ] 
  // modifying the value present at index 2 
   myObj.words[2] = "bad";   
+  
+- Turbolinks   
 
 ## update Cpanel
 - update/replace src/app

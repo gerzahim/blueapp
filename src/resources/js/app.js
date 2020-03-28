@@ -25,7 +25,8 @@ import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
 import Multiselect from 'vue-multiselect'
 // register globally
 Vue.component('multiselect', Multiselect)
-import 'vue-multiselect/dist/vue-multiselect.min.css'
+//import 'vue-multiselect/dist/vue-multiselect.min.css'
+import '../../public/css/vue-multiselect.css'
 
 
 /**

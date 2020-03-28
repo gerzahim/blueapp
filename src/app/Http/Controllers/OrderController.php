@@ -297,7 +297,8 @@ class OrderController extends Controller
         foreach ($purchases_items as $purchase_item)
         {
             $data2[$i]['id'] = $purchase_item->id;
-            $data2[$i]['text'] = 'Product: '.$purchase_item->product_name.' | PO: '.$purchase_item->po_name.' | Available ('.$purchase_item->available.')';
+            //$data2[$i]['text'] = $purchase_item->product_name.' | PO: '.$purchase_item->po_name.' | Av ('.$purchase_item->available.')';
+            $data2[$i]['text'] = $this->formatPadString($purchase_item->product_name,$purchase_item->po_name,$purchase_item->available);
             $data2[$i]['product_id'] = $purchase_item->product_id;
             $data2[$i]['name'] = $purchase_item->product_name;
             $data2[$i]['batch'] = $purchase_item->batch;
@@ -309,6 +310,24 @@ class OrderController extends Controller
         }
         $purchases_items = $data2;
         return response()->json(['products' => $purchases_items]);
+    }
+
+    /**
+     * @param $product
+     * @param $po
+     * @param $available
+     * @return string
+     */
+    public function formatPadString($product, $po, $available){
+
+        $product = substr($product, 0, 14);
+        $product = str_pad($product, 14, '-' , STR_PAD_RIGHT);
+
+        $po = substr($po, 0, 13);
+        $po = str_pad($po, 13, '-' , STR_PAD_RIGHT);
+
+        return $product.' | '.$po.' | Av ('.$available.')';
+
     }
 
 
