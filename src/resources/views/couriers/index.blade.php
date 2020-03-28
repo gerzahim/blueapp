@@ -56,7 +56,7 @@
                             @foreach ($couriers as $key => $courier)
                                 <tbody>
                                 <tr>
-                                    <td>
+                                    <td class="text-center">
                                         {{ $key + 1 }}
                                     </td>
                                     <td>

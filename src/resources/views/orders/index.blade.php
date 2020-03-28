@@ -56,7 +56,7 @@
                             @foreach ($orders as $key => $order)
                             <tbody>
                                 <tr>
-                                    <td>
+                                    <td class="text-center">
                                         {{ $key + 1 }}
                                     </td>
                                     <td>

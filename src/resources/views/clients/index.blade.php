@@ -58,7 +58,7 @@
                             @foreach ($clients as $key => $client)
                                 <tbody>
                                 <tr>
-                                    <td>
+                                    <td class="text-center">
                                         {{ $key + 1 }}
                                     </td>
                                     <td>

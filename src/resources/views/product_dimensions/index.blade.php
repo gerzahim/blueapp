@@ -56,7 +56,7 @@
                             @foreach ($pro_dimensions as $key => $pro_dimension)
                             <tbody>
                                 <tr>
-                                    <td>
+                                    <td class="text-center">
                                         {{ $key + 1 }}
                                     </td>
                                     <td>

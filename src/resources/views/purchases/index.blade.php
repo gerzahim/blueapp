@@ -56,7 +56,7 @@
                             @foreach ($purchases as $key => $purchase)
                             <tbody>
                                 <tr>
-                                    <td>
+                                    <td class="text-center">
                                         {{ $key + 1 }}
                                     </td>
                                     <td>

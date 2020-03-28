@@ -56,7 +56,7 @@
                             @foreach ($categories as $key => $category)
                             <tbody>
                                 <tr>
-                                    <td>
+                                    <td class="text-center">
                                         {{ $key + 1 }}
                                     </td>
                                     <td>
