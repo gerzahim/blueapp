@@ -63,13 +63,13 @@
                                             {{ $key + 1 }}
                                         </td>
                                         <td>
-                                            <a href="{{ route('stock.show',$stock->id) }}">
+                                            <a href="{{ route('product.show',$stock->product_id) }}">
                                                 {{ $products_name[$stock->product_id] }}
                                             </a>
                                         </td>
                                         <td>{{ $products_batch[$stock->purchases_item_id] }}</td>
                                         <td>
-                                            <a href="{{ route('stock.show',$stock->id) }}">
+                                            <a href="{{ route('purchases.show',$stock->purchases_id) }}">
                                                 {{ $purchases_name[$stock->purchases_id] }}
                                             </a>
                                         </td>
