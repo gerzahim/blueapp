@@ -49,11 +49,11 @@
                                     <th>Purchased</th>
                                     <th>Sold</th>
                                     <th>QOH</th>
-                                    <th>On Hold</th>
+                                    <!-- th>On Hold</th -->
                                     <th>Available</th>
                                     <th>RMA</th>
                                     <th>Refurbished</th>
-                                    <th>Lended</th>
+                                    <!-- th>Lended</th -->
                                 </tr>
                             </thead>
                             @foreach ($stocks as $key => $stock)
@@ -76,11 +76,11 @@
                                         <td>{{ $stock->purchased }}</td>
                                         <td>{{ $stock->sold }}</td>
                                         <td>{{ $stock->qoh }}</td>
-                                        <td>{{ $stock->on_hold }}</td>
+                                        <!-- td>{{ $stock->on_hold }}</td -->
                                         <td>{{ $stock->available }}</td>
                                         <td>{{ $stock->rma }}</td>
                                         <td>{{ $stock->refurbished }}</td>
-                                        <td>{{ $stock->lended }}</td>
+                                        <!-- td>{{ $stock->lended }}</td -->
                                     </tr>
                                 </tbody>
                             @endforeach

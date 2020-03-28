@@ -61,9 +61,9 @@
                                         <li class="sidebar-item"><a href="{{ url('/rma') }}" class="sidebar-link">
                                             <span class="hide-menu">RMA</span></a>
                                         </li>
-                                        <li class="sidebar-item"><a href="{{ url('/borrow') }}" class="sidebar-link">
+                                        <!-- li class="sidebar-item"><a href="{{ url('/borrow') }}" class="sidebar-link">
                                                 <span class="hide-menu">Return Borrowed</span></a>
-                                        </li>
+                                        </li -->
                                     </ul>
                         </li>
                         <li class="sidebar-item">
@@ -75,12 +75,12 @@
                                 <li class="sidebar-item"><a href="{{ route('order.index') }}" class="sidebar-link">
                                         <span class="hide-menu">Sales</span></a>
                                 </li>
-                                <li class="sidebar-item"><a href="{{ url('/lend') }}" class="sidebar-link">
-                                        <span class="hide-menu">Lend</span></a>
-                                </li>
                                 <li class="sidebar-item"><a href="{{ url('/refurbishment') }}" class="sidebar-link">
                                         <span class="hide-menu">Refurbishment</span></a>
                                 </li>
+                                <!-- li class="sidebar-item"><a href="{{ url('/lend') }}" class="sidebar-link">
+                                        <span class="hide-menu">Lend</span></a>
+                                </li -->
                             </ul>
                         </li>
                         <li class="nav-small-cap"><span class="hide-menu">Extra</span></li>
