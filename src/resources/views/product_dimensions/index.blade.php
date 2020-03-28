@@ -64,7 +64,7 @@
                                         {{ $pro_dimension->name }}
                                         </a>
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         <!-- Edit button -->
                                         <a
                                         class="btn btn-primary btn-sm"
