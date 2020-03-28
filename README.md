@@ -17,7 +17,7 @@ user1@gmail.com/12345678
 - report Filters
 
 ## pending Error
-- Fix Order Secuencia Name (create 2 and delete 3 and create 4)
+
 - Stock List, wrong id show
 - Breadcrumbs https://www.adminmart.com/src/html/ui-breadcrumb.html
 - fix Error Variable in components ( list Selected empty, available 0 or 1 and try to insert 2, boom )

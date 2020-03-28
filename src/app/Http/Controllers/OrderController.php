@@ -320,11 +320,11 @@ class OrderController extends Controller
      */
     public function formatPadString($product, $po, $available){
 
-        $product = substr($product, 0, 14);
-        $product = str_pad($product, 14, '-' , STR_PAD_RIGHT);
+        $product = substr($product, 0, 15);
+        $product = str_pad($product, 15, '_' , STR_PAD_RIGHT);
 
-        $po = substr($po, 0, 13);
-        $po = str_pad($po, 13, '-' , STR_PAD_RIGHT);
+        $po = substr($po, 0, 14);
+        $po = str_pad($po, 14, '_' , STR_PAD_RIGHT);
 
         return $product.' | '.$po.' | Av ('.$available.')';
 

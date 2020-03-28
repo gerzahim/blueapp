@@ -54,7 +54,7 @@ fieldset[disabled] .multiselect {
 .multiselect__input,
 .multiselect__single {
     font-family: "Inconsolata", sans-serif;
-    font-size: 12px;
+    font-size: 14px;
     -ms-touch-action: manipulation;
     touch-action: manipulation
 }

@@ -25,7 +25,7 @@
     <div class="container-fluid">
 
         <div class="row">
-            <div class="col-md-8 m-auto">
+            <div class="col-md-10 m-auto">
                 <div class="card">
                     <div class="card-header">
                         <div class="float-right">
