@@ -9,7 +9,11 @@
     <div class="page-breadcrumb">
         <div class="row">
             <div class="col-12 align-self-center">
-                <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Create Order</h4>
+                <nav class="breadcrumb">
+                    <a class="breadcrumb-item" href="{{ url('/') }}">Home</a>
+                    <a class="breadcrumb-item" href="{{ route('order.index') }}">Orders</a>
+                    <span class="breadcrumb-item active">Create Order</span>
+                </nav>
             </div>
         </div>
     </div>

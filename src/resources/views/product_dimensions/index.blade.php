@@ -8,7 +8,10 @@
     <div class="page-breadcrumb">
         <div class="row">
             <div class="col-12 align-self-center">
-                <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Product Dimensions</h4>
+                <nav class="breadcrumb">
+                    <a class="breadcrumb-item" href="{{ url('/') }}">Home</a>
+                    <span class="breadcrumb-item active">Product Dimensions</span>
+                </nav>
             </div>
         </div>
     </div>

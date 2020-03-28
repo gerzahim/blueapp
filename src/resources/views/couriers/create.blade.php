@@ -9,7 +9,11 @@
     <div class="page-breadcrumb">
         <div class="row">
             <div class="col-12 align-self-center">
-                <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Create Courier</h4>
+                <nav class="breadcrumb">
+                    <a class="breadcrumb-item" href="{{ url('/') }}">Home</a>
+                    <a class="breadcrumb-item" href="{{ route('courier.index') }}">Couriers</a>
+                    <span class="breadcrumb-item active">Create Courier</span>
+                </nav>
             </div>
         </div>
     </div>

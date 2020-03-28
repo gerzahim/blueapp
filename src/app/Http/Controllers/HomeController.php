@@ -37,7 +37,7 @@ class HomeController extends Controller
      */
     public function getSample()
     {
-        return view('purchases.samplecreate');
+        return view('layouts.samplecreate');
 
     }
 

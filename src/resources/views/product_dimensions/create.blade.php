@@ -9,7 +9,11 @@
     <div class="page-breadcrumb">
         <div class="row">
             <div class="col-12 align-self-center">
-                <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Create Product Dimensions</h4>
+                <nav class="breadcrumb">
+                    <a class="breadcrumb-item" href="{{ url('/') }}">Home</a>
+                    <a class="breadcrumb-item" href="{{ route('product_dimensions.index') }}">Product Dimensions</a>
+                    <span class="breadcrumb-item active">Create Product Dimensions</span>
+                </nav>
             </div>
         </div>
     </div>
@@ -28,7 +32,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="float-right">
-                            <a href="{{ route('product_dimensions.index') }}" class="btn btn-primary btn-sm">Back to Categories</a>
+                            <a href="{{ route('product_dimensions.index') }}" class="btn btn-primary btn-sm">Back to Product Dimensions</a>
                         </div>
                         Create Product Dimensions
                     </div>
