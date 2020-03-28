@@ -18,6 +18,7 @@ user1@gmail.com/12345678
 
 ## pending Error
 - Fix Style on Order vue-multiselect ******
+- Fix Style PO component 
 - Fix Order Secuencia Name (create 2 and delete 3 and create 4)
 - Stock List, wrong id show
 - Breadcrumbs https://www.adminmart.com/src/html/ui-breadcrumb.html

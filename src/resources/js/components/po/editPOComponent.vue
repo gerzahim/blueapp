@@ -136,18 +136,18 @@
                             <input type="hidden" name="vars" :value="JSON.stringify(vars)">
                             <ul class="list-group list-group-full">
                                 <li v-for="(variable, key) in vars" :key="key" class="list-group-item">
-                                    <div class="row" style="height: 25px;">
-                                        <div class="col-6 align-middle">
+                                    <div class="row pr-1" style="height: 25px;">
+                                        <div class="col-7 align-middle pl-2 px-1">
                                             {{variable.product_name}}
                                             <span class="badge badge-primary badge-pill"><b>{{variable.qty}}</b></span>
                                         </div>
-                                        <div class="col-4 align-middle">
+                                        <div class="col-4 align-middle px-1">
                                             <h4>
                                                 <span class="badge badge-secondary">{{variable.batch_number}}</span>
                                             </h4>
                                         </div>
-                                        <div class="col-2 align-middle text-right">
-                                            <a href="#" @click="$delete(vars, key)"><i class="fa fa-times-circle" style="color:red"></i></a>
+                                        <div class="col-1 align-middle text-left px-1">
+                                            <a href="#" @click="$delete(vars, key)"><h3><i class="fa fa-times-circle" style="color:red"></i></h3></a>
                                         </div>
                                     </div>
                                 </li>
