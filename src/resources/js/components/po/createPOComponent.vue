@@ -145,7 +145,7 @@
                                                 <span class="badge badge-secondary">{{variable.batch_number}}</span>
                                             </h4>
                                         </div>
-                                        <div class="col-1 align-middle text-left px-1">
+                                        <div class="col-1 align-middle text-center px-1">
                                             <a href="#" @click="$delete(vars, key)"><h3><i class="fa fa-times-circle" style="color:red"></i></h3></a>
                                         </div>
                                     </div>

@@ -79202,7 +79202,8 @@ var render = function() {
                             _c(
                               "div",
                               {
-                                staticClass: "col-1 align-middle text-left px-1"
+                                staticClass:
+                                  "col-1 align-middle text-center px-1"
                               },
                               [
                                 _c(
@@ -80110,38 +80111,50 @@ var render = function() {
                         _c(
                           "div",
                           {
-                            staticClass: "row",
+                            staticClass: "row pr-1",
                             staticStyle: { height: "25px" }
                           },
                           [
-                            _c("div", { staticClass: "col-6 align-middle" }, [
-                              _vm._v(
-                                "\n                                        " +
-                                  _vm._s(variable.product_name) +
-                                  "\n                                        "
-                              ),
-                              _c(
-                                "span",
-                                {
-                                  staticClass: "badge badge-primary badge-pill"
-                                },
-                                [_c("b", [_vm._v(_vm._s(variable.qty))])]
-                              )
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-4 align-middle" }, [
-                              _c("h4", [
+                            _c(
+                              "div",
+                              { staticClass: "col-7 align-middle pl-2 px-1" },
+                              [
+                                _vm._v(
+                                  "\n                                        " +
+                                    _vm._s(variable.product_name) +
+                                    "\n                                        "
+                                ),
                                 _c(
                                   "span",
-                                  { staticClass: "badge badge-secondary" },
-                                  [_vm._v(_vm._s(variable.batch_number))]
+                                  {
+                                    staticClass:
+                                      "badge badge-primary badge-pill"
+                                  },
+                                  [_c("b", [_vm._v(_vm._s(variable.qty))])]
                                 )
-                              ])
-                            ]),
+                              ]
+                            ),
                             _vm._v(" "),
                             _c(
                               "div",
-                              { staticClass: "col-2 align-middle text-right" },
+                              { staticClass: "col-4 align-middle px-1" },
+                              [
+                                _c("h4", [
+                                  _c(
+                                    "span",
+                                    { staticClass: "badge badge-secondary" },
+                                    [_vm._v(_vm._s(variable.batch_number))]
+                                  )
+                                ])
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "col-1 align-middle text-center px-1"
+                              },
                               [
                                 _c(
                                   "a",
@@ -80153,12 +80166,7 @@ var render = function() {
                                       }
                                     }
                                   },
-                                  [
-                                    _c("i", {
-                                      staticClass: "fa fa-times-circle",
-                                      staticStyle: { color: "red" }
-                                    })
-                                  ]
+                                  [_vm._m(14, true)]
                                 )
                               ]
                             )
@@ -80182,14 +80190,14 @@ var render = function() {
                       }
                     ]
                   },
-                  [_vm._m(14)]
+                  [_vm._m(15)]
                 )
               ])
             ])
           ])
         ]),
         _vm._v(" "),
-        _vm._m(15)
+        _vm._m(16)
       ]
     )
   ])
@@ -80320,6 +80328,17 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("label", { staticClass: "mb-0" }, [
       _c("small", [_vm._v("List Products added")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h3", [
+      _c("i", {
+        staticClass: "fa fa-times-circle",
+        staticStyle: { color: "red" }
+      })
     ])
   },
   function() {
