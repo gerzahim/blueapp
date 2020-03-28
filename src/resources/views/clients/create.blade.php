@@ -9,7 +9,14 @@
     <div class="page-breadcrumb">
         <div class="row">
             <div class="col-12 align-self-center">
-                <h4 class="page-title text-truncate text-dark font-weight-medium mb-1">Create Customer</h4>
+                <div class="col-12 align-self-center">
+                    <nav class="breadcrumb">
+                        <a class="breadcrumb-item" href="{{ url('/') }}">Home</a>
+                        <a class="breadcrumb-item" href="{{ route('client.index') }}">Customers</a>
+                        <span class="breadcrumb-item active">Create Customer</span>
+                    </nav>
+                </div>
+                <h4 class="page-title text-truncate text-dark font-weight-medium mb-1"></h4>
             </div>
         </div>
     </div>
