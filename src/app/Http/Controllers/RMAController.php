@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
+use App\ContactType;
+use App\Order;
 use App\RMA;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 class RMAController extends Controller
 {
@@ -24,7 +28,8 @@ class RMAController extends Controller
      */
     public function index()
     {
-        //
+        $rmas = RMA::latest()->paginate(10);
+        return view('rma.index', compact('rmas'));
     }
 
     /**
@@ -34,7 +39,26 @@ class RMAController extends Controller
      */
     public function create()
     {
-        //
+        $lastOrder = RMA::select('id')->orderBy('id','desc')->first();
+        if($lastOrder){
+            $lastOrder = $lastOrder->id+1;
+        }else{
+            $lastOrder = 1;
+        }
+
+        $contact_types = ContactType::all();
+
+        // GET Request
+        //$request = Request::create('/get_clients', 'GET');
+        //$clients = Route::dispatch($request);
+
+        $ctrl    = new PurchaseController();
+        $clients = $ctrl->getClientsWithOrders();
+
+        $ctrl    = new PurchaseController();
+        $vendors = $ctrl->getVendorsWithOrders();
+
+        return view('rma.create', compact('lastOrder', 'contact_types', 'clients', 'vendors') );
     }
 
     /**

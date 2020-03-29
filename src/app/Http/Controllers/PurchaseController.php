@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\Order;
 use App\OrderItems;
 use App\Purchases;
 use App\PurchasesItem;
@@ -18,7 +19,6 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Validator;
-use MongoDB\Driver\Session;
 
 
 class PurchaseController extends Controller
@@ -81,20 +81,6 @@ class PurchaseController extends Controller
 
         $time_now     = date('Y-m-d H:i:s');
 
-        $data = array(
-            'name'                => $request->name,
-            'contact_type_id'     => 1,
-            'contact_id'          => $request->vendor_id,
-            'courier_id'          => $request->courier_id,
-            'tracking'            => $request->tracking,
-            'transaction_type_id' => $request->transaction_type_id,
-            'bol'                 => $request->bol,
-            'package_list'        => $request->package_list,
-            'reference'           => $request->reference,
-            'created_at'          => $time_now,
-            'updated_at'          => $time_now
-        );
-
         $purchases = Purchases::create([
             'name'                => $request->name,
             'contact_type_id'     => 1,
@@ -138,64 +124,6 @@ class PurchaseController extends Controller
 
         }
         return redirect()->route('purchases.index')->with('success', 'PO created successfully.');
-    }
-
-    public function updateRMAPO(){
-        // Select PO
-        // Edit PO and ProductItems
-        // qty
-        // Update PO type po
-        // Update Stock
-
-        //public function updatePO(Request $request, Purchases $purchases, $id){
-            // Select PO
-            // Edit PO and ProductItems
-            // qty
-            // Update PO type po
-            // Update Stock
-    /*
-            $this->validate($request, [
-                'name'                => 'required|unique:po|max:50',
-                'email'               => "required|email|unique:db_users,email,$id",
-                'address'             => 'required|string|min:10|unique:clients,address,'.$id,
-                $address  = 'required|string|min:10|unique:clients,address,'.$this->id;
-                'transaction_type_id' => 'required',
-                'vendor_id'           => 'required'
-            ]);
-
-            // add and update same method
-            public function rules()
-            {
-            if($this->method() == 'POST')
-                $address = 'required|string|min:10|unique:clients,address';
-            else
-                $address  = 'required|string|min:10|unique:clients,address,'.$this->id;
-            //put a hidden input field named id with value on your edit view and catch it here;
-                return [
-                'nameEN'   => 'required|string',
-                'nameHE'   => 'required|string',
-                'address'  => $address
-                ];
-            }
-
-            $user = User::findOrFail($id);
-            $user->name = trim($request->name);
-            $user->email = trim($request->email);
-            $user->save();
-
-            Session::flash('success','USer information was successfully updated.');
-
-            return redirect()->route('users.show',$user->id);
-            */
-    }
-
-    public function storeRMA(){
-        // Select Client
-        // Select PO
-        // Select Product
-        // qty
-        // Create PO type Rma
-        // Update Stock
     }
 
     /**
@@ -363,6 +291,47 @@ class PurchaseController extends Controller
 
 
     /**
+     * Get List of Client with at least one Order
+     *
+     * @return JsonResponse
+     */
+    public function getClientsWithOrders() {
+        $orders        = Order::all();
+        $uniqueClients = $orders->unique('client_id');
+
+        $ClientsID = [];
+        foreach ($uniqueClients as $uniqueClient){
+            $ClientsID[] = $uniqueClient->client_id;
+        }
+        $clients  = Client::whereIn('id',$ClientsID)->get();
+        $sorted   = $clients->sortBy('name');
+        $clients  = $sorted->values()->all();
+        $clients  = json_encode($clients);
+        return $clients;
+
+    }
+
+    /**
+     * Get List of Client with at least one Order
+     *
+     * @return JsonResponse
+     */
+    public function getVendorsWithOrders() {
+        $purchases     = Purchases::all();
+        $uniqueVendors = $purchases->unique('contact_id');
+
+        $vendorsID = [];
+        foreach ($uniqueVendors as $uniqueVendor){
+            $vendorsID[] = $uniqueVendor->contact_id;
+        }
+        $vendors  = Vendor::whereIn('id',$vendorsID)->get();
+        $sorted   = $vendors->sortBy('name');
+        $vendors  = $sorted->values()->all();
+        $vendors  = json_encode($vendors);
+        return $vendors;
+    }
+
+    /**
      * Get List of Products by Json
      *
      * @return JsonResponse
@@ -385,6 +354,7 @@ class PurchaseController extends Controller
         $vendors = $sorted->values()->all();
         return response()->json(['vendors' => $vendors]);
     }
+
 
     /**
      * Get List of Products by Json

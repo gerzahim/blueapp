@@ -12,12 +12,12 @@ class ContactTypeTableSeeder extends Seeder
     public function run()
     {
         DB::table('contact_types')->insert([
-            'id'=> 1,
-            'name'=> 'vendor'
+            'id'=> 0,
+            'name'=> 'Customer'
         ]);
         DB::table('contact_types')->insert([
-            'id'=> 2,
-            'name'=> 'customer'
+            'id'=> 1,
+            'name'=> 'Supplier'
         ]);
     }
 }

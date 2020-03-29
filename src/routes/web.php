@@ -23,6 +23,7 @@ Route::resource('product_dimensions', 'ProductDimensionsController');
 Route::resource('product', 'ProductController');
 Route::resource('client', 'ClientController');
 Route::resource('vendor', 'VendorController');
+Route::resource('rma', 'RMAController');
 
 /** Purchases  **/
 Route::resource('purchases', 'PurchaseController');
@@ -52,7 +53,6 @@ Route::resource('courier', 'CourierController');
 Route::resource('stock', 'StockController');
 
 
-Route::get('/rma', 'HomeController@getUnderConstruction');
 Route::get('/borrow', 'HomeController@getUnderConstruction');
 Route::get('/lend', 'HomeController@getUnderConstruction');
 Route::get('/refurbishment', 'HomeController@getUnderConstruction');

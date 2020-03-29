@@ -16,6 +16,7 @@ user1@gmail.com/12345678
 - report Filters
 
 ## pending Error
+- check where for whereIn like 
 - PO show
 - fix Error Variable in components ( list Selected empty, available 0 or 1 and try to insert 2, boom )
 

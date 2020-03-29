@@ -50,6 +50,10 @@ Vue.component('editpo-component', require('./components/po/editPOComponent.vue')
 Vue.component('createorder-component', require('./components/order/createOrderComponent.vue').default);
 Vue.component('editorder-component', require('./components/order/editOrderComponent.vue').default);
 
+//Components for RMA
+Vue.component('createrma-component', require('./components/rma/createRMAComponent.vue').default);
+//Vue.component('editrma-component', require('./components/rma/editRMAComponent.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
