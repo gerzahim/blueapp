@@ -9,7 +9,6 @@ Custom Inventory Management System HUAHAI
 user1@gmail.com/12345678
 
 ## TODO
-- PO show
 - RMA IN 
 - Add Vue Datatables to RMA
 - Update RMA when update Order
@@ -17,7 +16,7 @@ user1@gmail.com/12345678
 - report Filters
 
 ## pending Error
-- Breadcrumbs https://www.adminmart.com/src/html/ui-breadcrumb.html
+- PO show
 - fix Error Variable in components ( list Selected empty, available 0 or 1 and try to insert 2, boom )
 
 ## Improves
