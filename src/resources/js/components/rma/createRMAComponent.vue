@@ -7,7 +7,7 @@
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0" ><small>RMA Number</small></label>
-                            <input type="hidden" name="transaction_type_id" value="3">
+                            <input type="hidden" name="transaction_type_id" value="2">
                             <input type="text" class="form-control form-control-sm" id="name" name="name" v-bind:class="[error_name ? 'is-invalid' : '']" v-model="name" readonly>
                             <div v-show="error_name" class="invalid-feedback">Please Indicate RMA Number !</div>
                         </div>
@@ -25,11 +25,10 @@
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0" ><small>Contact Type</small></label>
-                            <select id="contact_type" name="contact_type" class="form-control form-control-sm" v-bind:class="[error_client ? 'is-invalid' : '']" v-model="contact_type_selected" @change="dispatchContactType">
+                            <select id="contact_type" name="contact_type" class="form-control form-control-sm" v-model="contact_type_selected" @change="dispatchContactType">
                                 <option value="0" selected>Customer</option>
                                 <option value="1" >Supplier</option>
                             </select>
-                            <div v-show="error_client" class="invalid-feedback">Contact Type</div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -94,8 +93,8 @@
                                     <i class="fas fa-exclamation-triangle"></i>
                                 </div>
                                 <div class="col-10">
-                                    <h6 class="mb-1 mt-1 text-white text-sm-left" v-show="(contact_type_selected < 1)">Select Customer! for List Products</h6>
-                                    <h6 class="mb-1 mt-1 text-white text-sm-left" v-show="(contact_type_selected > 0)">Select Supplier! for List Products</h6>
+                                    <h6 class="mb-1 mt-1 text-white text-sm-left" v-show="(contact_type_selected < 1)">Select Product Return From Customer!</h6>
+                                    <h6 class="mb-1 mt-1 text-white text-sm-left" v-show="(contact_type_selected > 0)">Select Product Defective From Supplier!</h6>
                                 </div>
                             </div>
                         </div>
@@ -105,7 +104,7 @@
                         <div class="form-group-po" v-show="(!add_products_initial && !loading_customer && loaded_customer)">
                             <div class="card border-success pb-1 mb-2 mt-2">
                                 <div class="card-header bg-success pb-0 pt-1">
-                                    <h6 class="mb-1 mt-1 text-white text-sm-left">Add Products to RMA From Customer</h6>
+                                    <h6 class="mb-1 mt-1 text-white text-sm-left">Add Products to RMA From Customer Order</h6>
                                 </div>
                                 <div class="card-body bg-light pt-1 pb-1">
                                     <div class="row">
@@ -141,7 +140,7 @@
                         <div class="form-group-po" v-show="(!add_products_initial && !loading_vendor && loaded_vendor)">
                             <div class="card border-success pb-1 mb-2 mt-2">
                                 <div class="card-header bg-success pb-0 pt-1">
-                                    <h6 class="mb-1 mt-1 text-white text-sm-left">Add Products to RMA From Supplier</h6>
+                                    <h6 class="mb-1 mt-1 text-white text-sm-left">Add Products to RMA From Supplier PO</h6>
                                 </div>
                                 <div class="card-body bg-light pt-1 pb-1">
                                     <div class="row">
@@ -259,6 +258,7 @@
                 clients: [],
                 couriers: [],
                 vars: [],
+                current_prod_order_id: 0,
                 current_prod_po_id: 0,
                 current_prod_po_item_id: 0,
                 current_prod_id: 0,
@@ -277,6 +277,8 @@
         methods: {
             dispatchAction (prodc) {
                 this.current_prod_po_id = prodc.po_id
+                //this.current_prod_order_id = (typeof prodc.order_id !== "undefined") ? prodc.order_id : 0;
+                this.current_prod_order_id = prodc.order_id
                 this.current_prod_po_item_id = prodc.po_item_id
                 this.current_prod_id = prodc.product_id
                 this.current_prod_name = prodc.name
@@ -303,9 +305,13 @@
                     this.error_name = true
                     this.errors.push('Name required.');
                 }
-                if (this.client_selected == 0) {
+                if (this.client_selected == 0 && this.contact_type_selected == 0) {
                     this.error_client = true
                     this.errors.push('No Customer Selected')
+                }
+                if (this.vendor_selected == 0 && this.contact_type_selected == 1) {
+                    this.error_vendor = true
+                    this.errors.push('No Vendor Selected')
                 }
                 if (this.date == '') {
                     this.error_date = true
@@ -385,16 +391,19 @@
                     if (getInfoArray[0] > 0){
                         variables.splice(product_array_key,1)
                         variables.push({
-                        'po_id': this.current_prod_po_id,
-                        'po_item_id': this.current_prod_po_item_id,
-                        'product_id': this.current_prod_id,
-                        'product_name': this.current_prod_name,
-                        'batch': this.current_prod_batch,
-                        'po_name': this.current_prod_po_name,
-                        'available': this.current_prod_available,
-                        'qty': parseInt(this.qty)+parseInt(previousQty)})
+                            'order_id': this.current_prod_order_id,
+                            'po_id': this.current_prod_po_id,
+                            'po_item_id': this.current_prod_po_item_id,
+                            'product_id': this.current_prod_id,
+                            'product_name': this.current_prod_name,
+                            'batch': this.current_prod_batch,
+                            'po_name': this.current_prod_po_name,
+                            'available': this.current_prod_available,
+                            'qty': parseInt(this.qty)+parseInt(previousQty)
+                        })
                     }else {
                         variables.push({
+                        'order_id': this.current_prod_order_id,
                         'po_id': this.current_prod_po_id,
                         'po_item_id': this.current_prod_po_item_id,
                         'product_id': this.current_prod_id,
@@ -432,6 +441,7 @@
             fetchProductsByCustomerOrderID() {
                 this.loading_customer = true //the loading begin
                 this.loaded_vendor = false
+                this.vars = []
                 axios.get(`/get_orders_by_customer_id/${this.client_selected}`)
                     .then(response => {
                         this.loading_customer = false
@@ -444,9 +454,9 @@
                     })
             },
             fetchProductsByVendorID() {
-                console.log(this.loading_customer, this.vendor_selected, 'chuckubum2')
                 this.loading_vendor = true //the loading begin
                 this.loaded_customer = false
+                this.vars = []
                 axios.get(`/get_purchases_by_vendor_id/${this.vendor_selected}`)
                     .then(response => {
                         this.loading_vendor = false
@@ -474,13 +484,6 @@
         },
         created() {
             this.fetchCouries()
-            //this.fetchProductsByCustomerOrderID()
-            /*
-            this.fetchVendors()
-            this.fetchClients()
-            */
-            console.log('this.clients1.url')
-            console.log(this.clients)
             this.name = this.props_name;
             this.contact_types = this.props_contact_types
             this.clients = this.props_clients

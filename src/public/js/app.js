@@ -3657,7 +3657,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["props_name", "props_contact_types", "props_clients", "props_vendors"],
   data: function data() {
@@ -3685,6 +3684,7 @@ __webpack_require__.r(__webpack_exports__);
       clients: [],
       couriers: [],
       vars: [],
+      current_prod_order_id: 0,
       current_prod_po_id: 0,
       current_prod_po_item_id: 0,
       current_prod_id: 0,
@@ -3702,7 +3702,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     dispatchAction: function dispatchAction(prodc) {
-      this.current_prod_po_id = prodc.po_id;
+      this.current_prod_po_id = prodc.po_id; //this.current_prod_order_id = (typeof prodc.order_id !== "undefined") ? prodc.order_id : 0;
+
+      this.current_prod_order_id = prodc.order_id;
       this.current_prod_po_item_id = prodc.po_item_id;
       this.current_prod_id = prodc.product_id;
       this.current_prod_name = prodc.name;
@@ -3731,9 +3733,14 @@ __webpack_require__.r(__webpack_exports__);
         this.errors.push('Name required.');
       }
 
-      if (this.client_selected == 0) {
+      if (this.client_selected == 0 && this.contact_type_selected == 0) {
         this.error_client = true;
         this.errors.push('No Customer Selected');
+      }
+
+      if (this.vendor_selected == 0 && this.contact_type_selected == 1) {
+        this.error_vendor = true;
+        this.errors.push('No Vendor Selected');
       }
 
       if (this.date == '') {
@@ -3816,6 +3823,7 @@ __webpack_require__.r(__webpack_exports__);
         if (getInfoArray[0] > 0) {
           variables.splice(product_array_key, 1);
           variables.push({
+            'order_id': this.current_prod_order_id,
             'po_id': this.current_prod_po_id,
             'po_item_id': this.current_prod_po_item_id,
             'product_id': this.current_prod_id,
@@ -3827,6 +3835,7 @@ __webpack_require__.r(__webpack_exports__);
           });
         } else {
           variables.push({
+            'order_id': this.current_prod_order_id,
             'po_id': this.current_prod_po_id,
             'po_item_id': this.current_prod_po_item_id,
             'product_id': this.current_prod_id,
@@ -3869,6 +3878,7 @@ __webpack_require__.r(__webpack_exports__);
       this.loading_customer = true; //the loading begin
 
       this.loaded_vendor = false;
+      this.vars = [];
       axios.get("/get_orders_by_customer_id/".concat(this.client_selected)).then(function (response) {
         _this4.loading_customer = false;
         _this4.loaded_customer = true;
@@ -3881,10 +3891,10 @@ __webpack_require__.r(__webpack_exports__);
     fetchProductsByVendorID: function fetchProductsByVendorID() {
       var _this5 = this;
 
-      console.log(this.loading_customer, this.vendor_selected, 'chuckubum2');
       this.loading_vendor = true; //the loading begin
 
       this.loaded_customer = false;
+      this.vars = [];
       axios.get("/get_purchases_by_vendor_id/".concat(this.vendor_selected)).then(function (response) {
         _this5.loading_vendor = false;
         _this5.loaded_vendor = true;
@@ -3908,15 +3918,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {},
   created: function created() {
-    this.fetchCouries(); //this.fetchProductsByCustomerOrderID()
-
-    /*
-    this.fetchVendors()
-    this.fetchClients()
-    */
-
-    console.log('this.clients1.url');
-    console.log(this.clients);
+    this.fetchCouries();
     this.name = this.props_name;
     this.contact_types = this.props_contact_types;
     this.clients = this.props_clients;
@@ -80918,7 +80920,7 @@ var render = function() {
                   attrs: {
                     type: "hidden",
                     name: "transaction_type_id",
-                    value: "3"
+                    value: "2"
                   }
                 }),
                 _vm._v(" "),
@@ -81031,7 +81033,6 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control form-control-sm",
-                    class: [_vm.error_client ? "is-invalid" : ""],
                     attrs: { id: "contact_type", name: "contact_type" },
                     on: {
                       change: [
@@ -81061,22 +81062,6 @@ var render = function() {
                       _vm._v("Supplier")
                     ])
                   ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.error_client,
-                        expression: "error_client"
-                      }
-                    ],
-                    staticClass: "invalid-feedback"
-                  },
-                  [_vm._v("Contact Type")]
                 )
               ])
             ]),
@@ -81367,7 +81352,7 @@ var render = function() {
                           ],
                           staticClass: "mb-1 mt-1 text-white text-sm-left"
                         },
-                        [_vm._v("Select Customer! for List Products")]
+                        [_vm._v("Select Product Return From Customer!")]
                       ),
                       _vm._v(" "),
                       _c(
@@ -81383,7 +81368,7 @@ var render = function() {
                           ],
                           staticClass: "mb-1 mt-1 text-white text-sm-left"
                         },
-                        [_vm._v("Select Supplier! for List Products")]
+                        [_vm._v("Select Product Defective From Supplier!")]
                       )
                     ])
                   ])
@@ -81943,7 +81928,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header bg-success pb-0 pt-1" }, [
       _c("h6", { staticClass: "mb-1 mt-1 text-white text-sm-left" }, [
-        _vm._v("Add Products to RMA From Customer")
+        _vm._v("Add Products to RMA From Customer Order")
       ])
     ])
   },
@@ -81973,7 +81958,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header bg-success pb-0 pt-1" }, [
       _c("h6", { staticClass: "mb-1 mt-1 text-white text-sm-left" }, [
-        _vm._v("Add Products to RMA From Supplier")
+        _vm._v("Add Products to RMA From Supplier PO")
       ])
     ])
   },

@@ -133,6 +133,32 @@ class StockController extends Controller
     }
 
     /**
+     * * Add Products defective to RMA and reduce from Inventory
+     *
+     * @param $purchases_item_id
+     * @param $qty
+     */
+    public function addProductRMA_Vendor($purchases_item_id, $qty) {
+        $stock = Stock::where('purchases_item_id',$purchases_item_id)->first();
+        $stock->qoh = ($stock->qoh - $qty);
+        $stock->available = ($stock->available - $qty);
+        $stock->rma = ($stock->rma + $qty);
+        $stock->save();
+    }
+
+    /**
+     * * Add Products defective to RMA from Customer Return
+     *
+     * @param $purchases_item_id
+     * @param $qty
+     */
+    public function addProductRMA($purchases_item_id, $qty) {
+        $stock = Stock::where('purchases_item_id',$purchases_item_id)->first();
+        $stock->rma = ($stock->rma + $qty);
+        $stock->save();
+    }
+
+    /**
      * * Make calculation when create a New Order
      *
      * @param $purchases_item_id

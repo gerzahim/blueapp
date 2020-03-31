@@ -64,7 +64,7 @@
                                     </td>
                                     <td>
                                         <a href="{{ route('rma.show',$rma->id) }}">
-                                        {{ $order->name }}
+                                        {{ $rma->name }}
                                         </a>
                                     </td>
                                     <td class="text-center">

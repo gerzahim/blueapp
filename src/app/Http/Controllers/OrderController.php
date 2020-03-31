@@ -364,7 +364,7 @@ class OrderController extends Controller
         ->join('purchases', 'purchases_items.purchases_id', '=', 'purchases.id')
         ->join('products', 'purchases_items.product_id', '=', 'products.id')
         ->select('products.id AS product_id','products.name AS product_name', 'purchases_items.batch_number AS batch',
-                 'purchases.name AS po_name', 'purchases_items.id', 'purchases.id AS po_id', 'orders.name AS order_name')
+                 'purchases.name AS po_name', 'purchases_items.id', 'purchases.id AS po_id', 'orders.name AS order_name', 'orders.id AS order_id')
         ->whereIn('order_items.order_id',$ordersID)->get();
 
         $data2 = [];
@@ -376,6 +376,7 @@ class OrderController extends Controller
             $data2[$i]['product_id'] = $order_item->product_id;
             $data2[$i]['name'] = $order_item->product_name;
             $data2[$i]['batch'] = $order_item->batch;
+            $data2[$i]['order_id'] = $order_item->order_id;
             $data2[$i]['po_name'] = $order_item->po_name;
             $data2[$i]['po_id'] = $order_item->po_id;
             $data2[$i]['po_item_id'] = $order_item->id;
@@ -414,6 +415,7 @@ class OrderController extends Controller
             $data3[$i]['product_id'] = $purchase_item->product_id;
             $data3[$i]['name'] = $purchase_item->product_name;
             $data3[$i]['batch'] = $purchase_item->batch;
+            $data3[$i]['order_id'] = 0;
             $data3[$i]['po_name'] = $purchase_item->po_name;
             $data3[$i]['po_id'] = $purchase_item->po_id;
             $data3[$i]['po_item_id'] = $purchase_item->id;

@@ -10,31 +10,27 @@ user1@gmail.com/12345678
 
 ## TODO
 - RMA IN 
-  Error when if Select Customer and them Select Vendor empty vars ***
-  and v-model customer_selected = 0 ****  
-  Select Client hit action  ****
-  Select all Orders associated to Client *** 
-  Json ( Product , Order: asdas) ****  
-  Select Vendor hit action *****
-  Select all PO associated to Vendor *** 
-  Json ( Product , PO: asdas) ****
-  
-  Select customer Product , Qty and Save
-  Select Vendor Product , Qty and Save, Reduce from QOH and Available  
+  if change of customer of Vendor empty vars *** 
+  Contact Type say error type **** 
+  Select customer Product , Qty and Save ***
+  Select Vendor Product , Qty and Save, Reduce from QOH and Available ****  
     
-
 - Update RMA when update RMA
 - report Filters
 
 ## pending Error    
+- add loading to PO
+- add loading to Order
 - PO show
-- fix Error Variable in components ( list Selected empty, available 0 or 1 and try to insert 2, boom )
+- fix Error Variable in components ( list Selected empty(right), (left) available 0 or 1 and try to insert 2, boom )
   l5/public/js/inventory/vue/components/item_history.js
 
 ## Improves
 - Add Vue Datatables to RMA
+- holding ( from Create Order Select Holding, List Holding [Show Order][Complete Order][revert Order]) 
+
 - formatPadString , Replace - by spaces
-- Fix Style Select 2 (Select left and listgroup to the right)  https://www.adminmart.com/src/html/ui-list-media.html
+
 - style Stock
 <td style="font-weight: bold; text-align:right;background-color:red; color:white">+11 </td>
 <td style="font-weight: bold; text-align:right;background-color:#FFEEAA;"> +1,192 </td>
