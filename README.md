@@ -10,33 +10,29 @@ user1@gmail.com/12345678
 
 ## TODO
 - RMA IN 
-  Select Client hit action 
-  Select all Orders associated to Client 
-  Json ( Product , Order: asdas)
-  Select Product , Qty and Save
+  Error when if Select Customer and them Select Vendor empty vars ***
+  and v-model customer_selected = 0 ****  
+  Select Client hit action  ****
+  Select all Orders associated to Client *** 
+  Json ( Product , Order: asdas) ****  
+  Select Vendor hit action *****
+  Select all PO associated to Vendor *** 
+  Json ( Product , PO: asdas) ****
   
-  Select Vendor hit action 
-  Select all PO associated to Vendor 
-  Json ( Product , PO: asdas)
-  Select Product , Qty and Save, Reduce from QOH and Available  
+  Select customer Product , Qty and Save
+  Select Vendor Product , Qty and Save, Reduce from QOH and Available  
     
-- Add Vue Datatables to RMA
+
 - Update RMA when update RMA
 - report Filters
 
-## pending Error
-- Loading spinner vue-display-loader-when-request-is-in-progress
-    https://stackoverflow.com/questions/49356597/vue-display-loader-when-request-is-in-progress
-    https://www.digitalocean.com/community/tutorials/add-loading-indicators-to-your-vuejs-application
-    https://getbootstrap.com/docs/4.4/components/spinners/
-    https://www.adminmart.com/src/html/ui-spinner.html
-    <loading v-if="is_loading">Loading Item Information</loading>
-    
+## pending Error    
 - PO show
 - fix Error Variable in components ( list Selected empty, available 0 or 1 and try to insert 2, boom )
   l5/public/js/inventory/vue/components/item_history.js
 
 ## Improves
+- Add Vue Datatables to RMA
 - formatPadString , Replace - by spaces
 - Fix Style Select 2 (Select left and listgroup to the right)  https://www.adminmart.com/src/html/ui-list-media.html
 - style Stock

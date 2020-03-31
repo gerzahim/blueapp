@@ -52,6 +52,7 @@ Route::resource('order', 'OrderController');
 Route::get('/get_purchases_items', 'OrderController@getPurchasesItemsbyAjax');
 
 Route::get('/get_orders_by_customer_id/{id}', 'OrderController@getOrderByCustomerID');
+Route::get('/get_purchases_by_vendor_id/{id}', 'OrderController@getPurchasesByVendorID');
 
 
 Route::resource('courier', 'CourierController');

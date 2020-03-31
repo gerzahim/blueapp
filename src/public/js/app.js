@@ -3618,6 +3618,46 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["props_name", "props_contact_types", "props_clients", "props_vendors"],
   data: function data() {
@@ -3653,7 +3693,11 @@ __webpack_require__.r(__webpack_exports__);
       current_prod_po_name: '',
       current_prod_available: 0,
       previousqty: 0,
-      loading_customer: false
+      loading_customer: false,
+      loaded_customer: false,
+      loading_vendor: false,
+      loaded_vendor: false,
+      add_products_initial: true
     };
   },
   methods: {
@@ -3822,15 +3866,44 @@ __webpack_require__.r(__webpack_exports__);
     fetchProductsByCustomerOrderID: function fetchProductsByCustomerOrderID() {
       var _this4 = this;
 
-      console.log(this.loading_customer, this.client_selected, 'chuckubum');
       this.loading_customer = true; //the loading begin
 
+      this.loaded_vendor = false;
       axios.get("/get_orders_by_customer_id/".concat(this.client_selected)).then(function (response) {
         _this4.loading_customer = false;
+        _this4.loaded_customer = true;
+        _this4.add_products_initial = false;
         _this4.products = response.data.products;
       })["catch"](function (error) {
         _this4.loading_customer = false;
       });
+    },
+    fetchProductsByVendorID: function fetchProductsByVendorID() {
+      var _this5 = this;
+
+      console.log(this.loading_customer, this.vendor_selected, 'chuckubum2');
+      this.loading_vendor = true; //the loading begin
+
+      this.loaded_customer = false;
+      axios.get("/get_purchases_by_vendor_id/".concat(this.vendor_selected)).then(function (response) {
+        _this5.loading_vendor = false;
+        _this5.loaded_vendor = true;
+        _this5.add_products_initial = false;
+        _this5.products = response.data.products;
+      })["catch"](function (error) {
+        _this5.loading_vendor = false;
+      });
+    },
+    dispatchContactType: function dispatchContactType() {
+      this.add_products_initial = true;
+      this.vars = [];
+
+      if (this.contact_type_selected == '1') {
+        //means Vendor was Selected
+        this.vendor_selected = 0;
+      } else {
+        this.client_selected = 0;
+      }
     }
   },
   mounted: function mounted() {},
@@ -80961,19 +81034,22 @@ var render = function() {
                     class: [_vm.error_client ? "is-invalid" : ""],
                     attrs: { id: "contact_type", name: "contact_type" },
                     on: {
-                      change: function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.contact_type_selected = $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      }
+                      change: [
+                        function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.contact_type_selected = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        },
+                        _vm.dispatchContactType
+                      ]
                     }
                   },
                   [
@@ -81128,19 +81204,22 @@ var render = function() {
                       class: [_vm.error_vendor ? "is-invalid" : ""],
                       attrs: { id: "vendor_id", name: "vendor_id" },
                       on: {
-                        change: function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.vendor_selected = $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        }
+                        change: [
+                          function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.vendor_selected = $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          },
+                          _vm.fetchProductsByVendorID
+                        ]
                       }
                     },
                     [
@@ -81264,21 +81343,50 @@ var render = function() {
                     {
                       name: "show",
                       rawName: "v-show",
-                      value: _vm.loading_customer > 0,
-                      expression: "loading_customer > 0"
+                      value: _vm.add_products_initial,
+                      expression: "(add_products_initial)"
                     }
                   ],
-                  staticClass: "spinner-border text-success",
-                  attrs: { role: "status" }
+                  staticClass: "card-header bg-warning py-0"
                 },
                 [
-                  _c(
-                    "h6",
-                    { staticClass: "mb-1 mt-1 text-white text-sm-left" },
-                    [_vm._v("Add Products to RMA")]
-                  ),
-                  _vm._v(" "),
-                  _c("span", { staticClass: "sr-only" }, [_vm._v("Loading...")])
+                  _c("div", { staticClass: "row" }, [
+                    _vm._m(8),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-10" }, [
+                      _c(
+                        "h6",
+                        {
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value: _vm.contact_type_selected < 1,
+                              expression: "(contact_type_selected < 1)"
+                            }
+                          ],
+                          staticClass: "mb-1 mt-1 text-white text-sm-left"
+                        },
+                        [_vm._v("Select Customer! for List Products")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "h6",
+                        {
+                          directives: [
+                            {
+                              name: "show",
+                              rawName: "v-show",
+                              value: _vm.contact_type_selected > 0,
+                              expression: "(contact_type_selected > 0)"
+                            }
+                          ],
+                          staticClass: "mb-1 mt-1 text-white text-sm-left"
+                        },
+                        [_vm._v("Select Supplier! for List Products")]
+                      )
+                    ])
+                  ])
                 ]
               ),
               _vm._v(" "),
@@ -81289,8 +81397,29 @@ var render = function() {
                     {
                       name: "show",
                       rawName: "v-show",
-                      value: _vm.loading_customer < 1,
-                      expression: "loading_customer < 1"
+                      value: _vm.loading_customer || _vm.loading_vendor,
+                      expression: "(loading_customer || loading_vendor)"
+                    }
+                  ],
+                  staticClass: "spinner-border text-success",
+                  attrs: { role: "status" }
+                },
+                [_c("span", { staticClass: "sr-only" }, [_vm._v("Loading...")])]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value:
+                        !_vm.add_products_initial &&
+                        !_vm.loading_customer &&
+                        _vm.loaded_customer,
+                      expression:
+                        "(!add_products_initial && !loading_customer && loaded_customer)"
                     }
                   ],
                   staticClass: "form-group-po"
@@ -81300,7 +81429,7 @@ var render = function() {
                     "div",
                     { staticClass: "card border-success pb-1 mb-2 mt-2" },
                     [
-                      _vm._m(8),
+                      _vm._m(9),
                       _vm._v(" "),
                       _c(
                         "div",
@@ -81312,7 +81441,7 @@ var render = function() {
                                 "div",
                                 { staticClass: "form-group-po" },
                                 [
-                                  _vm._m(9),
+                                  _vm._m(10),
                                   _vm._v(" "),
                                   _c("multiselect", {
                                     attrs: {
@@ -81355,7 +81484,7 @@ var render = function() {
                           _c("div", { staticClass: "row" }, [
                             _c("div", { staticClass: "col-6" }, [
                               _c("div", { staticClass: "form-group-po" }, [
-                                _vm._m(10),
+                                _vm._m(11),
                                 _vm._v(" "),
                                 _c("input", {
                                   directives: [
@@ -81400,7 +81529,160 @@ var render = function() {
                             _vm._v(" "),
                             _c("div", { staticClass: "col-6" }, [
                               _c("div", { staticClass: "form-group-po" }, [
-                                _vm._m(11),
+                                _vm._m(12),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "input-group input-group-sm" },
+                                  [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "btn-success",
+                                        attrs: { type: "button" },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.insertNewProduct2()
+                                          }
+                                        }
+                                      },
+                                      [_c("i", { staticClass: "fas fa-plus" })]
+                                    )
+                                  ]
+                                )
+                              ])
+                            ])
+                          ])
+                        ]
+                      )
+                    ]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  directives: [
+                    {
+                      name: "show",
+                      rawName: "v-show",
+                      value:
+                        !_vm.add_products_initial &&
+                        !_vm.loading_vendor &&
+                        _vm.loaded_vendor,
+                      expression:
+                        "(!add_products_initial && !loading_vendor && loaded_vendor)"
+                    }
+                  ],
+                  staticClass: "form-group-po"
+                },
+                [
+                  _c(
+                    "div",
+                    { staticClass: "card border-success pb-1 mb-2 mt-2" },
+                    [
+                      _vm._m(13),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "card-body bg-light pt-1 pb-1" },
+                        [
+                          _c("div", { staticClass: "row" }, [
+                            _c("div", { staticClass: "col-md-12" }, [
+                              _c(
+                                "div",
+                                { staticClass: "form-group-po" },
+                                [
+                                  _vm._m(14),
+                                  _vm._v(" "),
+                                  _c("multiselect", {
+                                    attrs: {
+                                      options: _vm.products,
+                                      placeholder: "Select Product",
+                                      label: "text",
+                                      "track-by": "text"
+                                    },
+                                    on: { select: _vm.dispatchAction },
+                                    model: {
+                                      value: _vm.producta,
+                                      callback: function($$v) {
+                                        _vm.producta = $$v
+                                      },
+                                      expression: "producta"
+                                    }
+                                  }),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    {
+                                      directives: [
+                                        {
+                                          name: "show",
+                                          rawName: "v-show",
+                                          value: _vm.error_product,
+                                          expression: "error_product"
+                                        }
+                                      ],
+                                      staticClass: "invalid-feedback"
+                                    },
+                                    [_vm._v("Please Select a Product!")]
+                                  )
+                                ],
+                                1
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "row" }, [
+                            _c("div", { staticClass: "col-6" }, [
+                              _c("div", { staticClass: "form-group-po" }, [
+                                _vm._m(15),
+                                _vm._v(" "),
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.qty,
+                                      expression: "qty"
+                                    }
+                                  ],
+                                  staticClass: "form-control form-control-sm",
+                                  class: [_vm.error_qty ? "is-invalid" : ""],
+                                  attrs: { type: "number", min: "1" },
+                                  domProps: { value: _vm.qty },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.qty = $event.target.value
+                                    }
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    directives: [
+                                      {
+                                        name: "show",
+                                        rawName: "v-show",
+                                        value: _vm.error_qty,
+                                        expression: "error_qty"
+                                      }
+                                    ],
+                                    staticClass: "invalid-feedback"
+                                  },
+                                  [_vm._v("Please Indicate Qty!")]
+                                )
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-6" }, [
+                              _c("div", { staticClass: "form-group-po" }, [
+                                _vm._m(16),
                                 _vm._v(" "),
                                 _c(
                                   "div",
@@ -81434,7 +81716,7 @@ var render = function() {
             _vm._v(" "),
             _c("div", { staticClass: "col-md-6" }, [
               _c("div", { staticClass: "form-group-po" }, [
-                _vm._m(12),
+                _vm._m(17),
                 _vm._v(" "),
                 _c("input", {
                   attrs: { type: "hidden", name: "vars" },
@@ -81515,7 +81797,7 @@ var render = function() {
                                       }
                                     }
                                   },
-                                  [_vm._m(13, true)]
+                                  [_vm._m(18, true)]
                                 )
                               ]
                             )
@@ -81539,14 +81821,14 @@ var render = function() {
                       }
                     ]
                   },
-                  [_vm._m(14)]
+                  [_vm._m(19)]
                 )
               ])
             ])
           ])
         ]),
         _vm._v(" "),
-        _vm._m(15)
+        _vm._m(20)
       ]
     )
   ])
@@ -81627,16 +81909,10 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-6" }, [
-        _c("div", { staticClass: "form-group-po" }, [
-          _vm._v("\n                        PENDING\n                    ")
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-6" }, [
+      _c("div", { staticClass: "col-md-12" }, [
         _c("div", { staticClass: "form-group-po" }, [
           _c("label", { staticClass: "mb-0" }, [
-            _c("small", [_vm._v("Reference")])
+            _c("small", [_vm._v("Reference Notes")])
           ]),
           _vm._v(" "),
           _c("input", {
@@ -81657,9 +81933,47 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-2" }, [
+      _c("i", { staticClass: "fas fa-exclamation-triangle" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header bg-success pb-0 pt-1" }, [
       _c("h6", { staticClass: "mb-1 mt-1 text-white text-sm-left" }, [
         _vm._v("Add Products to RMA From Customer")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { staticClass: "typo__label mb-0" }, [
+      _c("small", [_vm._v("List Products")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { staticClass: "mb-0" }, [_c("small", [_vm._v("Qty")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { staticClass: "mb-0" }, [_c("small", [_vm._v("Add")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header bg-success pb-0 pt-1" }, [
+      _c("h6", { staticClass: "mb-1 mt-1 text-white text-sm-left" }, [
+        _vm._v("Add Products to RMA From Supplier")
       ])
     ])
   },
@@ -81722,12 +82036,6 @@ var staticRenderFns = [
           "button",
           { staticClass: "btn btn-info", attrs: { type: "submit" } },
           [_vm._v("Save")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          { staticClass: "btn btn-dark", attrs: { type: "reset" } },
-          [_vm._v("Reset")]
         )
       ])
     ])

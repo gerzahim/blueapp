@@ -25,7 +25,7 @@
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0" ><small>Contact Type</small></label>
-                            <select id="contact_type" name="contact_type" class="form-control form-control-sm" v-bind:class="[error_client ? 'is-invalid' : '']" v-model="contact_type_selected">
+                            <select id="contact_type" name="contact_type" class="form-control form-control-sm" v-bind:class="[error_client ? 'is-invalid' : '']" v-model="contact_type_selected" @change="dispatchContactType">
                                 <option value="0" selected>Customer</option>
                                 <option value="1" >Supplier</option>
                             </select>
@@ -45,7 +45,7 @@
                         </div>
                         <div class="form-group-po" v-show="contact_type_selected > 0">
                             <label class="mb-0"><small>Supplier</small></label>
-                            <select id="vendor_id" name="vendor_id" class="form-control form-control-sm" v-bind:class="[error_vendor ? 'is-invalid' : '']" v-model="vendor_selected">
+                            <select id="vendor_id" name="vendor_id" class="form-control form-control-sm" v-bind:class="[error_vendor ? 'is-invalid' : '']" v-model="vendor_selected" @change="fetchProductsByVendorID">
                                 <option value="0" disabled selected>Select Supplier</option>
                                 <option v-for="vendor in vendors" :value="vendor.id" :key="vendor.id">
                                     {{ vendor.name }}
@@ -78,14 +78,9 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group-po">
-                            PENDING
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group-po">
-                            <label class="mb-0" ><small>Reference</small></label>
+                            <label class="mb-0" ><small>Reference Notes</small></label>
                             <input type="text" class="form-control form-control-sm" id="reference" name="reference" min="1" placeholder="...">
                         </div>
                     </div>
@@ -93,14 +88,60 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="spinner-border text-success" role="status" v-show="loading_customer > 0">
-                            <h6 class="mb-1 mt-1 text-white text-sm-left">Add Products to RMA</h6>
+                        <div class="card-header bg-warning py-0" v-show="(add_products_initial)">
+                            <div class="row">
+                                <div class="col-2">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="col-10">
+                                    <h6 class="mb-1 mt-1 text-white text-sm-left" v-show="(contact_type_selected < 1)">Select Customer! for List Products</h6>
+                                    <h6 class="mb-1 mt-1 text-white text-sm-left" v-show="(contact_type_selected > 0)">Select Supplier! for List Products</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="spinner-border text-success" role="status" v-show="(loading_customer || loading_vendor)">
                             <span class="sr-only">Loading...</span>
                         </div>
-                        <div class="form-group-po" v-show="loading_customer < 1">
+                        <div class="form-group-po" v-show="(!add_products_initial && !loading_customer && loaded_customer)">
                             <div class="card border-success pb-1 mb-2 mt-2">
                                 <div class="card-header bg-success pb-0 pt-1">
                                     <h6 class="mb-1 mt-1 text-white text-sm-left">Add Products to RMA From Customer</h6>
+                                </div>
+                                <div class="card-body bg-light pt-1 pb-1">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group-po">
+                                                <label class="typo__label mb-0"><small>List Products</small></label>
+                                                <multiselect v-model="producta" :options="products" placeholder="Select Product" label="text" track-by="text" @select="dispatchAction">
+                                                </multiselect>
+                                                <div v-show="error_product" class="invalid-feedback">Please Select a Product!</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="form-group-po">
+                                                <label class="mb-0" ><small>Qty</small></label>
+                                                <input type="number" class="form-control form-control-sm" v-bind:class="[error_qty ? 'is-invalid' : '']" v-model="qty" min="1">
+                                                <div v-show="error_qty" class="invalid-feedback">Please Indicate Qty!</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group-po">
+                                                <label class="mb-0"><small>Add</small></label>
+                                                <div class="input-group input-group-sm">
+                                                    <button type="button" class="btn-success" @click="insertNewProduct2()"><i class="fas fa-plus"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group-po" v-show="(!add_products_initial && !loading_vendor && loaded_vendor)">
+                            <div class="card border-success pb-1 mb-2 mt-2">
+                                <div class="card-header bg-success pb-0 pt-1">
+                                    <h6 class="mb-1 mt-1 text-white text-sm-left">Add Products to RMA From Supplier</h6>
                                 </div>
                                 <div class="card-body bg-light pt-1 pb-1">
                                     <div class="row">
@@ -182,7 +223,6 @@
             <div class="form-actions mt-2">
                 <div class="text-right">
                     <button type="submit" class="btn btn-info">Save</button>
-                    <button type="reset" class="btn btn-dark">Reset</button>
                 </div>
             </div>
         </form>
@@ -228,6 +268,10 @@
                 current_prod_available: 0,
                 previousqty:0,
                 loading_customer: false,
+                loaded_customer: false,
+                loading_vendor: false,
+                loaded_vendor: false,
+                add_products_initial: true,
             }
         },
         methods: {
@@ -386,17 +430,44 @@
                     })
             },
             fetchProductsByCustomerOrderID() {
-                console.log(this.loading_customer, this.client_selected, 'chuckubum')
                 this.loading_customer = true //the loading begin
+                this.loaded_vendor = false
                 axios.get(`/get_orders_by_customer_id/${this.client_selected}`)
                     .then(response => {
                         this.loading_customer = false
+                        this.loaded_customer  = true
+                        this.add_products_initial = false
                         this.products = response.data.products
                     })
                     .catch(error => {
                         this.loading_customer = false
                     })
-            }
+            },
+            fetchProductsByVendorID() {
+                console.log(this.loading_customer, this.vendor_selected, 'chuckubum2')
+                this.loading_vendor = true //the loading begin
+                this.loaded_customer = false
+                axios.get(`/get_purchases_by_vendor_id/${this.vendor_selected}`)
+                    .then(response => {
+                        this.loading_vendor = false
+                        this.loaded_vendor  = true
+                        this.add_products_initial = false
+                        this.products = response.data.products
+                    })
+                    .catch(error => {
+                        this.loading_vendor = false
+                    })
+            },
+            dispatchContactType() {
+                this.add_products_initial = true
+                this.vars = []
+                if(this.contact_type_selected == '1'){
+                    //means Vendor was Selected
+                    this.vendor_selected = 0
+                }else{
+                    this.client_selected = 0
+                }
+            },
         },
         mounted() {
 

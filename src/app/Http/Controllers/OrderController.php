@@ -332,10 +332,10 @@ class OrderController extends Controller
     /**
      * @param $product
      * @param $po
-     * @param $available
+     * @param $order_id
      * @return string
      */
-    public function formatPadString2($product, $po, $available){
+    public function formatPadString2($product, $po, $order_id){
 
         $product = substr($product, 0, 15);
         $product = str_pad($product, 15, '.' , STR_PAD_RIGHT);
@@ -343,7 +343,7 @@ class OrderController extends Controller
         $po = substr($po, 0, 14);
         $po = str_pad($po, 14, '.' , STR_PAD_RIGHT);
 
-        return "${product} | ${po} | Order Number (${available})";
+        return "${product} | ${po} | Order # (${order_id})";
     }
 
 
@@ -351,7 +351,7 @@ class OrderController extends Controller
      * Get List of Orders by Customer
      * @return JsonResponse
      */
-    public function getOrderByCustomerID($id = 4) {
+    public function getOrderByCustomerID($id) {
 
 
         $orders = Order::where('client_id',$id)->get();
@@ -385,7 +385,44 @@ class OrderController extends Controller
         return response()->json(['products' => $orders_items]);
     }
 
-//Full texts 	id	order_id	purchases_id	qty	created_at	updated_at
+    /**
+     * Get List of Orders by Customer
+     * @return JsonResponse
+     */
+    public function getPurchasesByVendorID($id) {
+
+        $purchases = Purchases::where('contact_type_id',1)->where('contact_id',$id)->get();
+        $posID = [];
+        foreach ($purchases as $purchase){
+            $posID[] = $purchase->id;
+        }
+
+        // Get Purchases Items
+        $purchases_items = PurchasesItem::join('products', 'purchases_items.product_id', '=', 'products.id')
+            ->join('purchases', 'purchases_items.purchases_id', '=', 'purchases.id')
+            ->rightjoin('stocks', 'purchases_items.id', '=', 'stocks.purchases_item_id')
+            ->select('products.id AS product_id','products.name AS product_name', 'purchases_items.batch_number AS batch',
+                     'purchases.name AS po_name', 'stocks.available AS  available', 'purchases_items.id', 'purchases.id AS po_id')
+            ->whereIn('purchases_items.purchases_id',$posID)->get();
+
+        $data3 = [];
+        $i=0;
+        foreach ($purchases_items as $purchase_item)
+        {
+            $data3[$i]['id'] = $purchase_item->id;
+            $data3[$i]['text'] = $this->formatPadString($purchase_item->product_name,$purchase_item->po_name,$purchase_item->available);
+            $data3[$i]['product_id'] = $purchase_item->product_id;
+            $data3[$i]['name'] = $purchase_item->product_name;
+            $data3[$i]['batch'] = $purchase_item->batch;
+            $data3[$i]['po_name'] = $purchase_item->po_name;
+            $data3[$i]['po_id'] = $purchase_item->po_id;
+            $data3[$i]['po_item_id'] = $purchase_item->id;
+            $data3[$i]['available'] = $purchase_item->available;
+            $i++;
+        }
+        $purchases_items = $data3;
+        return response()->json(['products' => $purchases_items]);
+    }
 
 
 }
