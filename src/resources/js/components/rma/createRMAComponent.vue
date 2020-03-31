@@ -35,7 +35,7 @@
                     <div class="col-md-6">
                         <div class="form-group-po" v-show="contact_type_selected < 1">
                             <label class="mb-0"><small>Customer</small></label>
-                            <select id="client_id" name="client_id" class="form-control form-control-sm" v-bind:class="[error_client ? 'is-invalid' : '']" v-model="client_selected">
+                            <select id="client_id" name="client_id" class="form-control form-control-sm" v-bind:class="[error_client ? 'is-invalid' : '']" v-model="client_selected" @change="fetchProductsByCustomerOrderID">
                                 <option value="0" disabled selected>Select Customer</option>
                                 <option v-for="client in clients" :value="client.id" :key="client.id">
                                     {{ client.name }}
@@ -93,10 +93,14 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="form-group-po">
+                        <div class="spinner-border text-success" role="status" v-show="loading_customer > 0">
+                            <h6 class="mb-1 mt-1 text-white text-sm-left">Add Products to RMA</h6>
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <div class="form-group-po" v-show="loading_customer < 1">
                             <div class="card border-success pb-1 mb-2 mt-2">
                                 <div class="card-header bg-success pb-0 pt-1">
-                                    <h6 class="mb-1 mt-1 text-white text-sm-left">Add Products to PO</h6>
+                                    <h6 class="mb-1 mt-1 text-white text-sm-left">Add Products to RMA From Customer</h6>
                                 </div>
                                 <div class="card-body bg-light pt-1 pb-1">
                                     <div class="row">
@@ -223,6 +227,7 @@
                 current_prod_po_name: '',
                 current_prod_available: 0,
                 previousqty:0,
+                loading_customer: false,
             }
         },
         methods: {
@@ -380,11 +385,16 @@
                         this.clients = response.data.clients
                     })
             },
-            fetchPurchasesItems() {
-                axios
-                    .get('/get_purchases_items')
+            fetchProductsByCustomerOrderID() {
+                console.log(this.loading_customer, this.client_selected, 'chuckubum')
+                this.loading_customer = true //the loading begin
+                axios.get(`/get_orders_by_customer_id/${this.client_selected}`)
                     .then(response => {
+                        this.loading_customer = false
                         this.products = response.data.products
+                    })
+                    .catch(error => {
+                        this.loading_customer = false
                     })
             }
         },
@@ -393,7 +403,7 @@
         },
         created() {
             this.fetchCouries()
-            this.fetchPurchasesItems()
+            //this.fetchProductsByCustomerOrderID()
             /*
             this.fetchVendors()
             this.fetchClients()

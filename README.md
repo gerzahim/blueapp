@@ -10,15 +10,31 @@ user1@gmail.com/12345678
 
 ## TODO
 - RMA IN 
+  Select Client hit action 
+  Select all Orders associated to Client 
+  Json ( Product , Order: asdas)
+  Select Product , Qty and Save
+  
+  Select Vendor hit action 
+  Select all PO associated to Vendor 
+  Json ( Product , PO: asdas)
+  Select Product , Qty and Save, Reduce from QOH and Available  
+    
 - Add Vue Datatables to RMA
-- Update RMA when update Order
-- comment holding and Lend
+- Update RMA when update RMA
 - report Filters
 
 ## pending Error
-- check where for whereIn like 
+- Loading spinner vue-display-loader-when-request-is-in-progress
+    https://stackoverflow.com/questions/49356597/vue-display-loader-when-request-is-in-progress
+    https://www.digitalocean.com/community/tutorials/add-loading-indicators-to-your-vuejs-application
+    https://getbootstrap.com/docs/4.4/components/spinners/
+    https://www.adminmart.com/src/html/ui-spinner.html
+    <loading v-if="is_loading">Loading Item Information</loading>
+    
 - PO show
 - fix Error Variable in components ( list Selected empty, available 0 or 1 and try to insert 2, boom )
+  l5/public/js/inventory/vue/components/item_history.js
 
 ## Improves
 - formatPadString , Replace - by spaces

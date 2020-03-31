@@ -329,7 +329,63 @@ class OrderController extends Controller
         return "${product} | ${po} | Av (${available})";
     }
 
+    /**
+     * @param $product
+     * @param $po
+     * @param $available
+     * @return string
+     */
+    public function formatPadString2($product, $po, $available){
 
+        $product = substr($product, 0, 15);
+        $product = str_pad($product, 15, '.' , STR_PAD_RIGHT);
+
+        $po = substr($po, 0, 14);
+        $po = str_pad($po, 14, '.' , STR_PAD_RIGHT);
+
+        return "${product} | ${po} | Order Number (${available})";
+    }
+
+
+    /**
+     * Get List of Orders by Customer
+     * @return JsonResponse
+     */
+    public function getOrderByCustomerID($id = 4) {
+
+
+        $orders = Order::where('client_id',$id)->get();
+        $ordersID = [];
+        foreach ($orders as $order){
+            $ordersID[] = $order->id;
+        }
+        $orders_items  = OrderItems::join('orders', 'order_items.order_id', '=', 'orders.id')
+        ->join('purchases_items', 'order_items.purchases_id', '=', 'purchases_items.id')
+        ->join('purchases', 'purchases_items.purchases_id', '=', 'purchases.id')
+        ->join('products', 'purchases_items.product_id', '=', 'products.id')
+        ->select('products.id AS product_id','products.name AS product_name', 'purchases_items.batch_number AS batch',
+                 'purchases.name AS po_name', 'purchases_items.id', 'purchases.id AS po_id', 'orders.name AS order_name')
+        ->whereIn('order_items.order_id',$ordersID)->get();
+
+        $data2 = [];
+        $i=0;
+        foreach ($orders_items as $order_item)
+        {
+            $data2[$i]['id'] = $order_item->id;
+            $data2[$i]['text'] = $this->formatPadString2($order_item->product_name,$order_item->po_name, $order_item->order_name);
+            $data2[$i]['product_id'] = $order_item->product_id;
+            $data2[$i]['name'] = $order_item->product_name;
+            $data2[$i]['batch'] = $order_item->batch;
+            $data2[$i]['po_name'] = $order_item->po_name;
+            $data2[$i]['po_id'] = $order_item->po_id;
+            $data2[$i]['po_item_id'] = $order_item->id;
+            $i++;
+        }
+        $orders_items = $data2;
+        return response()->json(['products' => $orders_items]);
+    }
+
+//Full texts 	id	order_id	purchases_id	qty	created_at	updated_at
 
 
 }

@@ -32,6 +32,8 @@ Route::get('/editPurchase/{id}', [
     'as' => 'purchases.editPurchase'
 ]);
 
+
+
 /** Sorted  **/
 Route::get('/clients_sorted', 'ClientController@sortedByName');
 Route::get('/vendors_sorted', 'VendorController@sortedByName');
@@ -48,6 +50,9 @@ Route::get('/get_couriers', 'PurchaseController@getCouriersbyAjax');
 /** Orders  **/
 Route::resource('order', 'OrderController');
 Route::get('/get_purchases_items', 'OrderController@getPurchasesItemsbyAjax');
+
+Route::get('/get_orders_by_customer_id/{id}', 'OrderController@getOrderByCustomerID');
+
 
 Route::resource('courier', 'CourierController');
 Route::resource('stock', 'StockController');
