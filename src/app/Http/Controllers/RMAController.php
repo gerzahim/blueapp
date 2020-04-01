@@ -7,6 +7,10 @@ use App\ContactType;
 use App\Order;
 use App\RMA;
 use App\RMAItems;
+use App\Product;
+use App\Purchases;
+use App\PurchasesItem;
+use App\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -169,7 +173,36 @@ class RMAController extends Controller
      */
     public function edit(RMA $rma)
     {
-        //
+        $rma_lines  = RMAItems::where('rma_id',$rma->id)->get();
+        $products_rma = [];
+        foreach($rma_lines as $rma_line){
+
+            $po_line  = PurchasesItem::where('id',$rma_line->purchases_id)->first();
+            $po       = Purchases::where('id',$po_line->purchases_id)->first();
+            $product  = Product::where('id', $po_line->product_id)->first();
+            $stock    = Stock::where('purchases_item_id',$rma_line->purchases_id)->first();
+
+            $products_rma[] = array(
+                'order_id'     => $rma_line->order_id,
+                'po_id'        => $po->id,
+                'po_item_id'   => $po_line->id,
+                'product_id'   => $product->id,
+                'product_name' => $product->name,
+                'batch'        => $po_line->batch_number,
+                'po_name'      => $po->name,
+                'available'    => $stock->available,
+                'qty'          => $rma_line->qty
+            );
+        }
+        $products_rma = json_encode($products_rma, true);
+
+        $ctrl    = new PurchaseController();
+        $clients = $ctrl->getClientsWithOrders();
+
+        $ctrl    = new PurchaseController();
+        $vendors = $ctrl->getVendorsWithOrders();
+
+        return view('rma.edit', compact('rma', 'products_rma', 'clients', 'vendors') );
     }
 
     /**
@@ -181,7 +214,7 @@ class RMAController extends Controller
      */
     public function update(Request $request, RMA $rma)
     {
-        //
+        dd($request, $rma);
     }
 
     /**

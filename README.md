@@ -8,14 +8,12 @@ Custom Inventory Management System HUAHAI
 
 user1@gmail.com/12345678
 
-## TODO
-- RMA IN 
-  if change of customer of Vendor empty vars *** 
-  Contact Type say error type **** 
-  Select customer Product , Qty and Save ***
-  Select Vendor Product , Qty and Save, Reduce from QOH and Available ****  
-    
+## TODO   
 - Update RMA when update RMA
+  get all id 
+  if exist edit 
+  if not create 
+  remain delete
 - report Filters
 
 ## pending Error    
@@ -26,6 +24,21 @@ user1@gmail.com/12345678
   l5/public/js/inventory/vue/components/item_history.js
 
 ## Improves
+- Auto validate after change input 
+  @change="ValidateDate"
+  ValidateDate() {
+     error_date = true || errors.error_date = true
+     if(date){
+        error_date = false
+        errors.error_date = false
+     }
+  }
+  
+  checkForm(){
+      this.ValidateDate()
+      this.ValidateName()  
+  }
+  
 - Add Vue Datatables to RMA
 - holding ( from Create Order Select Holding, List Holding [Show Order][Complete Order][revert Order]) 
 

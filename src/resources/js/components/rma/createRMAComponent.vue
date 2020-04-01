@@ -222,6 +222,7 @@
             <div class="form-actions mt-2">
                 <div class="text-right">
                     <button type="submit" class="btn btn-info">Save</button>
+                    <a class="btn btn-dark"  href="/rma">Cancel</a>
                 </div>
             </div>
         </form>

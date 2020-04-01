@@ -51,10 +51,12 @@
                             </ul>
                         </div>
                         @endif
-                        <editorder-component
-                            v-bind:post_order="'{{ $order }}'"
-                            v-bind:post_products="'{{ $products_order }}'"
-                        ></editorder-component>
+                        <editrma-component
+                            v-bind:props_rma="'{{ $rma }}'"
+                            v-bind:props_products="'{{ $products_rma }}'"
+                            v-bind:props_clients="{{ $clients }}"
+                            v-bind:props_vendors="{{ $vendors }}"
+                        ></editrma-component>
                     </div>
                 </div>
             </div>
