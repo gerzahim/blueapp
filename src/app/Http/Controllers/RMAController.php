@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Client;
 use App\ContactType;
-use App\Order;
 use App\RMA;
 use App\RMAItems;
 use App\Product;
@@ -12,7 +10,7 @@ use App\Purchases;
 use App\PurchasesItem;
 use App\Stock;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades;
 
 class RMAController extends Controller
 {
@@ -138,7 +136,7 @@ class RMAController extends Controller
                 RMAItems::insert($data_rma_item);
 
                 $stock = new StockController();
-                if ($contact_id) {
+                if ($request->contact_type) {
                     // Reduce qty from PO IF contact id = 1
                     // Add Products defective to RMA and reduce from Inventory
                     $stock->addProductRMA_Vendor($rma_line->po_item_id, $rma_line->qty);
@@ -206,15 +204,114 @@ class RMAController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\RMA  $rma
-     * @return \Illuminate\Http\Response
+     * Update the specified resource in storage.
+     * @param Request $request
+     * @param RMA $rma
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
+     *
      */
     public function update(Request $request, RMA $rma)
     {
-        dd($request, $rma);
+        $messages = [
+            'name.required'      => 'The RMA is Required.',
+            'date.required'      => 'Must Select a Date',
+            'transaction_type_id.required'    => 'The Transaction Type must be Selected.',
+            'client_id.required' => 'Must Select a Customer',
+            'vendor_id.required' => 'Must Select a Supplier',
+        ];
+
+        if(!$request->contact_type) {
+            $contact_id = $request->client_id;
+            $this->validate($request, [
+                'name'                => 'required',
+                'date'                => 'required',
+                'transaction_type_id' => 'required',
+                'client_id'           => 'required'
+            ], $messages);
+        }else{
+            $contact_id = $request->vendor_id;
+            $this->validate($request, [
+                'name'                => 'required',
+                'date'                => 'required',
+                'transaction_type_id' => 'required',
+                'vendor_id'           => 'required'
+            ], $messages);
+        }
+
+        $time_now = date('Y-m-d H:i:s');
+
+        $data = array(
+            'name'                => $request->name,
+            'contact_type_id'     => $request->contact_type,
+            'contact_id'          => $contact_id,
+            'transaction_type_id' => $request->transaction_type_id,
+            'courier_id'          => $request->courier_id,
+            'tracking'            => $request->tracking,
+            'date'                => $request->date,
+            'reference'           => $request->reference,
+            'created_at'          => $time_now,
+            'updated_at'          => $time_now
+        );
+
+        $rma->fill($data)->save();
+
+        $stock = new StockController();
+        $rma_items_updated = [];
+
+        $rma_lines = json_decode($request->vars);
+
+        foreach ($rma_lines as $rma_line )
+        {
+            $data_rma_item = array(
+                'rma_id'       => $rma->id,
+                'product_id'   => $rma_line->product_id,
+                'qty'          => $rma_line->qty,
+                'order_id'     => $rma_line->order_id,
+                'purchases_id' => $rma_line->po_item_id,
+                'created_at'   => $time_now,
+                'updated_at'   => $time_now
+            );
+
+            // If Exist
+            $rma_line_previous  = RMAItems::where('rma_id',$rma->id)->where('purchases_id',$rma_line->po_item_id)->first();
+
+            if ($rma_line_previous){
+                // IF Exist
+                $stock->adjustProductRMA($rma_line_previous->purchases_id, $rma_line_previous->qty, $rma_line->qty, $request->contact_type);
+
+                // Update RMAItems Values
+                $rma_line_previous->fill($data_rma_item)->save();
+                $rma_items_updated[] = $rma_line_previous->id;
+            }else{
+                // Insert RMA Items if New
+
+                $new_rma_item = RMAItems::create($data_rma_item);
+                $lastInsertedId = $new_rma_item->id;
+                $rma_items_updated[] = $lastInsertedId;
+
+                if ($request->contact_type) {
+                    // Reduce qty from PO IF contact id = 1
+                    // Add Products defective to RMA and reduce from Inventory
+                    $stock->addProductRMA_Vendor($rma_line->po_item_id, $rma_line->qty);
+                }else{
+                    //Add Products defective to RMA from Customer Return
+                    $stock->addProductRMA($rma_line->po_item_id, $rma_line->qty);
+                }
+            }
+
+            // Update RMA for Items_no_longer_used
+            $rma_items_no_longer_used = RMAItems::where('rma_id', $rma->id)->whereNotIn('id', $rma_items_updated)->get();
+            foreach ($rma_items_no_longer_used as $rma_item_no_longer_used){
+                $stock->reverseProductRMA($rma_item_no_longer_used->purchases_id, $rma_item_no_longer_used->qty, $request->contact_type);
+            }
+
+            // Delete OrderItems No_longer_used
+            RMAItems::where('rma_id', $rma->id)->whereNotIn('id', $rma_items_updated)->delete();
+
+        }
+        return redirect()->route('rma.index')->with('success', 'RMA updated successfully.');
     }
 
     /**
@@ -225,6 +322,6 @@ class RMAController extends Controller
      */
     public function destroy(RMA $rma)
     {
-        //
+//
     }
 }

@@ -9,7 +9,6 @@ use App\Product;
 use Debugbar;
 use Illuminate\Http\Request;
 
-
 class StockController extends Controller
 {
     public $purchases_id;
@@ -159,6 +158,43 @@ class StockController extends Controller
     }
 
     /**
+     * * Add Products defective to RMA from Customer Return
+     *
+     * @param $purchases_item_id
+     * @param $qty_previous
+     * @param $qty_new
+     * @param $is_vendor
+     */
+    public function adjustProductRMA($purchases_item_id,  $qty_previous, $qty_new, $is_vendor) {
+
+        $stock = Stock::where('purchases_item_id',$purchases_item_id)->first();
+        if($is_vendor){
+            $stock->qoh = ($stock->qoh - $qty_previous) + $qty_new;
+            $stock->available = ($stock->available - $qty_previous) + $qty_new;
+        }
+        $stock->rma = ($stock->rma - $qty_previous) + $qty_new;
+        $stock->save();
+    }
+
+    /**
+     * * Make calculation when create a New Order
+     *
+     * @param $purchases_item_id
+     * @param $qty
+     * @param $is_vendor
+     */
+    public function reverseProductRMA($purchases_item_id, $qty, $is_vendor) {
+
+        $stock = Stock::where('purchases_item_id',$purchases_item_id)->first();
+        if($is_vendor){
+            $stock->qoh = ($stock->qoh + $qty);
+            $stock->available = ($stock->available + $qty);
+        }
+        $stock->rma = ($stock->rma - $qty);
+        $stock->save();
+    }
+
+    /**
      * * Make calculation when create a New Order
      *
      * @param $purchases_item_id
@@ -171,6 +207,7 @@ class StockController extends Controller
         $stock->qoh = ($stock->qoh + $qty_previous) - $qty_new;
         $stock->available = ($stock->available + $qty_previous) - $qty_new;
         $stock->save();
+
     }
 
 

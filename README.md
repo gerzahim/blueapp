@@ -9,11 +9,7 @@ Custom Inventory Management System HUAHAI
 user1@gmail.com/12345678
 
 ## TODO   
-- Update RMA when update RMA
-  get all id 
-  if exist edit 
-  if not create 
-  remain delete
+- delete RMA
 - report Filters
 
 ## pending Error    
