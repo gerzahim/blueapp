@@ -80,7 +80,7 @@ class RMAController extends Controller
             'vendor_id.required' => 'Must Select a Supplier',
         ];
 
-        if(!$request->contact_type) {
+        if(!$request->contact_type_id) {
             $contact_id = $request->client_id;
             $this->validate($request, [
                 'name'                => 'required',
@@ -102,7 +102,7 @@ class RMAController extends Controller
 
         $data = array(
             'name'                => $request->name,
-            'contact_type_id'     => $request->contact_type,
+            'contact_type_id'     => $request->contact_type_id,
             'contact_id'          => $contact_id,
             'transaction_type_id' => $request->transaction_type_id,
             'courier_id'          => $request->courier_id,
@@ -136,7 +136,7 @@ class RMAController extends Controller
                 RMAItems::insert($data_rma_item);
 
                 $stock = new StockController();
-                if ($request->contact_type) {
+                if ($request->contact_type_id) {
                     // Reduce qty from PO IF contact id = 1
                     // Add Products defective to RMA and reduce from Inventory
                     $stock->addProductRMA_Vendor($rma_line->po_item_id, $rma_line->qty);
@@ -221,8 +221,7 @@ class RMAController extends Controller
             'client_id.required' => 'Must Select a Customer',
             'vendor_id.required' => 'Must Select a Supplier',
         ];
-
-        if(!$request->contact_type) {
+        if(!$request->contact_type_id) {
             $contact_id = $request->client_id;
             $this->validate($request, [
                 'name'                => 'required',
@@ -244,7 +243,7 @@ class RMAController extends Controller
 
         $data = array(
             'name'                => $request->name,
-            'contact_type_id'     => $request->contact_type,
+            'contact_type_id'     => $request->contact_type_id,
             'contact_id'          => $contact_id,
             'transaction_type_id' => $request->transaction_type_id,
             'courier_id'          => $request->courier_id,
@@ -279,7 +278,7 @@ class RMAController extends Controller
 
             if ($rma_line_previous){
                 // IF Exist
-                $stock->adjustProductRMA($rma_line_previous->purchases_id, $rma_line_previous->qty, $rma_line->qty, $request->contact_type);
+                $stock->adjustProductRMA($rma_line_previous->purchases_id, $rma_line_previous->qty, $rma_line->qty, $request->contact_type_id);
 
                 // Update RMAItems Values
                 $rma_line_previous->fill($data_rma_item)->save();
@@ -291,7 +290,7 @@ class RMAController extends Controller
                 $lastInsertedId = $new_rma_item->id;
                 $rma_items_updated[] = $lastInsertedId;
 
-                if ($request->contact_type) {
+                if ($request->contact_type_id) {
                     // Reduce qty from PO IF contact id = 1
                     // Add Products defective to RMA and reduce from Inventory
                     $stock->addProductRMA_Vendor($rma_line->po_item_id, $rma_line->qty);
@@ -304,7 +303,7 @@ class RMAController extends Controller
             // Update RMA for Items_no_longer_used
             $rma_items_no_longer_used = RMAItems::where('rma_id', $rma->id)->whereNotIn('id', $rma_items_updated)->get();
             foreach ($rma_items_no_longer_used as $rma_item_no_longer_used){
-                $stock->reverseProductRMA($rma_item_no_longer_used->purchases_id, $rma_item_no_longer_used->qty, $request->contact_type);
+                $stock->reverseProductRMA($rma_item_no_longer_used->purchases_id, $rma_item_no_longer_used->qty, $request->contact_type_id);
             }
 
             // Delete OrderItems No_longer_used
@@ -316,12 +315,25 @@ class RMAController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\RMA  $rma
-     * @return \Illuminate\Http\Response
+     * @param RMA $rma
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function destroy(RMA $rma)
     {
-//
+        //Get All Order Lines associated to the Order
+        $RMAItems = RMAItems::where('rma_id',$rma->id)->get();
+        foreach ($RMAItems as $RMAItem){
+            // Updating Stock
+            $stock = new StockController();
+            $stock->reverseProductRMA($RMAItem->purchases_id, $RMAItem->qty, $rma->contact_type_id);
+        }
+        // Delete Order Lines
+        RMAItems::where('rma_id',$rma->id)->delete();
+
+        //Delete Order
+        $rma->delete();
+
+        return redirect()->route('rma.index')->with('success', 'RMA has been deleted successfully!');
     }
 }

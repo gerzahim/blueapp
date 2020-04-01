@@ -9,7 +9,11 @@ Custom Inventory Management System HUAHAI
 user1@gmail.com/12345678
 
 ## TODO   
-- delete RMA
+- delete RMA ***
+- error when update rma 
+Input Error!
+
+Must Select a Customer
 - report Filters
 
 ## pending Error    

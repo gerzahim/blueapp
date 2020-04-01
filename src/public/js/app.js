@@ -4455,7 +4455,6 @@ __webpack_require__.r(__webpack_exports__);
     this.vendors = this.props_vendors;
     this.rma = JSON.parse(this.props_rma);
     this.vars = JSON.parse(this.props_products);
-    console.log(this.rma, this.props_rma);
     this.add_products_initial = false;
     this.name = this.rma.name;
     this.date = this.rma.date;
@@ -81586,7 +81585,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control form-control-sm",
-                    attrs: { id: "contact_type", name: "contact_type" },
+                    attrs: { id: "contact_type_id", name: "contact_type_id" },
                     on: {
                       change: [
                         function($event) {
@@ -82765,7 +82764,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control form-control-sm",
-                    attrs: { id: "contact_type", name: "contact_type" },
+                    attrs: { id: "contact_type_id", name: "contact_type_id" },
                     on: {
                       change: [
                         function($event) {

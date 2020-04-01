@@ -27,7 +27,7 @@
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0" ><small>Contact Type</small></label>
-                            <select id="contact_type" name="contact_type" class="form-control form-control-sm" v-model="contact_type_selected" @change="dispatchContactType">
+                            <select id="contact_type_id" name="contact_type_id" class="form-control form-control-sm" v-model="contact_type_selected" @change="dispatchContactType">
                                 <option value="0" selected>Customer</option>
                                 <option value="1" >Supplier</option>
                             </select>
