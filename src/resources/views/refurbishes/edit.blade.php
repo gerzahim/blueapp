@@ -11,8 +11,8 @@
             <div class="col-12 align-self-center">
                 <nav class="breadcrumb">
                     <a class="breadcrumb-item" href="{{ url('/') }}">Home</a>
-                    <a class="breadcrumb-item" href="{{ route('rma.index') }}">RMA</a>
-                    <span class="breadcrumb-item active">Edit RMA</span>
+                    <a class="breadcrumb-item" href="{{ route('refurbishes.index') }}">Refurbish</a>
+                    <span class="breadcrumb-item active">Edit Refurbish</span>
                 </nav>
             </div>
         </div>
@@ -33,9 +33,9 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="float-right">
-                            <a href="{{ route('rma.index') }}" class="btn btn-primary btn-sm">Back RMA list</a>
+                            <a href="{{ route('refurbishes.index') }}" class="btn btn-primary btn-sm">Back Refurbishments list</a>
                         </div>
-                        Edit RMA
+                        Edit Refurbishment
                     </div>
                     <div class="card-body">
 

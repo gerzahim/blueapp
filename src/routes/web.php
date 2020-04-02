@@ -24,6 +24,9 @@ Route::resource('product', 'ProductController');
 Route::resource('client', 'ClientController');
 Route::resource('vendor', 'VendorController');
 Route::resource('rma', 'RMAController');
+Route::resource('refurbishes', 'RefurbishesController');
+
+
 
 /** Purchases  **/
 Route::resource('purchases', 'PurchaseController');

@@ -11,8 +11,8 @@
             <div class="col-12 align-self-center">
                 <nav class="breadcrumb">
                     <a class="breadcrumb-item" href="{{ url('/') }}">Home</a>
-                    <a class="breadcrumb-item" href="{{ route('rma.index') }}">RMA</a>
-                    <span class="breadcrumb-item active">Edit RMA</span>
+                    <a class="breadcrumb-item" href="{{ route('rma.index') }}">Refurbish</a>
+                    <span class="breadcrumb-item active">Create Refurbish</span>
                 </nav>
             </div>
         </div>
@@ -33,9 +33,9 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="float-right">
-                            <a href="{{ route('rma.index') }}" class="btn btn-primary btn-sm">Back RMA list</a>
+                            <a href="{{ route('rma.index') }}" class="btn btn-primary btn-sm">Back Refurbishments list</a>
                         </div>
-                        Edit RMA
+                        Create Refurbishment
                     </div>
                     <div class="card-body">
 
@@ -51,12 +51,11 @@
                             </ul>
                         </div>
                         @endif
-                        <editrma-component
-                            v-bind:props_rma="'{{ $rma }}'"
-                            v-bind:props_products="'{{ $products_rma }}'"
+                        <createrma-component
+                            v-bind:props_name="'{{ $lastOrder }}'"
                             v-bind:props_clients="{{ $clients }}"
                             v-bind:props_vendors="{{ $vendors }}"
-                        ></editrma-component>
+                        ></createrma-component>
                     </div>
                 </div>
             </div>
