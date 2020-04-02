@@ -10,6 +10,7 @@ use App\Purchases;
 use App\PurchasesItem;
 use App\Stock;
 use Illuminate\Http\Request;
+use Debugbar;
 use Illuminate\Support\Facades;
 
 class RMAController extends Controller
@@ -214,6 +215,7 @@ class RMAController extends Controller
      */
     public function update(Request $request, RMA $rma)
     {
+        //Debugbar::info($request);
         $messages = [
             'name.required'      => 'The RMA is Required.',
             'date.required'      => 'Must Select a Date',
@@ -222,6 +224,8 @@ class RMAController extends Controller
             'vendor_id.required' => 'Must Select a Supplier',
         ];
         if(!$request->contact_type_id) {
+            //Debugbar::info($request->contact_type_id);
+            //Debugbar::info('entre en Customer');
             $contact_id = $request->client_id;
             $this->validate($request, [
                 'name'                => 'required',
@@ -230,6 +234,8 @@ class RMAController extends Controller
                 'client_id'           => 'required'
             ], $messages);
         }else{
+            //Debugbar::info($request->contact_type_id);
+            //Debugbar::info('entre en Supplier');
             $contact_id = $request->vendor_id;
             $this->validate($request, [
                 'name'                => 'required',
