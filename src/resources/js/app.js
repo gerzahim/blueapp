@@ -54,6 +54,9 @@ Vue.component('editorder-component', require('./components/order/editOrderCompon
 Vue.component('createrma-component', require('./components/rma/createRMAComponent.vue').default);
 Vue.component('editrma-component', require('./components/rma/editRMAComponent.vue').default);
 
+//Components for Refurbishes
+Vue.component('createrefurbish-component', require('./components/refurbish/createRefurbishComponent.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

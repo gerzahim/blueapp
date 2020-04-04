@@ -11,12 +11,18 @@
 |
 */
 
+Route::get('test', function () {
+    $name = request('name');
+    return $name;
+});
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('/', 'HomeController');
 Route::resource('post', 'PostController');
+
+
 
 Route::resource('category', 'CategoryController');
 Route::resource('product_dimensions', 'ProductDimensionsController');
@@ -49,6 +55,9 @@ Route::get('/get_vendors', 'PurchaseController@getVendorsbyAjax');
 Route::get('/get_clients', 'PurchaseController@getClientsbyAjax');
 Route::get('/get_clientsDT', 'PurchaseController@getClientsDT');
 Route::get('/get_couriers', 'PurchaseController@getCouriersbyAjax');
+Route::get('/get_rmas', 'RMAController@getRMAItemsbyAjax');
+
+
 
 /** Orders  **/
 Route::resource('order', 'OrderController');

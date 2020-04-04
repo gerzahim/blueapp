@@ -75,7 +75,7 @@
                                 <li class="sidebar-item"><a href="{{ route('order.index') }}" class="sidebar-link">
                                         <span class="hide-menu">Sales</span></a>
                                 </li>
-                                <li class="sidebar-item"><a href="{{ url('/refurbishment') }}" class="sidebar-link">
+                                <li class="sidebar-item"><a href="{{ url('/refurbishes') }}" class="sidebar-link">
                                         <span class="hide-menu">Refurbishment</span></a>
                                 </li>
                                 <!-- li class="sidebar-item"><a href="{{ url('/lend') }}" class="sidebar-link">

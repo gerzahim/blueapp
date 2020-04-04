@@ -9,18 +9,21 @@ Custom Inventory Management System HUAHAI
 user1@gmail.com/12345678
 
 ## TODO   
-- delete RMA ***
-- error when update rma 
-Input Error!
+- create refurbishment 
+    get Products from rmas and rmaItems 
+    update rma (-)
+    update refurbishment (+)
+- update refurbishment
+- send refurbishment
 
-- add refurbishment 
-  get Products from rmas and rmaItems 
-  update rma +
-
-Must Select a Customer
 - report Filters
 
-## pending Error    
+## pending Error 
+- check rightjoin by join on ajaxcall
+- Select Product Return From Customer! fix message on create and update RMA
+- List Products added - fix message 
+- 1565ewewe when create batch pass lowercase to list 
+- remove Reset Button    
 - add loading to PO
 - add loading to Order
 - PO show

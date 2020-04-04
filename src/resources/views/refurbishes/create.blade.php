@@ -51,11 +51,9 @@
                             </ul>
                         </div>
                         @endif
-                        <createrma-component
+                        <createrefurbish-component
                             v-bind:props_name="'{{ $lastOrder }}'"
-                            v-bind:props_clients="{{ $clients }}"
-                            v-bind:props_vendors="{{ $vendors }}"
-                        ></createrma-component>
+                        ></createrefurbish-component>
                     </div>
                 </div>
             </div>

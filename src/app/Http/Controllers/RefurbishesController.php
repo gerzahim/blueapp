@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\PurchasesItem;
 use App\Refurbishes;
+use App\RMA;
+use App\RMAItems;
 use Illuminate\Http\Request;
 
 class RefurbishesController extends Controller
@@ -14,7 +17,8 @@ class RefurbishesController extends Controller
      */
     public function index()
     {
-        //
+        $refurbishes = Refurbishes::latest()->paginate(10);
+        return view('refurbishes.index', compact('refurbishes'));
     }
 
     /**
@@ -24,7 +28,14 @@ class RefurbishesController extends Controller
      */
     public function create()
     {
-        //
+        $lastOrder = Refurbishes::select('id')->orderBy('id','desc')->first();
+        if($lastOrder){
+            $lastOrder = $lastOrder->id+1;
+        }else{
+            $lastOrder = 1;
+        }
+
+        return view('refurbishes.create', compact('lastOrder') );
     }
 
     /**
