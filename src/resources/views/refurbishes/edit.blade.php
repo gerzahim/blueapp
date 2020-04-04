@@ -51,12 +51,10 @@
                             </ul>
                         </div>
                         @endif
-                        <editrma-component
-                            v-bind:props_rma="'{{ $rma }}'"
-                            v-bind:props_products="'{{ $products_rma }}'"
-                            v-bind:props_clients="{{ $clients }}"
-                            v-bind:props_vendors="{{ $vendors }}"
-                        ></editrma-component>
+                        <editrefurbish-component
+                            v-bind:props_refurbishes="'{{ $refurbish }}'"
+                            v-bind:props_products="'{{ $products_refurbishes }}'"
+                        ></editrefurbish-component>
                     </div>
                 </div>
             </div>

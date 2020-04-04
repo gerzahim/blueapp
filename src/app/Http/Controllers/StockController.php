@@ -132,6 +132,39 @@ class StockController extends Controller
     }
 
     /**
+     *  reduce from RMA and Add New Refurbishment
+     *
+     * @param $purchases_item_id
+     * @param $qty
+     */
+    public function reduceProductFromRMAStock2($purchases_item_id, $qty) {
+        $stock = Stock::where('purchases_item_id',$purchases_item_id)->first();
+        $stock->rma = ($stock->rma + $qty);
+        $stock->refurbished = ($stock->refurbished - $qty);
+        $stock->save();
+
+        $rma = new RMAController();
+        $rma->addRmaRefurbished($purchases_item_id, $qty);
+    }
+
+    /**
+     *  reduce from RMA and Add New Refurbishment
+     *
+     * @param $purchases_item_id
+     * @param $qty
+     */
+    public function adjustProductFromRMAStock($purchases_item_id, $qty_previous, $qty_new) {
+        $stock = Stock::where('purchases_item_id',$purchases_item_id)->first();
+        $stock->rma = ($stock->rma + $qty_previous) - $qty_new;
+        $stock->refurbished = ($stock->refurbished - $qty_previous) + $qty_new;
+        $stock->save();
+
+        $rma = new RMAController();
+        $rma->addRmaRefurbished($purchases_item_id, $qty_previous);
+        $rma->reduceRmaRefurbished($purchases_item_id, $qty_new);
+    }
+
+    /**
      * * Make calculation when create a New Order
      *
      * @param $purchases_item_id

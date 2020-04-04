@@ -56,6 +56,7 @@ Vue.component('editrma-component', require('./components/rma/editRMAComponent.vu
 
 //Components for Refurbishes
 Vue.component('createrefurbish-component', require('./components/refurbish/createRefurbishComponent.vue').default);
+Vue.component('editrefurbish-component', require('./components/refurbish/editRefurbishComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

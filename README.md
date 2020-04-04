@@ -9,13 +9,7 @@ Custom Inventory Management System HUAHAI
 user1@gmail.com/12345678
 
 ## TODO   
-- create refurbishment 
-    get Products from rmas and rmaItems 
-    update rma (-)
-    update refurbishment (+)
-- update refurbishment
 - send refurbishment
-
 - report Filters
 
 ## pending Error 

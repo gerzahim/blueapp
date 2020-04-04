@@ -405,4 +405,15 @@ class RMAController extends Controller
         $RMAItem->qty = ($RMAItem->qty - $qty);
         $RMAItem->save();
     }
+    /**
+     * reduceRmaRefurbished
+     * @param $purchases_item_id
+     * @param $qty
+     */
+    public function addRmaRefurbished($purchases_item_id, $qty)
+    {
+        $RMAItem = RMAItems::where('purchases_id', $purchases_item_id)->first();
+        $RMAItem->qty = ($RMAItem->qty + $qty);
+        $RMAItem->save();
+    }
 }
