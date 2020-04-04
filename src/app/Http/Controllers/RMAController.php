@@ -348,7 +348,7 @@ class RMAController extends Controller
             ->join('purchases_items', 'rma_items.purchases_id', '=', 'purchases_items.id')
             ->join('purchases', 'purchases_items.purchases_id', '=', 'purchases.id')
             ->join('stocks', 'purchases_items.id', '=', 'stocks.purchases_item_id')
-            ->select('products.id AS product_id','products.name AS product_name', 'purchases_items.batch_number AS batch', 'purchases.name AS po_name', 'stocks.available AS  available', 'purchases_items.id', 'purchases.id AS po_id')
+            ->select('products.id AS product_id','products.name AS product_name', 'purchases_items.batch_number AS batch', 'purchases.name AS po_name', 'rma_items.qty AS  available', 'purchases_items.id', 'purchases.id AS po_id')
             ->get();
 
         $data2 = [];
@@ -356,7 +356,6 @@ class RMAController extends Controller
         foreach ($rma_items as $purchase_item)
         {
             $data2[$i]['id'] = $purchase_item->id;
-            //$data2[$i]['text'] = $purchase_item->product_name.' | PO: '.$purchase_item->po_name.' | Av ('.$purchase_item->available.')';
             $data2[$i]['text'] = $this->formatPadString($purchase_item->product_name,$purchase_item->po_name,$purchase_item->available);
             $data2[$i]['product_id'] = $purchase_item->product_id;
             $data2[$i]['name'] = $purchase_item->product_name;
@@ -393,5 +392,17 @@ class RMAController extends Controller
         $rma->delete();
 
         return redirect()->route('rma.index')->with('success', 'RMA has been deleted successfully!');
+    }
+
+    /**
+     * reduceRmaRefurbished
+     * @param $purchases_item_id
+     * @param $qty
+     */
+    public function reduceRmaRefurbished($purchases_item_id, $qty)
+    {
+        $RMAItem = RMAItems::where('purchases_id', $purchases_item_id)->first();
+        $RMAItem->qty = ($RMAItem->qty - $qty);
+        $RMAItem->save();
     }
 }

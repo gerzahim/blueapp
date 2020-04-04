@@ -132,7 +132,7 @@
 
     export default {
 
-        props: ["props_name", "props_contact_types", "props_clients", "props_vendors"],
+        props: ["props_name"],
         data: function () {
             return {
                 errors:[],
@@ -166,7 +166,6 @@
         methods: {
             dispatchAction (prodc) {
                 this.current_prod_po_id = prodc.po_id
-                this.current_prod_order_id = prodc.order_id
                 this.current_prod_po_item_id = prodc.po_item_id
                 this.current_prod_id = prodc.product_id
                 this.current_prod_name = prodc.name
@@ -279,7 +278,6 @@
                     if (getInfoArray[0] > 0){
                         variables.splice(product_array_key,1)
                         variables.push({
-                            'order_id': this.current_prod_order_id,
                             'po_id': this.current_prod_po_id,
                             'po_item_id': this.current_prod_po_item_id,
                             'product_id': this.current_prod_id,
@@ -291,7 +289,6 @@
                         })
                     }else {
                         variables.push({
-                            'order_id': this.current_prod_order_id,
                             'po_id': this.current_prod_po_id,
                             'po_item_id': this.current_prod_po_item_id,
                             'product_id': this.current_prod_id,

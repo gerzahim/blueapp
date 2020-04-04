@@ -19,6 +19,8 @@ user1@gmail.com/12345678
 - report Filters
 
 ## pending Error 
+- created_at Stock
+- capital letter only works on Chrome
 - check rightjoin by join on ajaxcall
 - Select Product Return From Customer! fix message on create and update RMA
 - List Products added - fix message 

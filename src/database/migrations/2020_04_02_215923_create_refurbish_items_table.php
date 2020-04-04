@@ -19,7 +19,6 @@ class CreateRefurbishItemsTable extends Migration
             $table->integer('product_id');
             $table->integer('qty')->unsigned();
             $table->integer('purchases_id')->nullable();
-            $table->integer('rma_item_id')->nullable();
             $table->timestamps();
         });
     }

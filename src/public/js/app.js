@@ -3560,7 +3560,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["props_name", "props_contact_types", "props_clients", "props_vendors"],
+  props: ["props_name"],
   data: function data() {
     return {
       errors: [],
@@ -3594,7 +3594,6 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     dispatchAction: function dispatchAction(prodc) {
       this.current_prod_po_id = prodc.po_id;
-      this.current_prod_order_id = prodc.order_id;
       this.current_prod_po_item_id = prodc.po_item_id;
       this.current_prod_id = prodc.product_id;
       this.current_prod_name = prodc.name;
@@ -3713,7 +3712,6 @@ __webpack_require__.r(__webpack_exports__);
         if (getInfoArray[0] > 0) {
           variables.splice(product_array_key, 1);
           variables.push({
-            'order_id': this.current_prod_order_id,
             'po_id': this.current_prod_po_id,
             'po_item_id': this.current_prod_po_item_id,
             'product_id': this.current_prod_id,
@@ -3725,7 +3723,6 @@ __webpack_require__.r(__webpack_exports__);
           });
         } else {
           variables.push({
-            'order_id': this.current_prod_order_id,
             'po_id': this.current_prod_po_id,
             'po_item_id': this.current_prod_po_item_id,
             'product_id': this.current_prod_id,

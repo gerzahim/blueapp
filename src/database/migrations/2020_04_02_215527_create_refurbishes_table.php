@@ -16,11 +16,7 @@ class CreateRefurbishesTable extends Migration
         Schema::create('refurbishes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('name')->nullable();
-            $table->integer('contact_type_id');
-            $table->integer('contact_id');
             $table->integer('transaction_type_id');
-            $table->integer('courier_id')->nullable();
-            $table->string('tracking')->nullable();
             $table->date('date')->nullable();
             $table->string('reference')->nullable();
             $table->timestamps();

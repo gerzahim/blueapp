@@ -8,5 +8,5 @@ class Refurbishes extends Model
 {
     protected $table = 'refurbishes';
 
-    protected $fillable = [ 'name', 'contact_type_id', 'contact_id', 'courier_id', 'tracking', 'transaction_type_id', 'date', 'reference'];
+    protected $fillable = [ 'name', 'transaction_type_id', 'date', 'reference'];
 }
