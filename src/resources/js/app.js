@@ -43,8 +43,11 @@ import '../../public/css/vue-multiselect.css'
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 //Components for PO
+Vue.component('po-component', require('./components/po/poComponent.vue').default);
+/*
 Vue.component('createpo-component', require('./components/po/createPOComponent.vue').default);
 Vue.component('editpo-component', require('./components/po/editPOComponent.vue').default);
+*/
 
 //Components for Order
 Vue.component('createorder-component', require('./components/order/createOrderComponent.vue').default);

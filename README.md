@@ -9,22 +9,31 @@ Custom Inventory Management System HUAHAI
 user1@gmail.com/12345678
 
 ## TODO   
-- send refurbishment
+- send refurbishment on ( Create Order )
 - report Filters
 
 ## pending Error 
-- created_at Stock
+- replace ajax by props products[], vendors[], add loading_courier PO
+- remove no needed props                 v-bind:prop_purchase="'{{ null }}'"
+                                         v-bind:prop_products="'{{ null }}'"
+- remove $action = 'edit';                                         
+
 - capital letter only works on Chrome
+- 1565ewewe when create batch pass lowercase to list
+- fix Error Variable in components ( list Selected empty(right), (left) available 0 or 1 and try to insert 2, boom )
+  l5/public/js/inventory/vue/components/item_history.js
+- autovalidate if change **** 
+- created_at Stock
+ 
 - check rightjoin by join on ajaxcall
 - Select Product Return From Customer! fix message on create and update RMA
 - List Products added - fix message 
-- 1565ewewe when create batch pass lowercase to list 
+
 - remove Reset Button    
 - add loading to PO
 - add loading to Order
 - PO show
-- fix Error Variable in components ( list Selected empty(right), (left) available 0 or 1 and try to insert 2, boom )
-  l5/public/js/inventory/vue/components/item_history.js
+
 
 ## Improves
 - Auto validate after change input 

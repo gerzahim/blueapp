@@ -54,7 +54,12 @@ class PurchaseController extends Controller
         $products = Product::all();
         $couriers = Courier::all();
 
-        return view('purchases.create', compact('vendors','products','couriers'));
+        $products_po =
+
+        //return view('purchases.create', compact('vendors','products','couriers'));
+        $action = 'edit';
+
+        return view('purchases.create', compact('vendors','products','couriers', 'purchase', 'products_po'));
     }
 
 
@@ -160,6 +165,7 @@ class PurchaseController extends Controller
         $vendors  = Vendor::all();
         $products = Product::all();
         $couriers = Courier::all();
+        $action = 'edit';
 
         return view('purchases.edit', compact('vendors','products','couriers', 'purchase', 'products_po'));
 

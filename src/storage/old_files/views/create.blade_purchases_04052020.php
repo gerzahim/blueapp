@@ -12,7 +12,7 @@
                 <nav class="breadcrumb">
                     <a class="breadcrumb-item" href="{{ url('/') }}">Home</a>
                     <a class="breadcrumb-item" href="{{ route('purchases.index') }}">PO list</a>
-                    <span class="breadcrumb-item active">Edit PO</span>
+                    <span class="breadcrumb-item active">Create PO</span>
                 </nav>
             </div>
         </div>
@@ -35,7 +35,7 @@
                         <div class="float-right">
                             <a href="{{ route('purchases.index') }}" class="btn btn-primary btn-sm">Back to PO list</a>
                         </div>
-                        Edit PO
+                        Create PO
                     </div>
                     <div class="card-body">
 
@@ -51,11 +51,7 @@
                             </ul>
                         </div>
                         @endif
-                        <editpo-component
-                            v-bind:prop_action="'{{ null }}'"
-                            v-bind:prop_purchase="'{{ null }}'"
-                            v-bind:prop_products="'{{ null }}'"
-                        ></editpo-component>
+                        <createpo-component></createpo-component>
                     </div>
                 </div>
             </div>

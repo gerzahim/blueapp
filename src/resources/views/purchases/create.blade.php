@@ -29,7 +29,7 @@
     <div class="container-fluid">
 
         <div class="row">
-            <div class="col-md-8 m-auto">
+            <div class="col-md-10 m-auto">
                 <div class="card">
                     <div class="card-header">
                         <div class="float-right">
@@ -51,7 +51,10 @@
                             </ul>
                         </div>
                         @endif
-                        <createpo-component></createpo-component>
+                            <po-component
+                                v-bind:prop_purchase="'{{ null }}'"
+                                v-bind:prop_products="'{{ null }}'"
+                            ></po-component>
                     </div>
                 </div>
             </div>
