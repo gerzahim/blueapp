@@ -9,7 +9,7 @@
 - [ ] messages new Trait
 - [ ] prepare Data for Insert, Create in Trait
 - [ ] Refactor PurchaseController
-- [ ] ResponseController new Class
+- [ ] ResponseController new Class  php artisan make:controller ResponseController
    
 - Refactor -- formatPadString in Trait
 - show PO 

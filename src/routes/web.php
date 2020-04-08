@@ -50,11 +50,11 @@ Route::get('/products_sorted', 'ProductController@sortedByName');
 
 
 /** JSON RESPONSE  **/
-Route::get('/get_products', 'PurchaseController@getProductsbyAjax');
-Route::get('/get_vendors', 'PurchaseController@getVendorsbyAjax');
-Route::get('/get_clients', 'PurchaseController@getClientsbyAjax');
-Route::get('/get_clientsDT', 'PurchaseController@getClientsDT');
-Route::get('/get_couriers', 'PurchaseController@getCouriersbyAjax');
+Route::get('/get_products', 'ResponseController@getProductsbyAjax');
+Route::get('/get_vendors', 'ResponseController@getVendorsbyAjax');
+Route::get('/get_clients', 'ResponseController@getClientsbyAjax');
+Route::get('/get_clientsDT', 'ResponseController@getClientsDT');
+Route::get('/get_couriers', 'ResponseController@getCouriersbyAjax');
 Route::get('/get_rmas', 'RMAController@getRMAItemsbyAjax');
 
 
