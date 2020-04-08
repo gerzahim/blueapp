@@ -26,14 +26,19 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group-po">
-                            <label class="mb-0"><small>Supplier</small></label>
-                            <select id="vendor_id" name="vendor_id" class="form-control form-control-sm" v-bind:class="[ errors.vendor ? 'is-invalid' : '']" v-model="form_vendor_id" @change="validateVendor">
-                                <option value="0" disabled selected>Select Supplier</option>
-                                <option v-for="vendor in vendors" :value="vendor.id" :key="vendor.id">
-                                    {{ vendor.name }}
-                                </option>
-                            </select>
-                            <div v-show="errors.vendor" class="invalid-feedback">Please Select a Supplier!</div>
+                            <div class="spinner-border text-success" role="status" v-show="loading_vendors">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <div v-show="!loading_vendors">
+                                <label class="mb-0"><small>Supplier</small></label>
+                                <select id="vendor_id" name="vendor_id" class="form-control form-control-sm" v-bind:class="[ errors.vendor ? 'is-invalid' : '']" v-model="form_vendor_id" @change="validateVendor">
+                                    <option value="0" disabled selected>Select Supplier</option>
+                                    <option v-for="vendor in vendors" :value="vendor.id" :key="vendor.id">
+                                        {{ vendor.name }}
+                                    </option>
+                                </select>
+                                <div v-show="errors.vendor" class="invalid-feedback">Please Select a Supplier!</div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -46,13 +51,18 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group-po">
-                            <label class="mb-0"><small>Courier</small></label>
-                            <select id="courier_id" name="courier_id" class="form-control form-control-sm" v-model="form_courier_id">
-                                <option value="0" disabled selected>Select Courier</option>
-                                <option v-for="courier in couriers" :value="courier.id" :key="courier.id">
-                                    {{ courier.name }}
-                                </option>
-                            </select>
+                            <div class="spinner-border text-success" role="status" v-show="loading_couriers">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <div v-show="!loading_couriers">
+                                <label class="mb-0"><small>Courier</small></label>
+                                <select id="courier_id" name="courier_id" class="form-control form-control-sm" v-model="form_courier_id">
+                                    <option value="0" disabled selected>Select Courier</option>
+                                    <option v-for="courier in couriers" :value="courier.id" :key="courier.id">
+                                        {{ courier.name }}
+                                    </option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -80,7 +90,10 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group-po">
-                            <div class="card border-success pb-1 mb-2 mt-2">
+                            <div class="spinner-border text-success" role="status" v-show="loading_products">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <div class="card border-success pb-1 mb-2 mt-2" v-show="!loading_products">
                                 <div class="card-header bg-success pb-0 pt-1">
                                     <h6 class="mb-1 mt-1 text-white text-sm-left">Add Products to PO</h6>
                                 </div>
@@ -132,14 +145,14 @@
                             <input type="hidden" name="vars" :value="JSON.stringify(vars)">
                             <ul class="list-group list-group-full">
                                 <li v-for="(variable, key) in vars" :key="key" class="list-group-item">
-                                    <div class="row pr-1" style="height: 25px;">
+                                    <div class="row pr-1">
                                         <div class="col-7 align-middle pl-2 px-1">
                                             {{variable.product_name}}
                                             <span class="badge badge-primary badge-pill"><b>{{variable.qty}}</b></span>
                                         </div>
                                         <div class="col-4 align-middle px-1">
                                             <h4>
-                                                <span class="badge badge-secondary">{{variable.batch_number}}</span>
+                                                <span class="badge badge-secondary px-1">{{variable.batch_number}}</span>
                                             </h4>
                                         </div>
                                         <div class="col-1 align-middle text-center px-1">
@@ -171,11 +184,14 @@
 
 <script>
     export default {
-        props: ["prop_purchase", "prop_products", "prop_action"],
+        props: ["props_action", "props_products_edit", "props_purchase_edit"],
         data: function () {
             return {
                 csrf: document.head.querySelector('meta[name="csrf-token"]').content,
                 action_edit: false,
+                loading_products: false,
+                loading_vendors: false,
+                loading_couriers: false,
                 // var form
                 form_id: '',
                 form_name: null,
@@ -195,7 +211,7 @@
                 errors: {
                     name :false,
                     date : false,
-                    vendor_id :false,
+                    vendor :false,
                     vars :false,
                 },
                 errors_adder: {
@@ -207,6 +223,7 @@
                 vendors: [],
                 couriers: [],
                 vars: [],
+                purchase: [],
             }
         },
         watch: {
@@ -216,11 +233,10 @@
         },
         computed: {
             computedAction: function() {
-                if(this.prop_action === 'edit'){
-                    this.action_edit = true
+                if(this.action_edit){
                     return `/purchases/${this.form_id}`
                 }
-                // form action create
+                // form action_create
                 return `/purchases`
             },
         },
@@ -232,7 +248,7 @@
                 this.areProductsSelected()
 
                 if (this.errors.name || this.errors.date || this.errors.vendor || this.errors.vars) { //Put here the condition you want
-                    e.preventDefault(); // Here triggering stops
+                    e.preventDefault(); // Here triggering stop submit action
                     // Here you can put code relevant when event stops;
                     toastr.error('Form is Not Good!', 'Error Alert', {timeOut: 5000})
                     return;
@@ -307,9 +323,9 @@
                     let product_array_key = getInfoArray[1]
                     if (getInfoArray[0] > 0){
                         variables.splice(product_array_key,1)
-                        variables.push({'product_id': this.product_selected.id,'product_name': this.product_selected.name, 'qty': parseInt(this.qty)+parseInt(previousQty), 'batch_number': this.batch_number})
+                        variables.push({'product_id': this.product_selected.id,'product_name': this.product_selected.name, 'qty': parseInt(this.qty)+parseInt(previousQty), 'batch_number': this.batch_number.toUpperCase()})
                     }else {
-                        variables.push({'product_id': this.product_selected.id,'product_name': this.product_selected.name, 'qty': this.qty, 'batch_number': this.batch_number})
+                        variables.push({'product_id': this.product_selected.id,'product_name': this.product_selected.name, 'qty': this.qty, 'batch_number': this.batch_number.toUpperCase()})
                     }
                 }
                 this.areProductsSelected()
@@ -318,59 +334,59 @@
 
             //Methods for Ajax
             fetchProducts() {
-                axios
-                    .get('/get_products')
+                this.loading_products = true
+                axios.get('/get_products')
                     .then(response => {
+                        this.loading_products = false
                         this.products = response.data.products
                     })
             },
             fetchVendors() {
-                axios
-                    .get('/get_vendors')
-                    .then(response => {
+                this.loading_vendors = true
+                axios.get('/get_vendors')
+                     .then(response => {
                         this.vendors = response.data.vendors
+                        this.loading_vendors = false
                     })
             },
             fetchCouries() {
-                axios
-                    .get('/get_couriers')
+                this.loading_couriers = true
+                axios.get('/get_couriers')
                     .then(response => {
                         this.couriers = response.data.couriers
+                        this.loading_couriers = false
                     })
             },
-            fetchClients() {
-                axios
-                    .get('/get_clients')
-                    .then(response => {
-                        this.clients = response.data.clients
-                    })
-            }
         },
         created() {
             this.fetchProducts()
             this.fetchVendors()
             this.fetchCouries()
-            this.fetchClients()
-            console.log(this.prop_products,this.prop_products)
-            console.warn(this.prop_products,this.prop_products)
-            if(this.prop_products){
-                console.log('enter here')
-                this.vars = JSON.parse(this.prop_products);
+            //this.vendors = this.props_vendors
+            //this.products = this.props_products
+
+            if (this.props_action){
+                this.action_edit = true
             }
 
-            if(this.prop_purchase){
-                console.log('enter here 2 ')
-                let purchase;
-                this.purchase = JSON.parse(this.prop_purchase);
-                this.form_id = purchase.id
-                this.form_name = purchase.name
-                this.form_date = purchase.date
-                this.form_vendor_id = purchase.vendor_id
-                this.form_courier_id = purchase.courier_id
-                this.form_tracking = purchase.tracking
-                this.form_bol = purchase.bol
-                this.form_package_list = purchase.package_list
-                this.form_reference = purchase.reference
+            if(this.props_products_edit){
+                console.log('enter here')
+                this.vars = JSON.parse(this.props_products_edit);
+            }
+
+            if(this.props_purchase_edit){
+
+                this.purchase = JSON.parse(this.props_purchase_edit);
+                console.log('enter here 2 ', this.purchase)
+                this.form_id = this.purchase.id
+                this.form_name = this.purchase.name
+                this.form_date = this.purchase.date
+                this.form_vendor_id = this.purchase.contact_id
+                this.form_courier_id = this.purchase.courier_id
+                this.form_tracking = this.purchase.tracking
+                this.form_bol = this.purchase.bol
+                this.form_package_list = this.purchase.package_list
+                this.form_reference = this.purchase.reference
             }
         }
     }

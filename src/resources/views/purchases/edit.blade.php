@@ -29,7 +29,7 @@
     <div class="container-fluid">
 
         <div class="row">
-            <div class="col-md-8 m-auto">
+            <div class="col-md-10 m-auto">
                 <div class="card">
                     <div class="card-header">
                         <div class="float-right">
@@ -51,11 +51,11 @@
                             </ul>
                         </div>
                         @endif
-                        <editpo-component
-                            v-bind:prop_action="'{{ null }}'"
-                            v-bind:prop_purchase="'{{ null }}'"
-                            v-bind:prop_products="'{{ null }}'"
-                        ></editpo-component>
+                        <po-component
+                            v-bind:props_action="'{{ $form_action }}'"
+                            v-bind:props_purchase_edit="'{{ $purchase }}'"
+                            v-bind:props_products_edit="'{{ $products_po }}'"
+                        ></po-component>
                     </div>
                 </div>
             </div>

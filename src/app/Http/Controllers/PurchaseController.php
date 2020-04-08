@@ -19,10 +19,17 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Traits\MessagesValidationTrait;
+use App\Http\Traits\RulesValidationTrait;
+use App\Http\Traits\DataFormTrait;
 
 
 class PurchaseController extends Controller
 {
+    use MessagesValidationTrait;
+    use RulesValidationTrait;
+    use DataFormTrait;
+
     /**
      * Create a new controller instance.
      *
@@ -50,16 +57,7 @@ class PurchaseController extends Controller
      */
     public function create()
     {
-        $vendors = Vendor::all();
-        $products = Product::all();
-        $couriers = Courier::all();
-
-        $products_po =
-
-        //return view('purchases.create', compact('vendors','products','couriers'));
-        $action = 'edit';
-
-        return view('purchases.create', compact('vendors','products','couriers', 'purchase', 'products_po'));
+        return view('purchases.create');
     }
 
 
@@ -71,54 +69,28 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
+        // Validation Form
+        $messages = $this->getMessagesValidationPO();
+        $rules    = $this->getRulesValidationPO($request, false);
+        $this->validate($request, $rules, $messages);
 
-        $messages = [
-            'name.unique'    => 'The PO Name attribute has already been taken.',
-            'transaction_type_id.required'    => 'The Transaction Type must be Selected.',
-            'vendor_id.required' => 'Must Select a Supplier',
-        ];
-
-        $this->validate($request, [
-            'name'                => 'required|unique:purchases|max:50',
-            'transaction_type_id' => 'required',
-            'vendor_id'           => 'required'
-        ], $messages);
-
-        $time_now     = date('Y-m-d H:i:s');
-
-        $purchases = Purchases::create([
-            'name'                => $request->name,
-            'contact_type_id'     => 1,
-            'contact_id'          => $request->vendor_id,
-            'courier_id'          => $request->courier_id,
-            'tracking'            => $request->tracking,
-            'transaction_type_id' => $request->transaction_type_id,
-            'bol'                 => $request->bol,
-            'package_list'        => $request->package_list,
-            'reference'           => $request->reference,
-            'created_at'          => $time_now,
-            'updated_at'          => $time_now
-        ]);
-
+        // Insert Data Purchase
+        $data_form = $this->setDataPurchase($request);
+        $purchases = Purchases::create($data_form);
         $lastInsertedId= $purchases->id;
 
+        //Insert Purchase Items
         if($purchases){
             $purchases_id = $lastInsertedId;
 
             $po_lines = json_decode($request->vars);
             foreach ($po_lines as $po_line )
             {
-                $data_po = array(
-                    'purchases_id' => $purchases_id,
-                    'product_id'   => $po_line->product_id,
-                    'qty'          => $po_line->qty,
-                    'batch_number' => $po_line->batch_number,
-                    'created_at'   => $time_now,
-                    'updated_at'   => $time_now
-                );
+                $data_form_items = $this->setDataPurchaseItems($purchases_id, $po_line);
+
                 // Insert PO Items Associated to PO
-                $purchases_item = PurchasesItem::create($data_po);
-                $lastInsertedId = $purchases_item->id;
+                $purchases_item    = PurchasesItem::create($data_form_items);
+                $lastInsertedId    = $purchases_item->id;
                 $purchases_item_id = $lastInsertedId;
 
                 // Saving Stock
@@ -150,6 +122,8 @@ class PurchaseController extends Controller
 
     public function editPurchase($id)
     {
+        $form_action = 'edit';
+
         $purchase = Purchases::where('id',$id)->first();
 
         $po_lines  = PurchasesItem::where('purchases_id',$id)->get();
@@ -159,15 +133,9 @@ class PurchaseController extends Controller
             $po_line->name  = Product::where('id', $po_line->product_id)->first()->name;
             $products_pos[] = array('product_id' => $po_line->product_id, 'product_name' => $po_line->name, 'qty' => $po_line->qty, 'batch_number' => $po_line->batch_number);
         }
-
         $products_po = json_encode($products_pos, true);
 
-        $vendors  = Vendor::all();
-        $products = Product::all();
-        $couriers = Courier::all();
-        $action = 'edit';
-
-        return view('purchases.edit', compact('vendors','products','couriers', 'purchase', 'products_po'));
+        return view('purchases.edit', compact('form_action', 'purchase', 'products_po'));
 
     }
 
@@ -180,16 +148,8 @@ class PurchaseController extends Controller
      */
     public function update(Request $request, Purchases $purchases)
     {
-        $rules = [
-            'name'                => 'required|max:50|unique:purchases,name,'.$request->id,
-            'transaction_type_id' => 'required',
-            'vendor_id'           => 'required'
-        ];
-        $messages = [
-            'name.unique'                     => 'The PO Name attribute has already been taken.',
-            'transaction_type_id.required'    => 'The Transaction Type must be Selected.',
-            'vendor_id.required'              => 'Must Select a Supplier',
-        ];
+        $messages = $this->getMessagesValidationPO();
+        $rules    = $this->getRulesValidationPO($request, true);
 
         $validator = Validator::make($request->all(), $rules, $messages);
 
@@ -199,24 +159,10 @@ class PurchaseController extends Controller
                 ->withInput();
         }
 
-
-        $time_now     = date('Y-m-d H:i:s');
-
-        $data = array(
-            'name'                => $request->name,
-            'contact_type_id'     => 1,
-            'contact_id'          => $request->vendor_id,
-            'courier_id'          => $request->courier_id,
-            'tracking'            => $request->tracking,
-            'transaction_type_id' => $request->transaction_type_id,
-            'bol'                 => $request->bol,
-            'package_list'        => $request->package_list,
-            'reference'           => $request->reference,
-            'updated_at'          => $time_now
-        );
+        $data_form = $this->setDataPurchase($request);
 
         $purchases = Purchases::find($request->id);
-        $purchases->fill($data)->save();
+        $purchases->fill($data_form)->save();
 
         $po_lines = json_decode($request->vars);
 
@@ -225,17 +171,10 @@ class PurchaseController extends Controller
 
         foreach ($po_lines as $po_line )
         {
-            $data_po = array(
-                'purchases_id' => $request->id,
-                'product_id'   => $po_line->product_id,
-                'qty'          => $po_line->qty,
-                'batch_number' => $po_line->batch_number,
-                'created_at'   => $time_now,
-                'updated_at'   => $time_now
-            );
+            $data_form_items = $this->setDataPurchaseItems($request->id, $po_line);
 
             // Insert PO Items Associated to PO
-            $purchases_item    = PurchasesItem::create($data_po);
+            $purchases_item    = PurchasesItem::create($data_form_items);
             $lastInsertedId    = $purchases_item->id;
             $purchases_item_id = $lastInsertedId;
 

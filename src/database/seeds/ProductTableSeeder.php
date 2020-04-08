@@ -12,10 +12,10 @@ class ProductTableSeeder extends Seeder
      */
     public function run(Generator $faker)
     {
-    	foreach (range(1,200) as $index) {
+    	foreach (range(1,2000) as $index) {
 	        DB::table('products')->insert([
-                'name' => $faker->numerify('Product ######'),
-                'code' => $faker->numerify('sku_######'),
+                'name' => $faker->numerify('Product #############'),
+                'code' => $faker->numerify('sku_##############'),
                 'dimensions_id' => $faker->randomDigit(),
                 'category_id' => $faker->randomDigit()
 	        ]);

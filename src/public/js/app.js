@@ -2895,12 +2895,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["prop_purchase", "prop_products", "prop_action"],
+  props: ["props_action", "props_products_edit", "props_purchase_edit"],
   data: function data() {
     return {
       csrf: document.head.querySelector('meta[name="csrf-token"]').content,
       action_edit: false,
+      loading_products: false,
+      loading_vendors: false,
+      loading_couriers: false,
       // var form
       form_id: '',
       form_name: null,
@@ -2920,7 +2936,7 @@ __webpack_require__.r(__webpack_exports__);
       errors: {
         name: false,
         date: false,
-        vendor_id: false,
+        vendor: false,
         vars: false
       },
       errors_adder: {
@@ -2930,7 +2946,8 @@ __webpack_require__.r(__webpack_exports__);
       products: [],
       vendors: [],
       couriers: [],
-      vars: []
+      vars: [],
+      purchase: []
     };
   },
   watch: {
@@ -2940,10 +2957,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     computedAction: function computedAction() {
-      if (this.prop_action === 'edit') {
-        this.action_edit = true;
+      if (this.action_edit) {
         return "/purchases/".concat(this.form_id);
-      } // form action create
+      } // form action_create
 
 
       return "/purchases";
@@ -2958,7 +2974,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.errors.name || this.errors.date || this.errors.vendor || this.errors.vars) {
         //Put here the condition you want
-        e.preventDefault(); // Here triggering stops
+        e.preventDefault(); // Here triggering stop submit action
         // Here you can put code relevant when event stops;
 
         toastr.error('Form is Not Good!', 'Error Alert', {
@@ -3044,14 +3060,14 @@ __webpack_require__.r(__webpack_exports__);
             'product_id': this.product_selected.id,
             'product_name': this.product_selected.name,
             'qty': parseInt(this.qty) + parseInt(previousQty),
-            'batch_number': this.batch_number
+            'batch_number': this.batch_number.toUpperCase()
           });
         } else {
           variables.push({
             'product_id': this.product_selected.id,
             'product_name': this.product_selected.name,
             'qty': this.qty,
-            'batch_number': this.batch_number
+            'batch_number': this.batch_number.toUpperCase()
           });
         }
       }
@@ -3063,58 +3079,58 @@ __webpack_require__.r(__webpack_exports__);
     fetchProducts: function fetchProducts() {
       var _this = this;
 
+      this.loading_products = true;
       axios.get('/get_products').then(function (response) {
+        _this.loading_products = false;
         _this.products = response.data.products;
       });
     },
     fetchVendors: function fetchVendors() {
       var _this2 = this;
 
+      this.loading_vendors = true;
       axios.get('/get_vendors').then(function (response) {
         _this2.vendors = response.data.vendors;
+        _this2.loading_vendors = false;
       });
     },
     fetchCouries: function fetchCouries() {
       var _this3 = this;
 
+      this.loading_couriers = true;
       axios.get('/get_couriers').then(function (response) {
         _this3.couriers = response.data.couriers;
-      });
-    },
-    fetchClients: function fetchClients() {
-      var _this4 = this;
-
-      axios.get('/get_clients').then(function (response) {
-        _this4.clients = response.data.clients;
+        _this3.loading_couriers = false;
       });
     }
   },
   created: function created() {
     this.fetchProducts();
     this.fetchVendors();
-    this.fetchCouries();
-    this.fetchClients();
-    console.log(this.prop_products, this.prop_products);
-    console.warn(this.prop_products, this.prop_products);
+    this.fetchCouries(); //this.vendors = this.props_vendors
+    //this.products = this.props_products
 
-    if (this.prop_products) {
-      console.log('enter here');
-      this.vars = JSON.parse(this.prop_products);
+    if (this.props_action) {
+      this.action_edit = true;
     }
 
-    if (this.prop_purchase) {
-      console.log('enter here 2 ');
-      var purchase;
-      this.purchase = JSON.parse(this.prop_purchase);
-      this.form_id = purchase.id;
-      this.form_name = purchase.name;
-      this.form_date = purchase.date;
-      this.form_vendor_id = purchase.vendor_id;
-      this.form_courier_id = purchase.courier_id;
-      this.form_tracking = purchase.tracking;
-      this.form_bol = purchase.bol;
-      this.form_package_list = purchase.package_list;
-      this.form_reference = purchase.reference;
+    if (this.props_products_edit) {
+      console.log('enter here');
+      this.vars = JSON.parse(this.props_products_edit);
+    }
+
+    if (this.props_purchase_edit) {
+      this.purchase = JSON.parse(this.props_purchase_edit);
+      console.log('enter here 2 ', this.purchase);
+      this.form_id = this.purchase.id;
+      this.form_name = this.purchase.name;
+      this.form_date = this.purchase.date;
+      this.form_vendor_id = this.purchase.contact_id;
+      this.form_courier_id = this.purchase.courier_id;
+      this.form_tracking = this.purchase.tracking;
+      this.form_bol = this.purchase.bol;
+      this.form_package_list = this.purchase.package_list;
+      this.form_reference = this.purchase.reference;
     }
   }
 });
@@ -80303,63 +80319,25 @@ var render = function() {
           _c("div", { staticClass: "row" }, [
             _c("div", { staticClass: "col-md-6" }, [
               _c("div", { staticClass: "form-group-po" }, [
-                _vm._m(2),
-                _vm._v(" "),
                 _c(
-                  "select",
+                  "div",
                   {
                     directives: [
                       {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.form_vendor_id,
-                        expression: "form_vendor_id"
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.loading_vendors,
+                        expression: "loading_vendors"
                       }
                     ],
-                    staticClass: "form-control form-control-sm",
-                    class: [_vm.errors.vendor ? "is-invalid" : ""],
-                    attrs: { id: "vendor_id", name: "vendor_id" },
-                    on: {
-                      change: [
-                        function($event) {
-                          var $$selectedVal = Array.prototype.filter
-                            .call($event.target.options, function(o) {
-                              return o.selected
-                            })
-                            .map(function(o) {
-                              var val = "_value" in o ? o._value : o.value
-                              return val
-                            })
-                          _vm.form_vendor_id = $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        },
-                        _vm.validateVendor
-                      ]
-                    }
+                    staticClass: "spinner-border text-success",
+                    attrs: { role: "status" }
                   },
                   [
-                    _c(
-                      "option",
-                      { attrs: { value: "0", disabled: "", selected: "" } },
-                      [_vm._v("Select Supplier")]
-                    ),
-                    _vm._v(" "),
-                    _vm._l(_vm.vendors, function(vendor) {
-                      return _c(
-                        "option",
-                        { key: vendor.id, domProps: { value: vendor.id } },
-                        [
-                          _vm._v(
-                            "\n                                " +
-                              _vm._s(vendor.name) +
-                              "\n                            "
-                          )
-                        ]
-                      )
-                    })
-                  ],
-                  2
+                    _c("span", { staticClass: "sr-only" }, [
+                      _vm._v("Loading...")
+                    ])
+                  ]
                 ),
                 _vm._v(" "),
                 _c(
@@ -80369,13 +80347,87 @@ var render = function() {
                       {
                         name: "show",
                         rawName: "v-show",
-                        value: _vm.errors.vendor,
-                        expression: "errors.vendor"
+                        value: !_vm.loading_vendors,
+                        expression: "!loading_vendors"
                       }
-                    ],
-                    staticClass: "invalid-feedback"
+                    ]
                   },
-                  [_vm._v("Please Select a Supplier!")]
+                  [
+                    _vm._m(2),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form_vendor_id,
+                            expression: "form_vendor_id"
+                          }
+                        ],
+                        staticClass: "form-control form-control-sm",
+                        class: [_vm.errors.vendor ? "is-invalid" : ""],
+                        attrs: { id: "vendor_id", name: "vendor_id" },
+                        on: {
+                          change: [
+                            function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.form_vendor_id = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            },
+                            _vm.validateVendor
+                          ]
+                        }
+                      },
+                      [
+                        _c(
+                          "option",
+                          { attrs: { value: "0", disabled: "", selected: "" } },
+                          [_vm._v("Select Supplier")]
+                        ),
+                        _vm._v(" "),
+                        _vm._l(_vm.vendors, function(vendor) {
+                          return _c(
+                            "option",
+                            { key: vendor.id, domProps: { value: vendor.id } },
+                            [
+                              _vm._v(
+                                "\n                                    " +
+                                  _vm._s(vendor.name) +
+                                  "\n                                "
+                              )
+                            ]
+                          )
+                        })
+                      ],
+                      2
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.errors.vendor,
+                            expression: "errors.vendor"
+                          }
+                        ],
+                        staticClass: "invalid-feedback"
+                      },
+                      [_vm._v("Please Select a Supplier!")]
+                    )
+                  ]
                 )
               ])
             ]),
@@ -80417,59 +80469,98 @@ var render = function() {
           _c("div", { staticClass: "row" }, [
             _c("div", { staticClass: "col-md-6" }, [
               _c("div", { staticClass: "form-group-po" }, [
-                _vm._m(4),
-                _vm._v(" "),
                 _c(
-                  "select",
+                  "div",
                   {
                     directives: [
                       {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.form_courier_id,
-                        expression: "form_courier_id"
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.loading_couriers,
+                        expression: "loading_couriers"
                       }
                     ],
-                    staticClass: "form-control form-control-sm",
-                    attrs: { id: "courier_id", name: "courier_id" },
-                    on: {
-                      change: function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.form_courier_id = $event.target.multiple
-                          ? $$selectedVal
-                          : $$selectedVal[0]
-                      }
-                    }
+                    staticClass: "spinner-border text-success",
+                    attrs: { role: "status" }
                   },
                   [
-                    _c(
-                      "option",
-                      { attrs: { value: "0", disabled: "", selected: "" } },
-                      [_vm._v("Select Courier")]
-                    ),
+                    _c("span", { staticClass: "sr-only" }, [
+                      _vm._v("Loading...")
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: !_vm.loading_couriers,
+                        expression: "!loading_couriers"
+                      }
+                    ]
+                  },
+                  [
+                    _vm._m(4),
                     _vm._v(" "),
-                    _vm._l(_vm.couriers, function(courier) {
-                      return _c(
-                        "option",
-                        { key: courier.id, domProps: { value: courier.id } },
-                        [
-                          _vm._v(
-                            "\n                                " +
-                              _vm._s(courier.name) +
-                              "\n                            "
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.form_courier_id,
+                            expression: "form_courier_id"
+                          }
+                        ],
+                        staticClass: "form-control form-control-sm",
+                        attrs: { id: "courier_id", name: "courier_id" },
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.form_courier_id = $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          }
+                        }
+                      },
+                      [
+                        _c(
+                          "option",
+                          { attrs: { value: "0", disabled: "", selected: "" } },
+                          [_vm._v("Select Courier")]
+                        ),
+                        _vm._v(" "),
+                        _vm._l(_vm.couriers, function(courier) {
+                          return _c(
+                            "option",
+                            {
+                              key: courier.id,
+                              domProps: { value: courier.id }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                    " +
+                                  _vm._s(courier.name) +
+                                  "\n                                "
+                              )
+                            ]
                           )
-                        ]
-                      )
-                    })
-                  ],
-                  2
+                        })
+                      ],
+                      2
+                    )
+                  ]
                 )
               ])
             ]),
@@ -80582,7 +80673,38 @@ var render = function() {
               _c("div", { staticClass: "form-group-po" }, [
                 _c(
                   "div",
-                  { staticClass: "card border-success pb-1 mb-2 mt-2" },
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.loading_products,
+                        expression: "loading_products"
+                      }
+                    ],
+                    staticClass: "spinner-border text-success",
+                    attrs: { role: "status" }
+                  },
+                  [
+                    _c("span", { staticClass: "sr-only" }, [
+                      _vm._v("Loading...")
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: !_vm.loading_products,
+                        expression: "!loading_products"
+                      }
+                    ],
+                    staticClass: "card border-success pb-1 mb-2 mt-2"
+                  },
                   [
                     _vm._m(8),
                     _vm._v(" "),
@@ -80812,70 +80934,61 @@ var render = function() {
                       "li",
                       { key: key, staticClass: "list-group-item" },
                       [
-                        _c(
-                          "div",
-                          {
-                            staticClass: "row pr-1",
-                            staticStyle: { height: "25px" }
-                          },
-                          [
-                            _c(
-                              "div",
-                              { staticClass: "col-7 align-middle pl-2 px-1" },
-                              [
-                                _vm._v(
-                                  "\n                                        " +
-                                    _vm._s(variable.product_name) +
-                                    "\n                                        "
-                                ),
+                        _c("div", { staticClass: "row pr-1" }, [
+                          _c(
+                            "div",
+                            { staticClass: "col-7 align-middle pl-2 px-1" },
+                            [
+                              _vm._v(
+                                "\n                                        " +
+                                  _vm._s(variable.product_name) +
+                                  "\n                                        "
+                              ),
+                              _c(
+                                "span",
+                                {
+                                  staticClass: "badge badge-primary badge-pill"
+                                },
+                                [_c("b", [_vm._v(_vm._s(variable.qty))])]
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "col-4 align-middle px-1" },
+                            [
+                              _c("h4", [
                                 _c(
                                   "span",
-                                  {
-                                    staticClass:
-                                      "badge badge-primary badge-pill"
-                                  },
-                                  [_c("b", [_vm._v(_vm._s(variable.qty))])]
+                                  { staticClass: "badge badge-secondary px-1" },
+                                  [_vm._v(_vm._s(variable.batch_number))]
                                 )
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "col-4 align-middle px-1" },
-                              [
-                                _c("h4", [
-                                  _c(
-                                    "span",
-                                    { staticClass: "badge badge-secondary" },
-                                    [_vm._v(_vm._s(variable.batch_number))]
-                                  )
-                                ])
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "col-1 align-middle text-center px-1"
-                              },
-                              [
-                                _c(
-                                  "a",
-                                  {
-                                    attrs: { href: "#" },
-                                    on: {
-                                      click: function($event) {
-                                        return _vm.$delete(_vm.vars, key)
-                                      }
+                              ])
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "col-1 align-middle text-center px-1"
+                            },
+                            [
+                              _c(
+                                "a",
+                                {
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.$delete(_vm.vars, key)
                                     }
-                                  },
-                                  [_vm._m(14, true)]
-                                )
-                              ]
-                            )
-                          ]
-                        )
+                                  }
+                                },
+                                [_vm._m(14, true)]
+                              )
+                            ]
+                          )
+                        ])
                       ]
                     )
                   }),

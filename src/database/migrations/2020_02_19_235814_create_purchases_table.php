@@ -24,6 +24,7 @@ class CreatePurchasesTable extends Migration
             $table->integer('transaction_type_id');
             $table->string('bol')->nullable();
             $table->string('package_list')->nullable();
+            $table->date('date')->nullable();
             $table->string('reference')->nullable();
             $table->timestamps();
         });

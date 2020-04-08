@@ -51,10 +51,7 @@
                             </ul>
                         </div>
                         @endif
-                            <po-component
-                                v-bind:prop_purchase="'{{ null }}'"
-                                v-bind:prop_products="'{{ null }}'"
-                            ></po-component>
+                            <po-component></po-component>
                     </div>
                 </div>
             </div>
