@@ -29,6 +29,12 @@ trait DataFormTrait {
         return $data;
     }
 
+    /**
+     *
+     * @param $purchases_id
+     * @param $po_line
+     * @return array
+     */
     public function setDataPurchaseItems($purchases_id, $po_line){
         $data = [
             'purchases_id' => $purchases_id,
@@ -40,4 +46,50 @@ trait DataFormTrait {
         ];
         return $data;
     }
+
+
+    // Orders
+
+    /**
+     * @param Request $request
+     * @param bool $is_update
+     * @return array
+     */
+    public function setDataOrder( Request $request, $is_update = false){
+
+        $data = [
+            'name'                => $request->name,
+            'client_id'           => $request->client_id,
+            'courier_id'          => $request->courier_id,
+            'tracking'            => $request->tracking,
+            'transaction_type_id' => $request->transaction_type_id,
+            'date'                => $request->date,
+            'reference'           => $request->reference,
+            'created_at'          => $this->getTime(),
+            'updated_at'          => $this->getTime()
+        ];
+        if ($is_update) {
+            unset($data['name']);
+        }
+        return $data;
+    }
+
+    /**
+     *
+     * @param $purchases_id
+     * @param $po_line
+     * @return array
+     */
+    public function setDataOrderItems($order_id, $order_line){
+        return [
+            'order_id'     => $order_id,
+            'purchases_id' => $order_line->po_item_id,
+            'qty'          => $order_line->qty,
+            'created_at'   => $this->getTime(),
+            'updated_at'   => $this->getTime()
+        ];
+    }
+
+
+
 }

@@ -21,7 +21,10 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('/', 'HomeController');
 Route::resource('post', 'PostController');
-
+Route::get('/getsample', 'HomeController@getSample');
+Route::get('/borrow', 'HomeController@getUnderConstruction');
+Route::get('/lend', 'HomeController@getUnderConstruction');
+Route::get('/refurbishment', 'HomeController@getUnderConstruction');
 
 
 Route::resource('category', 'CategoryController');
@@ -31,7 +34,6 @@ Route::resource('client', 'ClientController');
 Route::resource('vendor', 'VendorController');
 Route::resource('rma', 'RMAController');
 Route::resource('refurbishes', 'RefurbishesController');
-
 
 
 /** Purchases  **/
@@ -55,28 +57,20 @@ Route::get('/get_vendors', 'ResponseController@getVendorsbyAjax');
 Route::get('/get_clients', 'ResponseController@getClientsbyAjax');
 Route::get('/get_clientsDT', 'ResponseController@getClientsDT');
 Route::get('/get_couriers', 'ResponseController@getCouriersbyAjax');
-Route::get('/get_rmas', 'RMAController@getRMAItemsbyAjax');
+Route::get('/get_purchases_items', 'ResponseController@getPurchasesItemsbyAjax');
+Route::get('/get_orders_by_customer_id/{id}', 'ResponseController@getOrderByCustomerID');
+Route::get('/get_purchases_by_vendor_id/{id}', 'ResponseController@getPurchasesByVendorID');
+Route::get('/get_rmas', 'ResponseController@getRMAItemsbyAjax');
 
 
 
-/** Orders  **/
+
 Route::resource('order', 'OrderController');
-Route::get('/get_purchases_items', 'OrderController@getPurchasesItemsbyAjax');
-
-Route::get('/get_orders_by_customer_id/{id}', 'OrderController@getOrderByCustomerID');
-Route::get('/get_purchases_by_vendor_id/{id}', 'OrderController@getPurchasesByVendorID');
-
-
 Route::resource('courier', 'CourierController');
 Route::resource('stock', 'StockController');
 
 
-Route::get('/borrow', 'HomeController@getUnderConstruction');
-Route::get('/lend', 'HomeController@getUnderConstruction');
-Route::get('/refurbishment', 'HomeController@getUnderConstruction');
 
-
-Route::get('/getsample', 'HomeController@getSample');
 
 
 

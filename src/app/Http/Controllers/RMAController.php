@@ -320,55 +320,7 @@ class RMAController extends Controller
         return redirect()->route('rma.index')->with('success', 'RMA updated successfully.');
     }
 
-    /**
-     * @param $product
-     * @param $po
-     * @param $available
-     * @return string
-     */
-    public function formatPadString($product, $po, $available){
 
-        $product = substr($product, 0, 15);
-        $product = str_pad($product, 15, '.' , STR_PAD_RIGHT);
-
-        $po = substr($po, 0, 14);
-        $po = str_pad($po, 14, '.' , STR_PAD_RIGHT);
-
-        return "${product} | ${po} | Av (${available})";
-    }
-
-    /**
-     * Get List of Purchases Items by Json
-     * @return JsonResponse
-     */
-    public function getRMAItemsbyAjax() {
-
-        // Get Purchases Items
-        $rma_items = RMAItems::join('products', 'rma_items.product_id', '=', 'products.id')
-            ->join('purchases_items', 'rma_items.purchases_id', '=', 'purchases_items.id')
-            ->join('purchases', 'purchases_items.purchases_id', '=', 'purchases.id')
-            ->join('stocks', 'purchases_items.id', '=', 'stocks.purchases_item_id')
-            ->select('products.id AS product_id','products.name AS product_name', 'purchases_items.batch_number AS batch', 'purchases.name AS po_name', 'rma_items.qty AS  available', 'purchases_items.id', 'purchases.id AS po_id')
-            ->get();
-
-        $data2 = [];
-        $i=0;
-        foreach ($rma_items as $purchase_item)
-        {
-            $data2[$i]['id'] = $purchase_item->id;
-            $data2[$i]['text'] = $this->formatPadString($purchase_item->product_name,$purchase_item->po_name,$purchase_item->available);
-            $data2[$i]['product_id'] = $purchase_item->product_id;
-            $data2[$i]['name'] = $purchase_item->product_name;
-            $data2[$i]['batch'] = $purchase_item->batch;
-            $data2[$i]['po_name'] = $purchase_item->po_name;
-            $data2[$i]['po_id'] = $purchase_item->po_id;
-            $data2[$i]['po_item_id'] = $purchase_item->id;
-            $data2[$i]['available'] = $purchase_item->available;
-            $i++;
-        }
-        $purchases_items = $data2;
-        return response()->json(['products' => $purchases_items]);
-    }
 
     /**
      * Remove the specified resource from storage.

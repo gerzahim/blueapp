@@ -6,13 +6,30 @@
 
 ## Bugs 
                      
-- [ ] messages new Trait
-- [ ] prepare Data for Insert, Create in Trait
-- [ ] Refactor PurchaseController
-- [ ] ResponseController new Class  php artisan make:controller ResponseController
+                     
+- [ ] loading gif, Order
+- [ ] Refactor, One Component ORDER
+
+
+- [ ] Refactor Controller RMA
+- [ ] messages new Trait, RMA
+- [ ] rules new Trait, PO*, RMA
+- [ ] Data Trait for Insert, RMA
+- [ ] Refactor, One Component RMA
+- [ ] loading gif, RMA
+
+- [ ] Refactor Controller Refurbishment
+- [ ] messages new Trait, Refurbishment
+- [ ] rules new Trait, Refurbishment
+- [ ] Data Trait for Insert, Refurbishment
+- [ ] Refactor, One Component Refurbishment
+- [ ] loading gif, Refurbishment
+
+- [ ] Refactor PaddingStringsTrait, 
    
-- Refactor -- formatPadString in Trait
-- show PO 
+
+- [ ] show PO
+- [ ] show Order 
 - created_at Stock
  
 - check rightjoin by join on ajaxcall
@@ -25,7 +42,7 @@
 
 
 ## Core Improvements 
-
+- [ ] 419 Page Expired , handle redirect or message error
 - [ ] Add Vue Datatables to RMA
       https://vuejsexamples.com/data-table-simplify-datatable-component-for-vue-2-x/
       https://codepen.io/ratiw/pen/GmJayw
@@ -85,5 +102,17 @@ user1@gmail.com/12345678
 
 - [x] Define core ASF style & header information in the model and 
       implement in various applications.  [lib/whimsy/asf/themes.rb](lib/whimsy/asf/themes.rb)
- - capital letter only works on Chrome
-  - 1565ewewe when create batch pass lowercase to list
+- [x] capital letter only works on Chrome
+- [x] 1565ewewe when create batch pass lowercase to list
+- [x] Refactor Controller PO*
+- [X] Refactor Controller Order  
+- [x] ResponseController new Class  get_rmas pending for move
+- [X] loading gif, PO*
+- [X] messages new Trait, PO*
+- [X] rules new Trait, PO*
+- [X] Data Trait for Insert, PO*
+
+- [X] messages new Trait, Order
+- [X] rules new Trait, Order
+- [X] Data Trait for Insert, Order
+- [X] Refactor, One Component PO
