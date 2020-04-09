@@ -53,4 +53,12 @@ trait RulesValidationTrait {
         return $rules;
     }
 
+    // Refurbishes
+    public function getRulesValidationRefurbishes(){
+        return [
+            'name' => 'required',
+            'date' => 'required',
+        ];
+    }
+
 }

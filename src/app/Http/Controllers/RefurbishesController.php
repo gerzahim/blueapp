@@ -57,42 +57,25 @@ class RefurbishesController extends Controller
      */
     public function store(Request $request)
     {
-        $messages = [
-            'name.required' => 'The Refurbished Number is Required.',
-            'date.required' => 'Must Select a Date',
-        ];
-        $this->validate($request, [
-            'name' => 'required',
-            'date' => 'required',
-        ], $messages);
+        // Validation Form
+        $messages = $this->getMessagesValidationRefurbishes();
+        $rules    = $this->getRulesValidationRefurbishes();
+        $this->validate($request, $rules, $messages);
 
-        $time_now = date('Y-m-d H:i:s');
+        // Insert Data Refurbishes
+        $data_form = $this->setDataRefurbishes($request);
+        $refurbish = Refurbishes::create($data_form);
 
-        $data = array(
-            'name'                => $request->name,
-            'transaction_type_id' => 6,
-            'date'                => $request->date,
-            'reference'           => $request->reference,
-            'created_at'          => $time_now,
-            'updated_at'          => $time_now
-        );
-        $refurbish = Refurbishes::create($data);
         $lastInsertedId= $refurbish->id;
 
         if($refurbish){
             $refurbishes_lines = json_decode($request->vars);
             foreach ($refurbishes_lines as $refurbish_line )
             {
-                $data_order_item = array(
-                    'refurbish_id' => $lastInsertedId,
-                    'product_id'   => $refurbish_line->product_id,
-                    'qty'          => $refurbish_line->qty,
-                    'purchases_id' => $refurbish_line->po_item_id,
-                    'created_at'   => $time_now,
-                    'updated_at'   => $time_now
-                );
+                $data_form_items = $this->setDataRefurbishesItems($lastInsertedId, $refurbish_line);
+
                 // Insert Refurbish Items
-                RefurbishItems::insert($data_order_item);
+                RefurbishItems::insert($data_form_items);
 
                 // Reduce FROM RMA
                 $stock = new StockController();
@@ -154,26 +137,14 @@ class RefurbishesController extends Controller
      */
     public function update(Request $request, Refurbishes $refurbish)
     {
-        $messages = [
-            'name.required' => 'The Refurbished Number is Required.',
-            'date.required' => 'Must Select a Date',
-        ];
-        $this->validate($request, [
-            'name' => 'required',
-            'date' => 'required',
-        ], $messages);
+        // Validation Form
+        $messages = $this->getMessagesValidationRefurbishes();
+        $rules    = $this->getRulesValidationRefurbishes();
+        $this->validate($request, $rules, $messages);
 
-        $time_now = date('Y-m-d H:i:s');
-
-        $data = array(
-            'name'                => $request->name,
-            'transaction_type_id' => 6,
-            'date'                => $request->date,
-            'reference'           => $request->reference,
-            'created_at'          => $time_now,
-            'updated_at'          => $time_now
-        );
-        $refurbish->fill($data)->save();
+        // Insert Data Refurbishes
+        $data_form = $this->setDataRefurbishes($request);
+        $refurbish->fill($data_form)->save();
 
         $stock = new StockController();
         $refurbish_items_updated = [];
@@ -184,15 +155,7 @@ class RefurbishesController extends Controller
 
             foreach ($refurbishes_lines as $refurbish_line )
             {
-                $data_order_item = array(
-                    'refurbish_id' => $refurbish->id,
-                    'product_id'   => $refurbish_line->product_id,
-                    'qty'          => $refurbish_line->qty,
-                    'purchases_id' => $refurbish_line->po_item_id,
-                    'created_at'   => $time_now,
-                    'updated_at'   => $time_now
-                );
-
+                $data_form_items = $this->setDataRefurbishesItems($refurbish->id, $refurbish_line);
 
                 // If Exist
                 $refurbish_line_previous  = RefurbishItems::where('refurbish_id',$refurbish->id)->where('purchases_id',$refurbish_line->po_item_id)->first();
@@ -202,11 +165,11 @@ class RefurbishesController extends Controller
                     $stock->adjustProductFromRMAStock($refurbish_line_previous->purchases_id, $refurbish_line_previous->qty, $refurbish_line->qty);
 
                     // Update RefurbishItems Values
-                    $refurbish_line_previous->fill($data_order_item)->save();
+                    $refurbish_line_previous->fill($data_form_items)->save();
                     $refurbish_items_updated[] = $refurbish_line_previous->id;
                 }else{
                     // Insert RMA Items if New
-                    $new_rma_item = RefurbishItems::create($data_order_item);
+                    $new_rma_item = RefurbishItems::create($data_form_items);
                     $lastInsertedId = $new_rma_item->id;
                     $refurbish_items_updated[] = $lastInsertedId;
 

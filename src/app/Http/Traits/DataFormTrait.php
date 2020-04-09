@@ -133,6 +133,41 @@ trait DataFormTrait {
         ];
     }
 
+    // Refurbishes
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function setDataRefurbishes( Request $request){
+
+        return [
+            'name'                => $request->name,
+            'transaction_type_id' => 6,
+            'date'                => $request->date,
+            'reference'           => $request->reference,
+            'created_at'          => $this->getTime(),
+            'updated_at'          => $this->getTime()
+        ];
+    }
+
+    /**
+     *
+     * @param $refurbish_id
+     * @param $refurbish_line
+     * @return array
+     */
+    public function setDataRefurbishesItems($refurbish_id, $refurbish_line){
+        return [
+            'refurbish_id' => $refurbish_id,
+            'product_id'   => $refurbish_line->product_id,
+            'qty'          => $refurbish_line->qty,
+            'purchases_id' => $refurbish_line->po_item_id,
+            'created_at'   => $this->getTime(),
+            'updated_at'   => $this->getTime()
+        ];
+    }
+
 
 
 }

@@ -84,7 +84,7 @@ class OrderController extends Controller
         $rules    = $this->getRulesValidationOrders(false);
         $this->validate($request, $rules, $messages);
 
-        // Insert Data Purchase
+        // Insert Data Order
         $data_form = $this->setDataOrder($request);
         $order = Order::create($data_form);
         $lastInsertedId= $order->id;

@@ -8,7 +8,7 @@
 - [ ] Report Filters
 
 ## Bugs 
-- [X] Refactor Controller RMA
+
 - [ ] Refactor Controller Refurbishment                     
       
 - [ ] loading gif, Order
@@ -117,3 +117,4 @@ user1@gmail.com/12345678
 - [X] rules new Trait, Order
 - [X] Data Trait for Insert, Order
 - [X] Refactor, One Component PO
+- [X] Refactor Controller RMA

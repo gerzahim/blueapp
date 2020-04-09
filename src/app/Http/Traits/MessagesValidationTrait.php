@@ -37,5 +37,13 @@ trait MessagesValidationTrait {
         ];
     }
 
+    // Refurbishes
+    public function getMessagesValidationRefurbishes(){
+        return [
+            'name.required' => 'The Refurbished Number is Required.',
+            'date.required' => 'Must Select a Date',
+        ];
+    }
+
 
 }
