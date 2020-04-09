@@ -1,44 +1,45 @@
 # TO DO List 
 
 ## TO DO   
+- [ ] show PO
+- [ ] show Order
+- [ ] show RMA  
 - [ ] Send refurbishment on ( Create Order )
 - [ ] Report Filters
 
 ## Bugs 
-                     
-                     
+- [X] Refactor Controller RMA
+- [ ] Refactor Controller Refurbishment                     
+      
 - [ ] loading gif, Order
 - [ ] Refactor, One Component ORDER
+- [ ] remove Reset Button ORDER
 
-
-- [ ] Refactor Controller RMA
 - [ ] messages new Trait, RMA
 - [ ] rules new Trait, PO*, RMA
 - [ ] Data Trait for Insert, RMA
 - [ ] Refactor, One Component RMA
 - [ ] loading gif, RMA
+- [ ] remove Reset Button RMA, Refurbishment
 
-- [ ] Refactor Controller Refurbishment
 - [ ] messages new Trait, Refurbishment
 - [ ] rules new Trait, Refurbishment
 - [ ] Data Trait for Insert, Refurbishment
 - [ ] Refactor, One Component Refurbishment
 - [ ] loading gif, Refurbishment
+- [ ] remove Reset Button Refurbishment
 
 - [ ] Refactor PaddingStringsTrait, 
    
 
-- [ ] show PO
-- [ ] show Order 
 - created_at Stock
  
 - check rightjoin by join on ajaxcall
 - Select Product Return From Customer! fix message on create and update RMA
 - List Products added - fix message 
 
-- remove Reset Button PO, Orders, RMA, Refurbishment    
-- add loading to PO
-- add loading to Order
+- [ ] remove Reset Button PO, Orders, RMA, Refurbishment    
+
 
 
 ## Core Improvements 

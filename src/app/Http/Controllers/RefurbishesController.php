@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\PurchasesItem;
 use App\Refurbishes;
 use App\RefurbishItems;
@@ -10,9 +11,16 @@ use App\Product;
 use App\RMA;
 use App\RMAItems;
 use Illuminate\Http\Request;
+use App\Http\Traits\DataFormTrait;
+use App\Http\Traits\MessagesValidationTrait;
+use App\Http\Traits\RulesValidationTrait;
 
 class RefurbishesController extends Controller
 {
+    use MessagesValidationTrait;
+    use RulesValidationTrait;
+    use DataFormTrait;
+
     /**
      * Display a listing of the resource.
      *

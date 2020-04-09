@@ -13,9 +13,16 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Debugbar;
 use Illuminate\Support\Facades;
+use App\Http\Traits\MessagesValidationTrait;
+use App\Http\Traits\RulesValidationTrait;
+use App\Http\Traits\DataFormTrait;
 
 class RMAController extends Controller
 {
+    use MessagesValidationTrait;
+    use RulesValidationTrait;
+    use DataFormTrait;
+
     /**
      * Create a new controller instance.
      *
@@ -74,48 +81,20 @@ class RMAController extends Controller
      */
     public function store(Request $request)
     {
-        $messages = [
-            'name.required'      => 'The RMA is Required.',
-            'date.required'      => 'Must Select a Date',
-            'transaction_type_id.required'    => 'The Transaction Type must be Selected.',
-            'client_id.required' => 'Must Select a Customer',
-            'vendor_id.required' => 'Must Select a Supplier',
-        ];
-
         if(!$request->contact_type_id) {
             $contact_id = $request->client_id;
-            $this->validate($request, [
-                'name'                => 'required',
-                'date'                => 'required',
-                'transaction_type_id' => 'required',
-                'client_id'           => 'required'
-            ], $messages);
         }else{
             $contact_id = $request->vendor_id;
-            $this->validate($request, [
-                'name'                => 'required',
-                'date'                => 'required',
-                'transaction_type_id' => 'required',
-                'vendor_id'           => 'required'
-            ], $messages);
         }
 
-        $time_now = date('Y-m-d H:i:s');
+        // Validation Form
+        $messages = $this->getMessagesValidationRMAs();
+        $rules    = $this->getRulesValidationRMAs($request->contact_type_id, false);
+        $this->validate($request, $rules, $messages);
 
-        $data = array(
-            'name'                => $request->name,
-            'contact_type_id'     => $request->contact_type_id,
-            'contact_id'          => $contact_id,
-            'transaction_type_id' => $request->transaction_type_id,
-            'courier_id'          => $request->courier_id,
-            'tracking'            => $request->tracking,
-            'date'                => $request->date,
-            'reference'           => $request->reference,
-            'created_at'          => $time_now,
-            'updated_at'          => $time_now
-        );
-
-        $rma = RMA::create($data);
+        // Insert Data RMA
+        $data_form = $this->setDataRMA($request, $contact_id);
+        $rma = RMA::create($data_form);
         $lastInsertedId= $rma->id;
 
         if($rma){
@@ -125,15 +104,8 @@ class RMAController extends Controller
 
             foreach ($rma_lines as $rma_line )
             {
-                $data_rma_item = array(
-                    'rma_id'       => $rma_id,
-                    'product_id'   => $rma_line->product_id,
-                    'qty'          => $rma_line->qty,
-                    'order_id'     => $rma_line->order_id,
-                    'purchases_id' => $rma_line->po_item_id,
-                    'created_at'   => $time_now,
-                    'updated_at'   => $time_now
-                );
+                $data_rma_item = $this->setDataRMAItems($rma_id, $rma_line);
+
                 // Insert RMA Items Associated to RMA
                 RMAItems::insert($data_rma_item);
 
@@ -216,52 +188,21 @@ class RMAController extends Controller
      */
     public function update(Request $request, RMA $rma)
     {
-        //Debugbar::info($request);
-        $messages = [
-            'name.required'      => 'The RMA is Required.',
-            'date.required'      => 'Must Select a Date',
-            'transaction_type_id.required'    => 'The Transaction Type must be Selected.',
-            'client_id.required' => 'Must Select a Customer',
-            'vendor_id.required' => 'Must Select a Supplier',
-        ];
+
+        // Validation Form
+        $messages = $this->getMessagesValidationRMAs();
+        $rules    = $this->getRulesValidationRMAs($request->contact_type_id, false);
+        $this->validate($request, $rules, $messages);
+
         if(!$request->contact_type_id) {
-            //Debugbar::info($request->contact_type_id);
-            //Debugbar::info('entre en Customer');
             $contact_id = $request->client_id;
-            $this->validate($request, [
-                'name'                => 'required',
-                'date'                => 'required',
-                'transaction_type_id' => 'required',
-                'client_id'           => 'required'
-            ], $messages);
         }else{
-            //Debugbar::info($request->contact_type_id);
-            //Debugbar::info('entre en Supplier');
             $contact_id = $request->vendor_id;
-            $this->validate($request, [
-                'name'                => 'required',
-                'date'                => 'required',
-                'transaction_type_id' => 'required',
-                'vendor_id'           => 'required'
-            ], $messages);
         }
 
-        $time_now = date('Y-m-d H:i:s');
-
-        $data = array(
-            'name'                => $request->name,
-            'contact_type_id'     => $request->contact_type_id,
-            'contact_id'          => $contact_id,
-            'transaction_type_id' => $request->transaction_type_id,
-            'courier_id'          => $request->courier_id,
-            'tracking'            => $request->tracking,
-            'date'                => $request->date,
-            'reference'           => $request->reference,
-            'created_at'          => $time_now,
-            'updated_at'          => $time_now
-        );
-
-        $rma->fill($data)->save();
+        // Insert Data RMA
+        $data_form = $this->setDataRMA($request, $contact_id);
+        $rma->fill($data_form)->save();
 
         $stock = new StockController();
         $rma_items_updated = [];
@@ -270,15 +211,7 @@ class RMAController extends Controller
 
         foreach ($rma_lines as $rma_line )
         {
-            $data_rma_item = array(
-                'rma_id'       => $rma->id,
-                'product_id'   => $rma_line->product_id,
-                'qty'          => $rma_line->qty,
-                'order_id'     => $rma_line->order_id,
-                'purchases_id' => $rma_line->po_item_id,
-                'created_at'   => $time_now,
-                'updated_at'   => $time_now
-            );
+            $data_rma_item = $this->setDataRMAItems($rma->id, $rma_line);
 
             // If Exist
             $rma_line_previous  = RMAItems::where('rma_id',$rma->id)->where('purchases_id',$rma_line->po_item_id)->first();

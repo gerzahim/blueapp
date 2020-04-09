@@ -20,13 +20,33 @@ trait RulesValidationTrait {
     }
 
     // Orders
-    public function getRulesValidationOrders(Request $request, $is_update){
+    public function getRulesValidationOrders($is_update){
         $rules = [
             'name'                => 'required',
             'date'                => 'required',
             'transaction_type_id' => 'required',
             'client_id'           => 'required'
         ];
+        if ($is_update) {
+            unset($rules['name']);
+        }
+        return $rules;
+    }
+
+    // RMAs
+    public function getRulesValidationRMAs($is_vendor, $is_update){
+        $rules = [
+            'name'                => 'required',
+            'date'                => 'required',
+            'transaction_type_id' => 'required',
+            'client_id'           => 'required'
+        ];
+
+        if($is_vendor) {
+            unset($rules['client_id']);
+            $rules['vendor_id'] = 'required';
+        }
+
         if ($is_update) {
             unset($rules['name']);
         }

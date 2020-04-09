@@ -81,7 +81,7 @@ class OrderController extends Controller
     {
         // Validation Form
         $messages = $this->getMessagesValidationOrders();
-        $rules    = $this->getRulesValidationOrders($request, false);
+        $rules    = $this->getRulesValidationOrders(false);
         $this->validate($request, $rules, $messages);
 
         // Insert Data Purchase
@@ -161,7 +161,7 @@ class OrderController extends Controller
     {
         // Validation Form
         $messages = $this->getMessagesValidationOrders();
-        $rules    = $this->getRulesValidationOrders($request, true);
+        $rules    = $this->getRulesValidationOrders(true);
         $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {

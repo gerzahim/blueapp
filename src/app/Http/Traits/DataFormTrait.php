@@ -49,7 +49,6 @@ trait DataFormTrait {
 
 
     // Orders
-
     /**
      * @param Request $request
      * @param bool $is_update
@@ -85,6 +84,50 @@ trait DataFormTrait {
             'order_id'     => $order_id,
             'purchases_id' => $order_line->po_item_id,
             'qty'          => $order_line->qty,
+            'created_at'   => $this->getTime(),
+            'updated_at'   => $this->getTime()
+        ];
+    }
+
+
+    // RMAs
+    /**
+     * @param Request $request
+     * @param bool $is_update
+     * @return array
+     */
+    public function setDataRMA( Request $request, $contact_id, $is_update = false){
+        $data = [
+            'name'                => $request->name,
+            'contact_type_id'     => $request->contact_type_id,
+            'contact_id'          => $contact_id,
+            'transaction_type_id' => $request->transaction_type_id,
+            'courier_id'          => $request->courier_id,
+            'tracking'            => $request->tracking,
+            'date'                => $request->date,
+            'reference'           => $request->reference,
+            'created_at'          => $this->getTime(),
+            'updated_at'          => $this->getTime()
+        ];
+        if ($is_update) {
+            unset($data['name']);
+        }
+        return $data;
+    }
+
+    /**
+     *
+     * @param $purchases_id
+     * @param $po_line
+     * @return array
+     */
+    public function setDataRMAItems($rma_id, $rma_line){
+        return [
+            'rma_id'       => $rma_id,
+            'product_id'   => $rma_line->product_id,
+            'qty'          => $rma_line->qty,
+            'order_id'     => $rma_line->order_id,
+            'purchases_id' => $rma_line->po_item_id,
             'created_at'   => $this->getTime(),
             'updated_at'   => $this->getTime()
         ];
