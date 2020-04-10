@@ -210,7 +210,6 @@
                 current_prod_batch: '',
                 current_prod_po_name: '',
                 current_prod_available: 0,
-                //previous_qty:0,
 
                 products: [],
                 clients: [],
@@ -287,7 +286,7 @@
                     this.errors_adder.product = true;
                 }
             },
-            getQtyAvailable(array, id) {
+            getPreviousQty(array, id) {
                 for (var i = 0; i < array.length; i++) {
                     if (array[i].product_id === id)
                         return array[i].qty;
@@ -296,16 +295,12 @@
             },
             validateProductAvailable() {
                 this.errors_adder.available = false;
-
                 let previous_qty = 0
-                previous_qty = this.getQtyAvailable(this.vars, this.current_prod_id)
-                let new_qty = this.qty
+                let available = 0
+                previous_qty = this.getPreviousQty(this.vars, this.current_prod_id)
+                available = parseInt(this.current_prod_available) - parseInt(previous_qty)
 
-                if(previous_qty){
-                    new_qty =  parseInt(this.previousqty)+parseInt(this.qty)
-                }
-
-                if(new_qty > this.current_prod_available) {
+                if(this.qty > available) {
                     toastr.error('Check Input Quantity is greater than the available!', 'Error Alert', {timeOut: 5000})
                     this.errors_adder.available = true;
                 }
@@ -317,7 +312,6 @@
                 }
                 return 0;
             },
-
 
             areErrorsAdder(){
                 this.validateQty() // validate qty is good
@@ -339,7 +333,7 @@
                     let getInfoArray = this.isThisValueInArray(this.vars, this.current_prod_id)
                     let previousQty = getInfoArray[0]
                     let product_array_key = getInfoArray[1]
-                    if (getInfoArray[0] > 0){
+                    if (previousQty > 0){
                         variables.splice(product_array_key,1)
                         this.qty = parseInt(this.qty)+parseInt(previousQty)
                     }

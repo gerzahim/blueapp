@@ -2151,7 +2151,6 @@ __webpack_require__.r(__webpack_exports__);
       current_prod_batch: '',
       current_prod_po_name: '',
       current_prod_available: 0,
-      //previous_qty:0,
       products: [],
       clients: [],
       couriers: [],
@@ -2237,7 +2236,7 @@ __webpack_require__.r(__webpack_exports__);
         this.errors_adder.product = true;
       }
     },
-    getQtyAvailable: function getQtyAvailable(array, id) {
+    getPreviousQty: function getPreviousQty(array, id) {
       for (var i = 0; i < array.length; i++) {
         if (array[i].product_id === id) return array[i].qty;
       }
@@ -2247,14 +2246,11 @@ __webpack_require__.r(__webpack_exports__);
     validateProductAvailable: function validateProductAvailable() {
       this.errors_adder.available = false;
       var previous_qty = 0;
-      previous_qty = this.getQtyAvailable(this.vars, this.current_prod_id);
-      var new_qty = this.qty;
+      var available = 0;
+      previous_qty = this.getPreviousQty(this.vars, this.current_prod_id);
+      available = parseInt(this.current_prod_available) - parseInt(previous_qty);
 
-      if (previous_qty) {
-        new_qty = parseInt(this.previousqty) + parseInt(this.qty);
-      }
-
-      if (new_qty > this.current_prod_available) {
+      if (this.qty > available) {
         toastr.error('Check Input Quantity is greater than the available!', 'Error Alert', {
           timeOut: 5000
         });
@@ -2282,7 +2278,8 @@ __webpack_require__.r(__webpack_exports__);
       return false;
     },
     resetAddProducts: function resetAddProducts() {
-      this.product_selected = 0, this.qty = 1;
+      //this.product_selected=0,
+      this.qty = 1;
     },
     insertNewProduct: function insertNewProduct() {
       if (!this.areErrorsAdder()) {
@@ -2291,7 +2288,7 @@ __webpack_require__.r(__webpack_exports__);
         var previousQty = getInfoArray[0];
         var product_array_key = getInfoArray[1];
 
-        if (getInfoArray[0] > 0) {
+        if (previousQty > 0) {
           variables.splice(product_array_key, 1);
           this.qty = parseInt(this.qty) + parseInt(previousQty);
         }
@@ -2340,7 +2337,6 @@ __webpack_require__.r(__webpack_exports__);
       });
     }
   },
-  mounted: function mounted() {},
   created: function created() {
     this.fetchCouriers();
     this.fetchClients();
@@ -2712,7 +2708,7 @@ __webpack_require__.r(__webpack_exports__);
         var previousQty = getInfoArray[0];
         var product_array_key = getInfoArray[1];
 
-        if (getInfoArray[0] > 0) {
+        if (previousQty > 0) {
           variables.splice(product_array_key, 1);
           this.qty = parseInt(this.qty) + parseInt(previousQty);
         }

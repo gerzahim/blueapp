@@ -321,7 +321,7 @@
 
                     let previousQty = getInfoArray[0]
                     let product_array_key = getInfoArray[1]
-                    if (getInfoArray[0] > 0){
+                    if (previousQty > 0){
                         variables.splice(product_array_key,1)
                         this.qty = parseInt(this.qty)+parseInt(previousQty)
                     }

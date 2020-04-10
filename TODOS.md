@@ -8,7 +8,7 @@
 - [ ] Report Filters
 
 ## Bugs 
-- [ ] fix bug in Order when try to insert more than available
+- [X] fix bug in Order when try to insert more than available
 - [X] fix bug in Order when update the order instead update do insert
 - [ ] remove Reset Button RMA, replace for Cancel Button
 - [ ] remove Reset Button , Refurbishment, replace for Cancel Button           
