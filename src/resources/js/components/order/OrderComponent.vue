@@ -7,11 +7,11 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group-po">
-                            <label class="mb-0" ><small>PO Name</small></label>
+                            <label class="mb-0" ><small>Order Number</small></label>
                             <input type="hidden" name="id" v-model="form_id">
                             <input type="hidden" name="transaction_type_id" :value="form_transaction_type_id">
-                            <input type="text" class="form-control form-control-sm" id="name" name="name" v-bind:class="[ errors.name ? 'is-invalid' : '']" v-model="form_name" placeholder="MIA-ZHE011.." @change="validateName">
-                            <div v-show="errors.name" class="invalid-feedback">Please Indicate unique PO Name !</div>
+                            <input type="text" class="form-control form-control-sm" id="name" name="name" v-bind:class="[ errors.name ? 'is-invalid' : '']" v-model="form_name" readonly>
+                            <div v-show="errors.name" class="invalid-feedback">Please Indicate Order Number !</div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -20,31 +20,6 @@
                             <b-form-datepicker id="example-datepicker" v-bind:class="[errors.date ? 'is-invalid' : '']" v-model="form_date" size="sm" class="form-control form-control-sm mb-2"></b-form-datepicker>
                             <input type="hidden" name="date" id="date" :value="form_date">
                             <div v-show="errors.date" class="invalid-feedback">Please Pick a Date !</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group-po">
-                            <div class="spinner-border text-success" role="status" v-show="loading_vendors">
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                            <div v-show="!loading_vendors">
-                                <label class="mb-0"><small>Supplier</small></label>
-                                <select id="vendor_id" name="vendor_id" class="form-control form-control-sm" v-bind:class="[ errors.vendor ? 'is-invalid' : '']" v-model="form_vendor_id" @change="validateVendor">
-                                    <option value="0" disabled selected>Select Supplier</option>
-                                    <option v-for="vendor in vendors" :value="vendor.id" :key="vendor.id">
-                                        {{ vendor.name }}
-                                    </option>
-                                </select>
-                                <div v-show="errors.vendor" class="invalid-feedback">Please Select a Supplier!</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group-po">
-                            <label class="mb-0" ><small>Bill of Landing</small></label>
-                            <input type="text" class="form-control form-control-sm" id="bol" name="bol" placeholder="..." v-model="form_bol">
                         </div>
                     </div>
                 </div>
@@ -75,8 +50,19 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group-po">
-                            <label class="mb-0" ><small>Package List</small></label>
-                            <input type="text" class="form-control form-control-sm" id="package_list" name="package_list" placeholder="..." v-model="form_package_list">
+                            <div class="spinner-border text-success" role="status" v-show="loading_customers">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <div v-show="!loading_customers">
+                                <label class="mb-0"><small>Customer</small></label>
+                                <select id="client_id" name="client_id" class="form-control form-control-sm" v-bind:class="[ errors.client ? 'is-invalid' : '']" v-model="form_client_id" @change="validateClient">
+                                    <option value="0" disabled selected>Select Customer</option>
+                                    <option v-for="client in clients" :value="client.id" :key="client.id">
+                                        {{ client.name }}
+                                    </option>
+                                </select>
+                                <div v-show="errors.client" class="invalid-feedback">Please Select a Supplier!</div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -101,32 +87,22 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group-po">
-                                                <label class="mb-0"><small>Products</small></label>
-                                                <select id="product_id" name="product_id" class="form-control form-control-sm" v-bind:class="[errors_adder.product ? 'is-invalid' : '']" v-model="product_selected">
-                                                    <option value="0" disabled selected>Select Product</option>
-                                                    <option v-for="product in products" v-bind:value="{ id: product.id, name: product.name }" :key="product.id">
-                                                        {{ product.name }}
-                                                    </option>
-                                                </select>
+                                                <label class="typo__label mb-0"><small>List Products</small></label>
+                                                <multiselect :options="products" placeholder="Select Product" label="text" track-by="text" v-model="product_selected" @select="dispatchAction">
+                                                </multiselect>
                                                 <div v-show="errors_adder.product" class="invalid-feedback">Please Select a Product!</div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
                                             <div class="form-group-po">
                                                 <label class="mb-0" ><small>Qty</small></label>
                                                 <input type="number" class="form-control form-control-sm" v-bind:class="[errors_adder.qty ? 'is-invalid' : '']" v-model="qty" min="1">
                                                 <div v-show="errors_adder.qty" class="invalid-feedback">Please Indicate Qty!</div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-8">
-                                            <div class="form-group-po">
-                                                <label class="mb-0" ><small>Batch</small></label>
-                                                <input type="text" class="form-control form-control-sm text-uppercase" id="batch_number" name="batch_number" v-model="batch_number" placeholder="XFR4487...">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
+                                        <div class="col-6">
                                             <div class="form-group-po">
                                                 <label class="mb-0"><small>Add</small></label>
                                                 <div class="input-group input-group-sm">
@@ -145,17 +121,26 @@
                             <input type="hidden" name="vars" :value="JSON.stringify(vars)">
                             <ul class="list-group list-group-full">
                                 <li v-for="(variable, key) in vars" :key="key" class="list-group-item">
-                                    <div class="row pr-1">
-                                        <div class="col-7 align-middle pl-2 px-1">
-                                            {{variable.product_name}}
-                                            <span class="badge badge-primary badge-pill"><b>{{variable.qty}}</b></span>
+                                    <div class="row" style="height: 50px;">
+                                        <div class="col-10 align-middle">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    {{variable.product_name}}
+                                                    <span class="badge badge-primary badge-pill"><b>{{variable.qty}}</b></span>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <span class="badge badge-success">{{variable.po_name}}</span>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <span class="badge badge-secondary">{{variable.batch}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-4 align-middle px-1">
-                                            <h4>
-                                                <span class="badge badge-secondary px-1">{{variable.batch_number}}</span>
-                                            </h4>
-                                        </div>
-                                        <div class="col-1 align-middle text-center px-1">
+                                        <div class="col-2 align-middle text-right mt-1">
                                             <a href="#" @click="$delete(vars, key)"><h3><i class="fa fa-times-circle" style="color:red"></i></h3></a>
                                         </div>
                                     </div>
@@ -164,7 +149,7 @@
                             <ul v-show="errors.vars">
                                 <div class="alert alert-danger">
                                     <p>
-                                        <strong><li>Please Add a Product to PO !</li></strong>
+                                        <strong><li>Please Add Product to Order !</li></strong>
                                     </p>
                                 </div>
                             </ul>
@@ -184,46 +169,54 @@
 
 <script>
     export default {
-        props: ["props_action", "props_products_edit", "props_purchase_edit"],
+        props: ["props_name", "props_action", "props_products_edit", "props_order_edit"],
         data: function () {
             return {
                 csrf: document.head.querySelector('meta[name="csrf-token"]').content,
                 action_edit: false,
                 loading_products: false,
-                loading_vendors: false,
+                loading_customers: false,
                 loading_couriers: false,
                 // var form
                 form_id: '',
                 form_name: null,
                 form_date: '',
-                form_vendor_id: 0,
+                form_client_id: 0,
                 form_courier_id: 0,
-                form_transaction_type_id: 1,
+                form_transaction_type_id: 3,
                 form_tracking: '',
-                form_bol: '',
-                form_package_list: '',
                 form_reference: '',
                 // var adder
                 product_selected: 0,
                 qty: 1,
-                batch_number: '',
                 // var errors
                 errors: {
                     name :false,
                     date : false,
-                    vendor :false,
+                    client :false,
                     vars :false,
                 },
                 errors_adder: {
                     qty :false,
                     product :false,
+                    available: false,
                 },
 
+                // var products_vars
+                current_prod_po_id: 0,
+                current_prod_po_item_id: 0,
+                current_prod_id: 0,
+                current_prod_name: '',
+                current_prod_batch: '',
+                current_prod_po_name: '',
+                current_prod_available: 0,
+                //previous_qty:0,
+
                 products: [],
-                vendors: [],
+                clients: [],
                 couriers: [],
                 vars: [],
-                purchase: [],
+                order: [],
             }
         },
         watch: {
@@ -234,43 +227,45 @@
         computed: {
             computedAction: function() {
                 if(this.action_edit){
-                    return `/purchases/${this.form_id}`
+                    return `/order/${this.form_id}`
                 }
                 // form action_create
-                return `/purchases`
+                return `/order`
             },
         },
         methods: {
             processForm:function(e) {
-                this.validateName()
                 this.validateDate()
-                this.validateVendor()
+                this.validateClient()
                 this.areProductsSelected()
 
-                if (this.errors.name || this.errors.date || this.errors.vendor || this.errors.vars) { //Put here the condition you want
+                if (this.errors.date || this.errors.vendor || this.errors.vars) { //Put here the condition you want
                     e.preventDefault(); // Here triggering stop submit action
                     // Here you can put code relevant when event stops;
                     toastr.error('Form is Not Good!', 'Error Alert', {timeOut: 5000})
                     return;
                 }
             },
-            //Methods for Form
-            validateName(){
-                this.errors.name = false
-                if (!this.form_name) {
-                    this.errors.name = true
-                }
+            dispatchAction (prodc) {
+                this.current_prod_po_id = prodc.po_id
+                this.current_prod_po_item_id = prodc.po_item_id
+                this.current_prod_id = prodc.product_id
+                this.current_prod_name = prodc.name
+                this.current_prod_batch = prodc.batch
+                this.current_prod_po_name = prodc.po_name
+                this.current_prod_available = prodc.available
             },
+            //Methods for Form
             validateDate(){
                 this.errors.date = false
                 if (this.form_date === '') {
                     this.errors.date = true
                 }
             },
-            validateVendor(){
-                this.errors.vendor = false
-                if (this.form_vendor_id === 0) {
-                    this.errors.vendor = true
+            validateClient(){
+                this.errors.client = false
+                if (this.form_client_id === 0) {
+                    this.errors.client = true
                 }
             },
             areProductsSelected(){
@@ -292,60 +287,83 @@
                     this.errors_adder.product = true;
                 }
             },
-
-            areTheseValuesInArray(array, id, batch) {
+            getQtyAvailable(array, id) {
                 for (var i = 0; i < array.length; i++) {
-                    if (array[i].product_id === id && array[i].batch_number === batch)
+                    if (array[i].product_id === id)
+                        return array[i].qty;
+                }
+                return 0;
+            },
+            validateProductAvailable() {
+                this.errors_adder.available = false;
+
+                let previous_qty = 0
+                previous_qty = this.getQtyAvailable(this.vars, this.current_prod_id)
+                let new_qty = this.qty
+
+                if(previous_qty){
+                    new_qty =  parseInt(this.previousqty)+parseInt(this.qty)
+                }
+
+                if(new_qty > this.current_prod_available) {
+                    toastr.error('Check Input Quantity is greater than the available!', 'Error Alert', {timeOut: 5000})
+                    this.errors_adder.available = true;
+                }
+            },
+            isThisValueInArray(array, id) {
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i].product_id === id)
                         return [array[i].qty, i];
                 }
                 return 0;
             },
+
+
             areErrorsAdder(){
-                this.validateQty()
-                this.validateProductSelected()
-                if (this.errors_adder.qty || this.errors_adder.product) {
+                this.validateQty() // validate qty is good
+                this.validateProductSelected() // validate Product is good
+                this.validateProductAvailable() // Validate Available is good
+                if (this.errors_adder.qty || this.errors_adder.product || this.errors_adder.available) {
                     return true;
                 }
                 return false
             },
             resetAddProducts() {
-                this.product_selected=0,
-                this.qty= 1,
-                this.batch_number= ''
+                //this.product_selected=0,
+                this.qty= 1
             },
             insertNewProduct() {
                 if( !this.areErrorsAdder() ) {
 
                     let variables = this.vars
-                    let getInfoArray = this.areTheseValuesInArray(this.vars, this.product_selected.id, this.batch_number)
-
+                    let getInfoArray = this.isThisValueInArray(this.vars, this.current_prod_id)
                     let previousQty = getInfoArray[0]
                     let product_array_key = getInfoArray[1]
                     if (getInfoArray[0] > 0){
                         variables.splice(product_array_key,1)
                         this.qty = parseInt(this.qty)+parseInt(previousQty)
                     }
-                    variables.push({'product_id': this.product_selected.id,'product_name': this.product_selected.name, 'qty': this.qty, 'batch_number': this.batch_number.toUpperCase()})
+                    variables.push({
+                        'po_id': this.current_prod_po_id,
+                        'po_item_id': this.current_prod_po_item_id,
+                        'product_id': this.current_prod_id,
+                        'product_name': this.current_prod_name,
+                        'batch': this.current_prod_batch,
+                        'po_name': this.current_prod_po_name,
+                        'available': this.current_prod_available,
+                        'qty': this.qty})
                 }
                 this.areProductsSelected()
                 this.resetAddProducts()
             },
 
             //Methods for Ajax
-            fetchProducts() {
-                this.loading_products = true
-                axios.get('/get_products')
+            fetchClients() {
+                this.loading_customers = true
+                axios.get('/get_clients')
                     .then(response => {
-                        this.loading_products = false
-                        this.products = response.data.products
-                    })
-            },
-            fetchVendors() {
-                this.loading_vendors = true
-                axios.get('/get_vendors')
-                     .then(response => {
-                        this.vendors = response.data.vendors
-                        this.loading_vendors = false
+                        this.clients = response.data.clients
+                        this.loading_customers = false
                     })
             },
             fetchCouriers() {
@@ -356,38 +374,43 @@
                         this.loading_couriers = false
                     })
             },
+            fetchPurchasesItems() {
+                this.loading_products = true
+                axios
+                    .get('/get_purchases_items')
+                    .then(response => {
+                        this.products = response.data.products
+                        this.loading_products = false
+                    })
+            }
         },
         created() {
-            this.fetchProducts()
-            this.fetchVendors()
             this.fetchCouriers()
-            //this.vendors = this.props_vendors
-            //this.products = this.props_products
+            this.fetchClients()
+            this.fetchPurchasesItems()
 
             if (this.props_action){
                 this.action_edit = true
             }
 
+            if (this.props_name) {
+                this.form_name = this.props_name
+            }
+
             if(this.props_products_edit){
-                console.log('enter here')
                 this.vars = JSON.parse(this.props_products_edit);
             }
 
-            if(this.props_purchase_edit){
-
-                this.purchase = JSON.parse(this.props_purchase_edit);
-                console.log('enter here 2 ', this.purchase)
-                this.form_id = this.purchase.id
-                this.form_name = this.purchase.name
-                this.form_date = this.purchase.date
-                this.form_vendor_id = this.purchase.contact_id
-                this.form_courier_id = this.purchase.courier_id
-                this.form_tracking = this.purchase.tracking
-                this.form_bol = this.purchase.bol
-                this.form_package_list = this.purchase.package_list
-                this.form_reference = this.purchase.reference
+            if(this.props_order_edit){
+                this.order = JSON.parse(this.props_order_edit);
+                this.form_id = this.order.id
+                this.form_name = this.order.name
+                this.form_date = this.order.date
+                this.form_client_id = this.order.client_id
+                this.form_courier_id = this.order.courier_id
+                this.form_tracking = this.order.tracking
+                this.form_reference = this.order.reference
             }
         }
     }
 </script>
-

@@ -126,6 +126,8 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
+        $form_action = 'edit';
+
         $order_lines  = OrderItems::where('order_id',$order->id)->get();
         $products_order = [];
         foreach($order_lines as $order_line){
@@ -148,7 +150,7 @@ class OrderController extends Controller
         }
         $products_order = json_encode($products_order, true);
 
-        return view('orders.edit', compact('order', 'products_order'));
+        return view('orders.edit', compact('form_action', 'order', 'products_order'));
     }
 
     /**

@@ -51,9 +51,9 @@
                             </ul>
                         </div>
                         @endif
-                        <createorder-component
-                            v-bind:post_name="'{{ $lastOrder }}'"
-                        ></createorder-component>
+                        <order-component
+                            v-bind:props_name="'{{ $lastOrder }}'"
+                        ></order-component>
                     </div>
                 </div>
             </div>

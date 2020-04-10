@@ -64,10 +64,8 @@ class RMAController extends Controller
         //$request = Request::create('/get_clients', 'GET');
         //$clients = Route::dispatch($request);
 
-        $ctrl    = new PurchaseController();
+        $ctrl    = new ResponseController();
         $clients = $ctrl->getClientsWithOrders();
-
-        $ctrl    = new PurchaseController();
         $vendors = $ctrl->getVendorsWithOrders();
 
         return view('rma.create', compact('lastOrder', 'contact_types', 'clients', 'vendors') );
@@ -168,10 +166,8 @@ class RMAController extends Controller
         }
         $products_rma = json_encode($products_rma, true);
 
-        $ctrl    = new PurchaseController();
+        $ctrl    = new ResponseController();
         $clients = $ctrl->getClientsWithOrders();
-
-        $ctrl    = new PurchaseController();
         $vendors = $ctrl->getVendorsWithOrders();
 
         return view('rma.edit', compact('rma', 'products_rma', 'clients', 'vendors') );

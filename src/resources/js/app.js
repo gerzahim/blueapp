@@ -47,11 +47,13 @@ Vue.component('po-component', require('./components/po/poComponent.vue').default
 /*
 Vue.component('createpo-component', require('./components/po/createPOComponent.vue').default);
 Vue.component('editpo-component', require('./components/po/editPOComponent.vue').default);
+Vue.component('createorder-component', require('./components/order/createOrderComponent.vue').default);
+Vue.component('editorder-component', require('./components/order/editOrderComponent.vue').default);
+
 */
 
 //Components for Order
-Vue.component('createorder-component', require('./components/order/createOrderComponent.vue').default);
-Vue.component('editorder-component', require('./components/order/editOrderComponent.vue').default);
+Vue.component('order-component', require('./components/order/OrderComponent.vue').default);
 
 //Components for RMA
 Vue.component('createrma-component', require('./components/rma/createRMAComponent.vue').default);

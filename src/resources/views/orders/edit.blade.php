@@ -51,15 +51,15 @@
                             </ul>
                         </div>
                         @endif
-                        <editorder-component
-                            v-bind:post_order="'{{ $order }}'"
-                            v-bind:post_products="'{{ $products_order }}'"
-                        ></editorder-component>
+                        <order-component
+                            v-bind:props_action="'{{ $form_action }}'"
+                            v-bind:props_order_edit="'{{ $order }}'"
+                            v-bind:props_products_edit="'{{ $products_order }}'"
+                        ></order-component>
                     </div>
                 </div>
             </div>
         </div>
-
 
     </div>
     <!-- ============================================================== -->
