@@ -63,6 +63,10 @@ Route::get('/get_purchases_by_vendor_id/{id}', 'ResponseController@getPurchasesB
 Route::get('/get_rmas', 'ResponseController@getRMAItemsbyAjax');
 
 
+Route::get('/get_clients_with_orders', 'ResponseController@getClientsWithOrders');
+Route::get('/get_vendors_with_po', 'ResponseController@getVendorsWithPO');
+
+
 
 
 Route::resource('order', 'OrderController');

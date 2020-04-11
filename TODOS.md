@@ -8,21 +8,7 @@
 - [ ] Report Filters
 
 ## Bugs 
-- [X] fix bug in Order when try to insert more than available
-- [X] fix bug in Order when update the order instead update do insert
-- [ ] remove Reset Button RMA, replace for Cancel Button
-- [ ] remove Reset Button , Refurbishment, replace for Cancel Button           
-      
-- [x] loading gif, Order
-- [X] Refactor, One Component ORDER
-- [x] remove Reset Button ORDER
 
-- [ ] messages new Trait, RMA
-- [ ] rules new Trait, PO*, RMA
-- [ ] Data Trait for Insert, RMA
-- [ ] Refactor, One Component RMA
-- [ ] loading gif, RMA
-- [ ] remove Reset Button RMA, Refurbishment, replace for Cancel Button
 
 - [ ] messages new Trait, Refurbishment
 - [ ] rules new Trait, Refurbishment
@@ -37,7 +23,6 @@
 - created_at Stock
  
 - check rightjoin by join on ajaxcall
-- Select Product Return From Customer! fix message on create and update RMA
 - List Products added - fix message 
 
 - [ ] remove Reset Button PO, Orders, RMA, Refurbishment    
@@ -121,3 +106,19 @@ user1@gmail.com/12345678
 - [X] Refactor, One Component PO
 - [X] Refactor Controller RMA
 - [X] Refactor Controller Refurbishment
+
+- [X] fix bug in Order when try to insert more than available
+- [X] fix bug in Order when update the order instead update do insert
+- [X] remove Reset Button RMA, replace for Cancel Button
+- [x] remove Reset Button , Refurbishment, replace for Cancel Button           
+      
+- [x] loading gif, Order
+- [X] Refactor, One Component ORDER
+- [x] remove Reset Button ORDER
+
+- [X] messages new Trait, RMA
+- [x] rules new Trait, PO*, RMA
+- [x] Data Trait for Insert, RMA
+- [X] Refactor, One Component RMA
+- [x] loading gif, RMA
+- [x] remove Reset Button RMA, replace for Cancel Button

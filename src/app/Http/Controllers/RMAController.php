@@ -57,18 +57,7 @@ class RMAController extends Controller
         }else{
             $lastOrder = 1;
         }
-
-        $contact_types = ContactType::all();
-
-        // GET Request
-        //$request = Request::create('/get_clients', 'GET');
-        //$clients = Route::dispatch($request);
-
-        $ctrl    = new ResponseController();
-        $clients = $ctrl->getClientsWithOrders();
-        $vendors = $ctrl->getVendorsWithOrders();
-
-        return view('rma.create', compact('lastOrder', 'contact_types', 'clients', 'vendors') );
+        return view('rma.create', compact('lastOrder') );
     }
 
     /**
@@ -143,6 +132,8 @@ class RMAController extends Controller
      */
     public function edit(RMA $rma)
     {
+        $form_action = 'edit';
+
         $rma_lines  = RMAItems::where('rma_id',$rma->id)->get();
         $products_rma = [];
         foreach($rma_lines as $rma_line){
@@ -166,11 +157,7 @@ class RMAController extends Controller
         }
         $products_rma = json_encode($products_rma, true);
 
-        $ctrl    = new ResponseController();
-        $clients = $ctrl->getClientsWithOrders();
-        $vendors = $ctrl->getVendorsWithOrders();
-
-        return view('rma.edit', compact('rma', 'products_rma', 'clients', 'vendors') );
+        return view('rma.edit', compact('form_action','rma', 'products_rma') );
     }
 
     /**

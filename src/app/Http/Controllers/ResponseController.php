@@ -60,17 +60,16 @@ class ResponseController extends Controller
         $clients  = Client::whereIn('id',$ClientsID)->get();
         $sorted   = $clients->sortBy('name');
         $clients  = $sorted->values()->all();
-        $clients  = json_encode($clients);
-        return $clients;
+        return response()->json(['clients' => $clients]);
 
     }
 
     /**
-     * Get List of Client with at least one Order
+     * Get List of Vendor with at least one PO
      *
      * @return JsonResponse
      */
-    public function getVendorsWithOrders() {
+    public function getVendorsWithPO() {
         $purchases     = Purchases::all();
         $uniqueVendors = $purchases->unique('contact_id');
 
@@ -81,12 +80,16 @@ class ResponseController extends Controller
         $vendors  = Vendor::whereIn('id',$vendorsID)->get();
         $sorted   = $vendors->sortBy('name');
         $vendors  = $sorted->values()->all();
+        /*
+         * Used this way if need send directly as props
         $vendors  = json_encode($vendors);
         return $vendors;
+        */
+        return response()->json(['vendors' => $vendors]);
     }
 
     /**
-     * Get List of Products by Json
+     * Get List of Clients by Json
      *
      * @return JsonResponse
      */
@@ -178,7 +181,7 @@ class ResponseController extends Controller
             ->join('purchases', 'purchases_items.purchases_id', '=', 'purchases.id')
             ->join('products', 'purchases_items.product_id', '=', 'products.id')
             ->select('products.id AS product_id','products.name AS product_name', 'purchases_items.batch_number AS batch',
-                'purchases.name AS po_name', 'purchases_items.id', 'purchases.id AS po_id', 'orders.name AS order_name', 'orders.id AS order_id')
+                'purchases.name AS po_name', 'purchases_items.id', 'purchases.id AS po_id', 'orders.name AS order_name', 'orders.id AS order_id', 'order_items.qty AS available')
             ->whereIn('order_items.order_id',$ordersID)->get();
 
         $data2 = [];
@@ -186,7 +189,7 @@ class ResponseController extends Controller
         foreach ($orders_items as $order_item)
         {
             $data2[$i]['id'] = $order_item->id;
-            $data2[$i]['text'] = $this->formatPadString2($order_item->product_name,$order_item->po_name, $order_item->order_name);
+            $data2[$i]['text'] = $this->formatPadString2($order_item->product_name,$order_item->po_name, $order_item->order_name, $order_item->available);
             $data2[$i]['product_id'] = $order_item->product_id;
             $data2[$i]['name'] = $order_item->product_name;
             $data2[$i]['batch'] = $order_item->batch;
@@ -194,6 +197,7 @@ class ResponseController extends Controller
             $data2[$i]['po_name'] = $order_item->po_name;
             $data2[$i]['po_id'] = $order_item->po_id;
             $data2[$i]['po_item_id'] = $order_item->id;
+            $data2[$i]['available'] = $order_item->available;
             $i++;
         }
         $orders_items = $data2;

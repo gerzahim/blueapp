@@ -51,12 +51,9 @@
                             </ul>
                         </div>
                         @endif
-                        <createrma-component
+                        <rma-component
                             v-bind:props_name="'{{ $lastOrder }}'"
-                            v-bind:props_contact_types="'{{ $contact_types }}'"
-                            v-bind:props_clients="{{ $clients }}"
-                            v-bind:props_vendors="{{ $vendors }}"
-                        ></createrma-component>
+                        ></rma-component>
                     </div>
                 </div>
             </div>
