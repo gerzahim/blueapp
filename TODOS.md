@@ -8,11 +8,8 @@
 - [ ] Report Filters
 
 ## Bugs 
-- [x] fix available Order
+
 - [ ] fix available RMA
-- [ ] fix available Refurbish
-
-
 
 - [ ] Refactor PaddingStringsTrait, 
    
