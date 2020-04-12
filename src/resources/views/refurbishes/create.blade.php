@@ -51,9 +51,9 @@
                             </ul>
                         </div>
                         @endif
-                        <createrefurbish-component
+                        <refurbish-component
                             v-bind:props_name="'{{ $lastOrder }}'"
-                        ></createrefurbish-component>
+                        ></refurbish-component>
                     </div>
                 </div>
             </div>

@@ -141,7 +141,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group-po">
-                            <label class="mb-0" ><small>List Products added</small></label>
+                            <label class="mb-0" ><small>List Products Selected</small></label>
                             <input type="hidden" name="vars" :value="JSON.stringify(vars)">
                             <ul class="list-group list-group-full">
                                 <li v-for="(variable, key) in vars" :key="key" class="list-group-item">

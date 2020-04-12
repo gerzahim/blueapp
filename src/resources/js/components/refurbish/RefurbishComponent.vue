@@ -7,7 +7,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group-po">
-                            <label class="mb-0" ><small>Order Number</small></label>
+                            <label class="mb-0" ><small>Refurbish Number</small></label>
                             <input type="hidden" name="id" v-model="form_id">
                             <input type="hidden" name="transaction_type_id" :value="form_transaction_type_id">
                             <input type="text" class="form-control form-control-sm" id="name" name="name" v-bind:class="[ errors.name ? 'is-invalid' : '']" v-model="form_name" readonly>
@@ -24,48 +24,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group-po">
-                            <div class="spinner-border text-success" role="status" v-show="loading_couriers">
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                            <div v-show="!loading_couriers">
-                                <label class="mb-0"><small>Courier</small></label>
-                                <select id="courier_id" name="courier_id" class="form-control form-control-sm" v-model="form_courier_id">
-                                    <option value="0" disabled selected>Select Courier</option>
-                                    <option v-for="courier in couriers" :value="courier.id" :key="courier.id">
-                                        {{ courier.name }}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group-po">
-                            <label class="mb-0" ><small>Tracking Number</small></label>
-                            <input type="text" class="form-control form-control-sm" id="tracking" name="tracking" placeholder="..." v-model="form_tracking">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group-po">
-                            <div class="spinner-border text-success" role="status" v-show="loading_customers">
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                            <div v-show="!loading_customers">
-                                <label class="mb-0"><small>Customer</small></label>
-                                <select id="client_id" name="client_id" class="form-control form-control-sm" v-bind:class="[ errors.client ? 'is-invalid' : '']" v-model="form_client_id" @change="validateClient">
-                                    <option value="0" disabled selected>Select Customer</option>
-                                    <option v-for="client in clients" :value="client.id" :key="client.id">
-                                        {{ client.name }}
-                                    </option>
-                                </select>
-                                <div v-show="errors.client" class="invalid-feedback">Please Select a Supplier!</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group-po">
                             <label class="mb-0" ><small>Reference</small></label>
                             <input type="text" class="form-control form-control-sm" id="reference" name="reference" min="1" placeholder="..." v-model="form_reference">
@@ -81,7 +40,7 @@
                             </div>
                             <div class="card border-success pb-1 mb-2 mt-2" v-show="!loading_products">
                                 <div class="card-header bg-success pb-0 pt-1">
-                                    <h6 class="mb-1 mt-1 text-white text-sm-left">Add Products to PO</h6>
+                                    <h6 class="mb-1 mt-1 text-white text-sm-left">Add Refurbished Products</h6>
                                 </div>
                                 <div class="card-body bg-light pt-1 pb-1">
                                     <div class="row">
@@ -149,7 +108,7 @@
                             <ul v-show="errors.vars">
                                 <div class="alert alert-danger">
                                     <p>
-                                        <strong><li>Please Add Product to Order !</li></strong>
+                                        <strong><li>Please Add Product Refurbished !</li></strong>
                                     </p>
                                 </div>
                             </ul>
@@ -161,6 +120,7 @@
             <div class="form-actions mt-2">
                 <div class="text-right">
                     <button type="submit" class="btn btn-info">Save</button>
+                    <a class="btn btn-dark"  href="/refurbishes">Cancel</a>
                 </div>
             </div>
         </form>
@@ -169,22 +129,17 @@
 
 <script>
     export default {
-        props: ["props_name", "props_action", "props_products_edit", "props_order_edit"],
+        props: ["props_name", "props_action", "props_products_edit", "props_refurbish_edit"],
         data: function () {
             return {
                 csrf: document.head.querySelector('meta[name="csrf-token"]').content,
                 action_edit: false,
                 loading_products: false,
-                loading_customers: false,
-                loading_couriers: false,
                 // var form
                 form_id: '',
                 form_name: null,
                 form_date: '',
-                form_client_id: 0,
-                form_courier_id: 0,
-                form_transaction_type_id: 3,
-                form_tracking: '',
+                form_transaction_type_id: 6,
                 form_reference: '',
                 // var adder
                 product_selected: 0,
@@ -193,8 +148,6 @@
                 errors: {
                     name :false,
                     date : false,
-                    client :false,
-                    vendor :false,
                     vars :false,
                 },
                 errors_adder: {
@@ -213,11 +166,9 @@
                 current_prod_available: 0,
 
                 products: [],
-                clients: [],
-                couriers: [],
                 vars: [],
                 vars_available: [],
-                order: [],
+                refurbish: [],
             }
         },
         watch: {
@@ -228,19 +179,18 @@
         computed: {
             computedAction: function() {
                 if(this.action_edit){
-                    return `/order/${this.form_id}`
+                    return `/refurbishes/${this.form_id}`
                 }
                 // form action_create
-                return `/order`
+                return `/refurbishes`
             },
         },
         methods: {
             processForm:function(e) {
                 this.validateDate()
-                this.validateClient()
                 this.areProductsSelected()
 
-                if (this.errors.date || this.errors.vendor || this.errors.vars) { //Put here the condition you want
+                if (this.errors.date || this.errors.vars) { //Put here the condition you want
                     e.preventDefault(); // Here triggering stop submit action
                     // Here you can put code relevant when event stops;
                     toastr.error('Form is Not Good!', 'Error Alert', {timeOut: 5000})
@@ -278,12 +228,6 @@
                 this.errors.date = false
                 if (this.form_date === '') {
                     this.errors.date = true
-                }
-            },
-            validateClient(){
-                this.errors.client = false
-                if (this.form_client_id === 0) {
-                    this.errors.client = true
                 }
             },
             areProductsSelected(){
@@ -389,38 +333,18 @@
                 this.areProductsSelected()
                 this.resetAddProducts()
             },
-
-            //Methods for Ajax
-            fetchClients() {
-                this.loading_customers = true
-                axios.get('/get_clients')
-                    .then(response => {
-                        this.clients = response.data.clients
-                        this.loading_customers = false
-                    })
-            },
-            fetchCouriers() {
-                this.loading_couriers = true
-                axios.get('/get_couriers')
-                    .then(response => {
-                        this.couriers = response.data.couriers
-                        this.loading_couriers = false
-                    })
-            },
-            fetchPurchasesItems() {
+            fetchRMAS() {
                 this.loading_products = true
                 axios
-                    .get('/get_purchases_items')
+                    .get('/get_rmas')
                     .then(response => {
                         this.products = response.data.products
                         this.loading_products = false
                     })
-            }
+            },
         },
         created() {
-            this.fetchCouriers()
-            this.fetchClients()
-            this.fetchPurchasesItems()
+            this.fetchRMAS()
 
             if (this.props_action){
                 this.action_edit = true
@@ -434,15 +358,12 @@
                 this.vars = JSON.parse(this.props_products_edit);
             }
 
-            if(this.props_order_edit){
-                this.order = JSON.parse(this.props_order_edit);
-                this.form_id = this.order.id
-                this.form_name = this.order.name
-                this.form_date = this.order.date
-                this.form_client_id = this.order.client_id
-                this.form_courier_id = this.order.courier_id
-                this.form_tracking = this.order.tracking
-                this.form_reference = this.order.reference
+            if(this.props_refurbish_edit){
+                this.refurbish = JSON.parse(this.props_refurbish_edit);
+                this.form_id = this.refurbish.id
+                this.form_name = this.refurbish.name
+                this.form_date = this.refurbish.date
+                this.form_reference = this.refurbish.reference
             }
         }
     }

@@ -42,26 +42,11 @@ import '../../public/css/vue-multiselect.css'
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
-//Components for PO
+//Components
 Vue.component('po-component', require('./components/po/poComponent.vue').default);
-/*
-Vue.component('createpo-component', require('./components/po/createPOComponent.vue').default);
-Vue.component('editpo-component', require('./components/po/editPOComponent.vue').default);
-Vue.component('createorder-component', require('./components/order/createOrderComponent.vue').default);
-Vue.component('editorder-component', require('./components/order/editOrderComponent.vue').default);
-Vue.component('createrma-component', require('./components/rma/createRMAComponent.vue').default);
-Vue.component('editrma-component', require('./components/rma/editRMAComponent.vue').default);
-*/
-
-//Components for Order
 Vue.component('order-component', require('./components/order/OrderComponent.vue').default);
-
-//Components for RMA
 Vue.component('rma-component', require('./components/rma/RMAComponent.vue').default);
-
-//Components for Refurbishes
-Vue.component('createrefurbish-component', require('./components/refurbish/createRefurbishComponent.vue').default);
-Vue.component('editrefurbish-component', require('./components/refurbish/editRefurbishComponent.vue').default);
+Vue.component('refurbish-component', require('./components/refurbish/RefurbishComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

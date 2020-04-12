@@ -104,6 +104,8 @@ class RefurbishesController extends Controller
      */
     public function edit(Refurbishes $refurbish)
     {
+        $form_action = 'edit';
+
         $refurbishes_lines  = RefurbishItems::where('refurbish_id',$refurbish->id)->get();
 
         $products_refurbishes = [];
@@ -126,7 +128,7 @@ class RefurbishesController extends Controller
         }
         $products_refurbishes = json_encode($products_refurbishes, true);
 
-        return view('refurbishes.edit', compact('refurbish', 'products_refurbishes') );
+        return view('refurbishes.edit', compact('form_action','refurbish', 'products_refurbishes') );
     }
 
     /**

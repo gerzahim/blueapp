@@ -190,7 +190,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group-po">
-                            <label class="mb-0" ><small>List Products added</small></label>
+                            <label class="mb-0" ><small>List Products Selected</small></label>
                             <input type="hidden" name="vars" :value="JSON.stringify(vars)">
                             <ul class="list-group list-group-full">
                                 <li v-for="(variable, key) in vars" :key="key" class="list-group-item">
@@ -304,7 +304,7 @@
                 vendors: [],
                 couriers: [],
                 vars: [],
-                vars_deleted: [],
+                vars_available: [],
                 rma:[],
             }
         },
@@ -340,25 +340,15 @@
             dispatchDelete(vars, key) {
 
                 // Move Delete object to vars_deleted[]
-                let exist_in_vars_deleted = 0
-                exist_in_vars_deleted = this.isThisValueInArray(this.vars_deleted, vars[key].product_id)
+                let exist_in_vars_available = 0
+                exist_in_vars_available = this.isThisValueInArray(this.vars_available, vars[key].product_id)
                 //exist ?
-                if (exist_in_vars_deleted) {
-                    key = exist_in_vars_deleted[1]
-                    this.vars_deleted.splice(key,1)
+                if (!exist_in_vars_available) {
+                    this.vars_available.push({
+                        'product_id': this.vars[key].product_id,
+                        'qty': parseInt(this.vars[key].available) + parseInt(this.vars[key].qty)
+                    })
                 }
-                //Insert in vars_deleted if exist rewrite values
-                this.vars_deleted.push({
-                    'order_id': this.vars[key].order_id,
-                    'po_id': this.vars[key].po_id,
-                    'po_item_id': this.vars[key].po_item_id,
-                    'product_id': this.vars[key].product_id,
-                    'product_name': this.vars[key].product_name,
-                    'batch': this.vars[key].batch,
-                    'po_name': this.vars[key].po_name,
-                    'available': this.vars[key].available,
-                    'qty': this.vars[key].qty
-                })
 
                 // Delete from vars[], vars.delete(vars, key)
                 vars.splice(key,1)
@@ -445,14 +435,32 @@
             validateProductAvailable() {
                 this.errors_adder.available = false;
                 let previous_qty = 0
-                let previous_qty_deleted = 0
+                let previous_qty_edit = 0
                 let available = 0
-                previous_qty = this.getPreviousQty(this.vars, this.current_prod_id)
-                previous_qty_deleted = this.getPreviousQty(this.vars_deleted, this.current_prod_id)
-                available = parseInt(this.current_prod_available) - parseInt(previous_qty) + parseInt(previous_qty_deleted)
 
-                if(this.qty > available) {
-                    toastr.error('Check Input Quantity is greater than the available!', 'Error Alert', {timeOut: 5000})
+                // exist on vars_edit, means was already added
+                previous_qty_edit = this.getPreviousQty(this.vars_available, this.current_prod_id)
+                // exist available
+
+                previous_qty = this.getPreviousQty(this.vars, this.current_prod_id)
+                if (!previous_qty_edit ) {
+                    if (previous_qty){
+                        this.vars_available.push({
+                            'product_id': this.current_prod_id,
+                            'qty': parseInt(this.current_prod_available) + parseInt(previous_qty)
+                        })
+                    }else{
+                        this.vars_available.push({
+                            'product_id': this.current_prod_id,
+                            'qty': parseInt(this.current_prod_available)
+                        })
+                    }
+                }
+
+                available = this.getPreviousQty(this.vars_available, this.current_prod_id)
+
+                if( (parseInt(this.qty)+ parseInt(previous_qty)) > available) {
+                    toastr.error('Quantity entered is greater than the quantity available!', 'Error Alert', {timeOut: 5000})
                     this.errors_adder.available = true;
                 }
             },

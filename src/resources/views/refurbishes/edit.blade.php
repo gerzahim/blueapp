@@ -51,10 +51,11 @@
                             </ul>
                         </div>
                         @endif
-                        <editrefurbish-component
-                            v-bind:props_refurbishes="'{{ $refurbish }}'"
-                            v-bind:props_products="'{{ $products_refurbishes }}'"
-                        ></editrefurbish-component>
+                        <refurbish-component
+                            v-bind:props_action="'{{ $form_action }}'"
+                            v-bind:props_refurbish_edit="'{{ $refurbish }}'"
+                            v-bind:props_products_edit="'{{ $products_refurbishes }}'"
+                        ></refurbish-component>
                     </div>
                 </div>
             </div>

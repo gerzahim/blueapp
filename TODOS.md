@@ -8,26 +8,17 @@
 - [ ] Report Filters
 
 ## Bugs 
+- [x] fix available Order
+- [ ] fix available RMA
+- [ ] fix available Refurbish
 
 
-- [ ] messages new Trait, Refurbishment
-- [ ] rules new Trait, Refurbishment
-- [ ] Data Trait for Insert, Refurbishment
-- [ ] Refactor, One Component Refurbishment
-- [ ] loading gif, Refurbishment
-- [ ] remove Reset Button Refurbishment
 
 - [ ] Refactor PaddingStringsTrait, 
    
 
-- created_at Stock
- 
+- created_at Stock 
 - check rightjoin by join on ajaxcall
-- List Products added - fix message 
-
-- [ ] remove Reset Button PO, Orders, RMA, Refurbishment    
-
-
 
 ## Core Improvements 
 - [ ] 419 Page Expired , handle redirect or message error

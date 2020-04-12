@@ -27,8 +27,8 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group-po">
-                            <label class="mb-0" ><small>Reference Notes</small></label>
-                            <input type="text" class="form-control form-control-sm" id="reference" name="reference" v-model="reference" min="1" placeholder="...">
+                            <label class="mb-0" ><small>Reference</small></label>
+                            <input type="text" class="form-control form-control-sm" id="reference" name="reference" min="1" placeholder="..." v-model="form_reference">
                         </div>
                     </div>
                 </div>
@@ -77,7 +77,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group-po">
-                            <label class="mb-0" ><small>List Products added</small></label>
+                            <label class="mb-0" ><small>List Products Selected</small></label>
                             <input type="hidden" name="vars" :value="JSON.stringify(vars)">
                             <ul class="list-group list-group-full">
                                 <li v-for="(variable, key) in vars" :key="key" class="list-group-item">
