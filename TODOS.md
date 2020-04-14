@@ -8,16 +8,12 @@
 - [ ] Report Filters
 
 ## Bugs 
+     
+- [ ] created_at Stock (add created_at and updated_at in Model), update StockController.php
+- [ ] check rightjoin by join on ajaxcall ResponseController
 
-- [ ] fix available RMA
-
-- [ ] Refactor PaddingStringsTrait, 
-   
-
-- created_at Stock 
-- check rightjoin by join on ajaxcall
-
-## Core Improvements 
+## Core Improvements
+- [ ] Refactor PaddingStringsTrait , Replace - by spaces
 - [ ] 419 Page Expired , handle redirect or message error
 - [ ] Add Vue Datatables to RMA
       https://vuejsexamples.com/data-table-simplify-datatable-component-for-vue-2-x/
@@ -25,9 +21,7 @@
       https://vuejsexamples.com/a-vue-js-datatable-component-for-laravel-that-works-with-bootstrap/
       https://github.com/jamesdordoy/laravel-vue-datatable
       
-- [ ] formatPadString , Replace - by spaces
 - [ ] holding ( from Create Order Select Holding, List Holding [Show Order][Complete Order][revert Order]) 
-
 
 - [ ] style Stock
     <td style="font-weight: bold; text-align:right;background-color:red; color:white">+11 </td>
@@ -35,14 +29,6 @@
           
 - [ ] If fail refill values ( No priority) on Vue component
 - [ ] Disable Button Save or Message why not submit
-- [ ] Edit instead splice try, Components 
- "words":[ "I", "am", "Good" ] 
-  myObj.words[2] = "bad";  
- "words":[ "I", "am", "bad" ] 
- // modifying the value present at index 2 
-  myObj.words[2] = "bad";   
-  
-
 
 ## Crazy Ideas :
 
@@ -110,3 +96,8 @@ user1@gmail.com/12345678
 - [X] Refactor, One Component RMA
 - [x] loading gif, RMA
 - [x] remove Reset Button RMA, replace for Cancel Button
+- [X] fix available RMA 
+     if Customer
+        take qty Ordered 
+     if Vendor 
+        take qty available

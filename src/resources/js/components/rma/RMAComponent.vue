@@ -442,22 +442,34 @@
                 previous_qty_edit = this.getPreviousQty(this.vars_available, this.current_prod_id)
                 // exist available
 
-                previous_qty = this.getPreviousQty(this.vars, this.current_prod_id)
-                if (!previous_qty_edit ) {
-                    if (previous_qty){
-                        this.vars_available.push({
-                            'product_id': this.current_prod_id,
-                            'qty': parseInt(this.current_prod_available) + parseInt(previous_qty)
-                        })
-                    }else{
-                        this.vars_available.push({
-                            'product_id': this.current_prod_id,
-                            'qty': parseInt(this.current_prod_available)
-                        })
+                if(this.form_contact_type_id === '0' || this.form_contact_type_id === 0){
+                    //means Customer was Selected
+                    previous_qty = this.getPreviousQty(this.vars, this.current_prod_id)
+                    this.vars_available.push({
+                        'product_id': this.current_prod_id,
+                        'qty': parseInt(this.current_prod_available)
+                    })
+                    available = this.getPreviousQty(this.vars_available, this.current_prod_id)
+
+                }else{
+                    previous_qty = this.getPreviousQty(this.vars, this.current_prod_id)
+                    if (!previous_qty_edit ) {
+                        if (previous_qty){
+                            this.vars_available.push({
+                                'product_id': this.current_prod_id,
+                                'qty': parseInt(this.current_prod_available) + parseInt(previous_qty)
+                            })
+                        }else{
+                            this.vars_available.push({
+                                'product_id': this.current_prod_id,
+                                'qty': parseInt(this.current_prod_available)
+                            })
+                        }
                     }
+                    available = this.getPreviousQty(this.vars_available, this.current_prod_id)
                 }
 
-                available = this.getPreviousQty(this.vars_available, this.current_prod_id)
+                console.log('hey007', available, previous_qty, this.qty,this.vars_available, this.current_prod_id)
 
                 if( (parseInt(this.qty)+ parseInt(previous_qty)) > available) {
                     toastr.error('Quantity entered is greater than the quantity available!', 'Error Alert', {timeOut: 5000})
