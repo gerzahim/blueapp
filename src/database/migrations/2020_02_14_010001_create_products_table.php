@@ -18,8 +18,8 @@ class CreateProductsTable extends Migration
             $table->string('name')->unique();
             $table->string('code')->unique()->nullable();
             $table->text('description')->nullable();
-            $table->integer('dimensions_id');
-            $table->integer('category_id');
+            $table->unsignedBigInteger('dimensions_id');
+            $table->unsignedBigInteger('category_id');
             $table->text('image')->nullable();
             $table->timestamps();
         });

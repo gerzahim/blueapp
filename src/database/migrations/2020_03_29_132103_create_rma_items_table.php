@@ -15,8 +15,8 @@ class CreateRMAItemsTable extends Migration
     {
         Schema::create('rma_items', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('rma_id');
-            $table->integer('product_id');
+            $table->unsignedBigInteger('rma_id');
+            $table->unsignedBigInteger('product_id');
             $table->integer('qty')->unsigned();
             $table->integer('order_id')->nullable();
             $table->integer('purchases_id')->nullable();

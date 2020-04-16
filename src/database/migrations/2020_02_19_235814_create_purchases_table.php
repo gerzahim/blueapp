@@ -18,8 +18,8 @@ class CreatePurchasesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->unique();
             $table->integer('contact_type_id');
-            $table->integer('contact_id');
-            $table->integer('courier_id')->nullable();
+            $table->unsignedBigInteger('contact_id');
+            $table->unsignedBigInteger('courier_id')->nullable();
             $table->string('tracking')->nullable();
             $table->integer('transaction_type_id');
             $table->string('bol')->nullable();

@@ -109,7 +109,7 @@ class ProductDimensionsController extends Controller
             'name'                => $request->name
         );
 
-        $productDimensions = ProductDimensions::find($request->id);
+        $productDimensions = ProductDimensions::findOrFail($request->id);
         $productDimensions->fill($data)->save();
 
         return redirect()->route('product_dimensions.index')->with('success', 'Product Dimension has been updated successfully!');

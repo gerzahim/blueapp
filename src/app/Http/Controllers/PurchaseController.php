@@ -161,7 +161,7 @@ class PurchaseController extends Controller
 
         $data_form = $this->setDataPurchase($request);
 
-        $purchases = Purchases::find($request->id);
+        $purchases = Purchases::findOrFail($request->id);
         $purchases->fill($data_form)->save();
 
         $po_lines = json_decode($request->vars);

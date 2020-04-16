@@ -15,10 +15,10 @@ class CreateRefurbishItemsTable extends Migration
     {
         Schema::create('refurbish_items', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('refurbish_id');
-            $table->integer('product_id');
+            $table->unsignedBigInteger('refurbish_id');
+            $table->unsignedBigInteger('product_id');
             $table->integer('qty')->unsigned();
-            $table->integer('purchases_id')->nullable();
+            $table->unsignedBigInteger('purchases_id')->nullable();
             $table->timestamps();
         });
     }

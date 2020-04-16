@@ -17,9 +17,9 @@ class CreateRMASTable extends Migration
             $table->bigIncrements('id');
             $table->integer('name')->nullable();
             $table->integer('contact_type_id');
-            $table->integer('contact_id');
+            $table->unsignedBigInteger('contact_id');
             $table->integer('transaction_type_id');
-            $table->integer('courier_id')->nullable();
+            $table->unsignedBigInteger('courier_id');
             $table->string('tracking')->nullable();
             $table->date('date')->nullable();
             $table->string('reference')->nullable();
