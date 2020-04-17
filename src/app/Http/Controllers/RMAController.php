@@ -121,7 +121,29 @@ class RMAController extends Controller
      */
     public function show(RMA $rma)
     {
-        //
+        $rma_lines  = RMAItems::where('rma_id',$rma->id)->get();
+        $products_rma = [];
+        foreach($rma_lines as $rma_line){
+
+            $po_line  = PurchasesItem::where('id',$rma_line->purchases_id)->first();
+            $po       = Purchases::where('id',$po_line->purchases_id)->first();
+            $product  = Product::where('id', $po_line->product_id)->first();
+            $stock    = Stock::where('purchases_item_id',$rma_line->purchases_id)->first();
+
+            $products_rma[] = array(
+                'order_id'     => $rma_line->order_id,
+                'po_id'        => $po->id,
+                'po_item_id'   => $po_line->id,
+                'product_id'   => $product->id,
+                'product_name' => $product->name,
+                'batch'        => $po_line->batch_number,
+                'po_name'      => $po->name,
+                'available'    => $stock->available,
+                'qty'          => $rma_line->qty
+            );
+        }
+
+        return view('rma.show', compact('rma', 'products_rma') );
     }
 
     /**

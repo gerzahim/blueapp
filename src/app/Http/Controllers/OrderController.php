@@ -115,7 +115,27 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        $order_lines = OrderItems::where('order_id',$order->id)->get();
+        $products_order = [];
+        foreach($order_lines as $order_line){
+
+            $po_line  = PurchasesItem::where('id',$order_line->purchases_id)->first();
+            $po       = Purchases::where('id',$po_line->purchases_id)->first();
+            $product  = Product::where('id', $po_line->product_id)->first();
+            $stock    = Stock::where('purchases_item_id',$order_line->purchases_id)->first();
+
+            $products_order[] = array(
+                'po_id'        => $po->id,
+                'po_item_id'   => $po_line->id,
+                'product_id'   => $product->id,
+                'product_name' => $product->name,
+                'batch'        => $po_line->batch_number,
+                'po_name'      => $po->name,
+                'available'    => $stock->available,
+                'qty'          => $order_line->qty
+            );
+        }
+        return view('orders.show', compact( 'order', 'products_order'));
     }
 
     /**

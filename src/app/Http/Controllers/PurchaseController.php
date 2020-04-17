@@ -104,18 +104,28 @@ class PurchaseController extends Controller
     }
 
     /**
-     * @param Purchases $purchases
+     * @param Purchases $purchase
+     * @return Factory|View
      */
-    public function show(Purchases $purchases)
+    public function show(Purchases $purchase)
     {
-        //
+
+        $po_lines  = PurchasesItem::where('purchases_id',$purchase->id)->get();
+        $products_pos = [];
+
+        foreach($po_lines as $po_line){
+            $po_line->name  = Product::where('id', $po_line->product_id)->first()->name;
+            $products_pos[] = array('product_id' => $po_line->product_id, 'product_name' => $po_line->name, 'qty' => $po_line->qty, 'batch_number' => $po_line->batch_number);
+        }
+
+        return view('purchases.show', compact( 'purchase', 'products_pos'));
     }
 
     /**
      * @param Request $request
-     * @param Purchases $purchases
+     * @param Purchases $purchase
      */
-    public function edit(Request $request, Purchases $purchases)
+    public function edit(Request $request, Purchases $purchase)
     {
         dd($request);
     }
@@ -142,11 +152,11 @@ class PurchaseController extends Controller
     /**
      * Update the specified resource in storage.
      * @param Request $request
-     * @param Purchases $purchases
+     * @param Purchases $purchase
      * @return RedirectResponse
      * @throws ValidationException
      */
-    public function update(Request $request, Purchases $purchases)
+    public function update(Request $request, Purchases $purchase)
     {
         $messages = $this->getMessagesValidationPO();
         $rules    = $this->getRulesValidationPO($request, true);
@@ -188,13 +198,13 @@ class PurchaseController extends Controller
 
     /**
      * @param Request $request
-     * @param Purchases $purchases
+     * @param Purchases $purchase
      * @return RedirectResponse
      */
-    public function destroy(Request $request, Purchases $purchases)
+    public function destroy(Request $request, Purchases $purchase)
     {
-        $purchases->id      = $request->id;
-        $purchases_items    = PurchasesItem::where('purchases_id',$purchases->id)->get();
+        $purchase->id      = $request->id;
+        $purchases_items    = PurchasesItem::where('purchases_id',$purchase->id)->get();
         $purchases_items_id = [];
         foreach ( $purchases_items as $purchase_item) {
             $purchases_items_id[] = $purchase_item->id;
@@ -205,9 +215,9 @@ class PurchaseController extends Controller
             return redirect()->route('purchases.index')->with('warning', 'Can Not Delete this PO, have Orders Associated');
         }
 
-        Purchases::where('id',$purchases->id)->delete();
-        Stock::where('purchases_id',$purchases->id)->delete();
-        PurchasesItem::where('purchases_id',$purchases->id)->delete();
+        Purchases::where('id',$purchase->id)->delete();
+        Stock::where('purchases_id',$purchase->id)->delete();
+        PurchasesItem::where('purchases_id',$purchase->id)->delete();
 
         return redirect()->route('purchases.index')->with('success', 'Purchase - PO has been deleted successfully!');
     }

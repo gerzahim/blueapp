@@ -89,12 +89,33 @@ class RefurbishesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Refurbishes  $refurbishes
+     * @param Refurbishes $refurbish
      * @return \Illuminate\Http\Response
      */
-    public function show(Refurbishes $refurbishes)
+    public function show(Refurbishes $refurbish)
     {
-        //
+        $refurbishes_lines  = RefurbishItems::where('refurbish_id',$refurbish->id)->get();
+
+        $products_refurbishes = [];
+        foreach($refurbishes_lines as $refurbish_line){
+            $po_line  = PurchasesItem::where('id',$refurbish_line->purchases_id)->first();
+            $po       = Purchases::where('id',$po_line->purchases_id)->first();
+            $product  = Product::where('id', $po_line->product_id)->first();
+            $rma_item = RMAItems::where('purchases_id',$refurbish_line->purchases_id)->first();
+
+            $products_refurbishes[] = array(
+                'po_id'        => $po->id,
+                'po_item_id'   => $po_line->id,
+                'product_id'   => $product->id,
+                'product_name' => $product->name,
+                'batch'        => $po_line->batch_number,
+                'po_name'      => $po->name,
+                'available'    => $rma_item->qty,
+                'qty'          => $refurbish_line->qty
+            );
+        }
+
+        return view('refurbishes.show', compact('refurbish', 'products_refurbishes') );
     }
 
     /**

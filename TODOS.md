@@ -1,10 +1,8 @@
 # TO DO List 
 
 ## TO DO   
-- [ ] show PO
-- [ ] show Order
-- [ ] show RMA  
-- [ ] Send refurbishment on ( Create Order )
+  
+- [ ] Send refurbishment ( Create Order to Customer with refurbishes Items)
 - [ ] Report Filters
 - [ ] Import on Server GoDaddy
 
@@ -102,3 +100,6 @@ user1@gmail.com/12345678
         take qty Ordered 
      if Vendor 
         take qty available
+- [x] show PO
+- [x] show Order
+- [x] show RMA
