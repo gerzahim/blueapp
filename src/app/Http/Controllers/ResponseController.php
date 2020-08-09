@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Client;
 use App\Courier;
 use App\Order;
 use App\OrderItems;
 use App\Product;
+use App\ProductDimensions;
 use App\Purchases;
 use App\PurchasesItem;
 use App\RMAItems;
@@ -33,7 +35,7 @@ class ResponseController extends Controller
     }
 
     /**
-     * Get List of Products by Json
+     * Get List of Clients by Json
      *
      * @return JsonResponse
      */
@@ -278,6 +280,30 @@ class ResponseController extends Controller
     }
 
 
+
+    /**
+     * Get List of Categories by Json
+     *
+     * @return JsonResponse
+     */
+    public function getCategoriesAjax() {
+        $categories = Category::all();
+        $sorted  = $categories->sortBy('name');
+        $categories = $sorted->values()->all();
+        return response()->json(['categories' => $categories]);
+    }
+
+    /**
+     * Get List of Products Dimensions by Json
+     *
+     * @return JsonResponse
+     */
+    public function getProductsDimensionsAjax() {
+        $dimensions = ProductDimensions::all();
+        $sorted  = $dimensions->sortBy('name');
+        $dimensions = $sorted->values()->all();
+        return response()->json(['dimensions' => $dimensions]);
+    }
 
 
 

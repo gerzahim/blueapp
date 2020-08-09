@@ -61,6 +61,8 @@ Route::get('/get_purchases_items', 'ResponseController@getPurchasesItemsbyAjax')
 Route::get('/get_orders_by_customer_id/{id}', 'ResponseController@getOrderByCustomerID');
 Route::get('/get_purchases_by_vendor_id/{id}', 'ResponseController@getPurchasesByVendorID');
 Route::get('/get_rmas', 'ResponseController@getRMAItemsbyAjax');
+Route::get('/get_categories', 'ResponseController@getCategoriesAjax');
+Route::get('/get_dimensions', 'ResponseController@getProductsDimensionsAjax');
 
 
 Route::get('/get_clients_with_orders', 'ResponseController@getClientsWithOrders');

@@ -39,8 +39,13 @@
                             <div class="col-md-6">
                                 <div class="float-right">
                                     <a href="{{ url('/clients_sorted') }}" class="btn btn-info btn-sm">Sort by Name</a>
-                                    &nbsp;
                                     <a href="{{ route('client.create') }}" class="btn btn-success btn-sm">Add</a>
+                                    <!-- Large modal -->
+                                    <button type="button" class="btn btn-info" data-toggle="modal"
+                                            data-target="#bs-example-modal-lg">Large modal</button>
+                                    <!-- Info header modal -->
+                                    <button type="button" class="btn btn-info" data-toggle="modal"
+                                            data-target="#info-header-modal">Info Header</button>
                                 </div>
                             </div>
                         </div>
@@ -99,6 +104,54 @@
             </div>
         </div>
     </div>
+    &nbsp;
+    <!--  Modal content  -->
+    <div class="modal fade" id="bs-example-modal-lg" tabindex="-1" role="dialog"
+         aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myLargeModalLabel">Large modal</h4>
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- Info Header Modal -->
+    <div id="info-header-modal" class="modal fade" tabindex="-1" role="dialog"
+         aria-labelledby="info-header-modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header modal-colored-header bg-info">
+                    <h4 class="modal-title" id="info-header-modalLabel">Modal Heading</h4>
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <h5 class="mt-0">Info Background</h5>
+                    <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+                        dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
+                        ac consectetur ac, vestibulum at eros.</p>
+                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
+                        Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor
+                        auctor.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light"
+                            data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-info">Save changes</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+
     <!-- ============================================================== -->
     <!-- End Container fluid  -->
     <!-- ============================================================== -->

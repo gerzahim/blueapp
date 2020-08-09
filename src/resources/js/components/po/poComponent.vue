@@ -86,9 +86,127 @@
                         </div>
                     </div>
                 </div>
+                <div class="p-2 border shadow-sm rounded">
+                    <input type="hidden" name="vars" :value="JSON.stringify(vars)">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead class="thead-light">
+                                    <tr>
+                                        <th width="50%" scope="col">Product</th>
+                                        <th width="30%" scope="col">Batch Number</th>
+                                        <th width="10%" scope="col">Qty</th>                                        
+                                        <th width="10%" scope="col">Handle</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="(po_product, k) in vars" :key="k">
 
+                                        <td width="50%"> 
+                                            <select id="product_id" name="product_id" class="form-control form-control-sm" v-bind:class="[errors_adder.product ? 'is-invalid' : '']" v-model="po_product.product_id">
+                                                <option value="0" selected disabled>Select Product</option>
+                                                <option v-for="product in products" v-bind:value="product.id" :key="product.id">
+                                                    {{ product.name }}
+                                                </option>
+                                            </select>
+                                            <!-- <div v-show="errors_adder.product" class="invalid-feedback">Please Select a Product!</div> -->
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control form-control-sm text-uppercase" id="batch_number" name="batch_number" v-model="po_product.batch_number" placeholder="XFR4487...">
+                                        </td>
+                                        <th scope="row">
+                                            <input type="number" class="form-control form-control-sm" v-bind:class="[errors_adder.qty ? 'is-invalid' : '']" v-model="po_product.qty" min="1">
+                                            <!-- <div v-show="errors_adder.qty" class="invalid-feedback">Please Indicate Qty!</div> -->
+                                        </th>
+                                        <td align="center"> 
+                                            <!--
+                                            <i class="far fa-trash-alt" @click="deleteRow(k, po_product)"></i>
+                                            <a href="#" @click="$delete(vars, key)"><h3><i class="fa fa-times-circle" style="color:red"></i></h3></a>
+                                            -->
+                                            <a href="#" @click="$delete(vars, k)"><h3><i class="far fa-trash-alt" style="color:red"></i></h3></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="4">
+                                            <button type='button' class="btn btn-success btn-sm" @click="addNewRow">
+                                                <i class="fas fa-plus-circle"></i>&nbsp; Add a Line
+                                            </button>
+                                            <!-- Create Product modal -->
+                                            <button type='button' 
+                                                    class="btn btn-secondary btn-sm" 
+                                                    data-toggle="modal"
+                                                    data-target="#create-modal">
+                                                <i class="fas fa-tags"></i>&nbsp; Create New Product
+                                            </button>
+                                        </th>
+                                    </tr>
+                                    <tr v-show="errors.vars">
+                                        <th colspan="4">
+                                            <div class="alert alert-danger">
+                                                <p>
+                                                    <strong><li>Please Add a Product to PO</li></strong>
+                                                </p>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 
+                <div class="p-4 border shadow-sm rounded">
+                    <h4 class="card-title">List Products Selected</h4>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group-po">
+                            <input type="hidden" name="vars" :value="JSON.stringify(vars)">
+                        </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">Qty</th>
+                                        <th scope="col">Product</th>
+                                        <th scope="col">Batch Number</th>
+                                        <th scope="col">Handle</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="(variable, key) in vars" :key="key">
+                                        <th scope="row"><span class="badge badge-primary badge-pill"><b>{{variable.qty}}</b></span></th>
+                                        <td>{{variable.product_name}}</td>
+                                        <td>{{variable.batch_number}}</td>
+                                        <td><a href="#" @click="$delete(vars, key)"><h3><i class="fa fa-times-circle" style="color:red"></i></h3></a></td>
+                                    </tr>
+                                    <tr v-show="errors.vars">
+                                        <th colspan="4">
+                                            <div class="alert alert-danger">
+                                                <p>
+                                                    <strong><li>Please Add a Product to PO</li></strong>
+                                                </p>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                -->
+
+                <!--
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group-po">
                             <div class="spinner-border text-success" role="status" v-show="loading_products">
                                 <span class="sr-only">Loading...</span>
@@ -139,6 +257,8 @@
                             </div>
                         </div>
                     </div>
+
+                    
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0" ><small>List Products Selected</small></label>
@@ -170,7 +290,11 @@
                             </ul>
                         </div>
                     </div>
-                </div> <!-- END ROW -->
+                    
+                </div> 
+                -->
+
+                <!-- END ROW -->
             </div>
 
             <div class="form-actions mt-2">
@@ -179,7 +303,121 @@
                 </div>
             </div>
         </form>
+
+
+
+        <!-- Signup modal content -->
+        <div id="create-modal" class="modal fade" tabindex="-1" role="dialog"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+
+                    <div class="modal-body mt-2">
+                    <ul class="nav nav-tabs nav-justified nav-bordered mb-3">
+                        <li class="nav-item">
+                            <a href="#home" data-toggle="tab" aria-expanded="true" class="nav-link active">
+                                <i class="mdi mdi-home-variant d-lg-none d-block mr-1"></i>
+                                <span class="d-none d-lg-block">Create a Product</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#profile" data-toggle="tab" aria-expanded="false" class="nav-link">
+                                <i class="mdi mdi-account-circle d-lg-none d-block mr-1"></i>
+                                <span class="d-none d-lg-block">Create Category</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#settings" data-toggle="tab" aria-expanded="false" class="nav-link">
+                                <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
+                                <span class="d-none d-lg-block">Create Product Dimensions</span>
+                            </a>
+                        </li>
+                    </ul>
+
+
+                    <div class="tab-content">
+                        <br><br>
+                        <div class="tab-pane show active" id="home">
+                                <form method="POST" @submit="checkFormProduct" action="/product">
+                                <input type="hidden" name="_token" :value="csrf">
+                                <div class="form-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Product Name</label>
+                                                <input type="text" class="form-control" id="name" name="name" placeholder="P10-MCXXa">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>Product Description</label>
+                                                <input type="text" class="form-control" id="description" name="description" placeholder="Unit Cabinet P10, PO MIA-ZH...">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Dimensions</label>
+                                                <select id="dimensions_id" name="dimensions_id" class="form-control form-control-sm">
+                                                    <option value="0" selected disabled>Select Product Dimension</option>
+                                                    <option v-for="dimension in dimensions" v-bind:value="dimension.id" :key="dimension.id">
+                                                        {{ dimension.name }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Category</label>
+                                                <select id="category_id" name="category_id" class="form-control form-control-sm">
+                                                    <option value="0" selected disabled>Select Category</option>
+                                                    <option v-for="category in categories" v-bind:value="category.id" :key="category.id">
+                                                        {{ category.name }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-4">
+                                        <div class="col-md-12 text-right">
+                                            <button type="button" class="btn btn-light"
+                                                    data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-info"><i class="far fa-save"></i>&nbsp;Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="tab-pane" id="profile">
+                            <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim
+                                justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis
+                                eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum
+                                semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor
+                                eu, consequat vitae, eleifend ac, enim.</p>
+                        </div>
+                        <div class="tab-pane" id="settings">
+                            <p>Food truck quinoa dolor sit amet, consectetuer adipiscing elit. Aenean
+                                commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et
+                                magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis,
+                                ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa
+                                quis enim.</p>
+                        </div>
+                    </div>
+
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+
+
+
     </div>
+
+    
 </template>
 
 <script>
@@ -188,10 +426,13 @@
         data: function () {
             return {
                 csrf: document.head.querySelector('meta[name="csrf-token"]').content,
-                action_edit: false,
-                loading_products: false,
-                loading_vendors: false,
-                loading_couriers: false,
+                action_edit:false,
+                loading_products:false,
+                loading_vendors:false,
+                loading_couriers:false,
+                loading_dimensions:false,
+                loading_categories:false,
+
                 // var form
                 form_id: '',
                 form_name: null,
@@ -209,21 +450,23 @@
                 batch_number: '',
                 // var errors
                 errors: {
-                    name :false,
-                    date : false,
-                    vendor :false,
-                    vars :false,
+                    name:false,
+                    date:false,
+                    vendor:false,
+                    vars:false,
                 },
                 errors_adder: {
-                    qty :false,
-                    product :false,
+                    qty:false,
+                    product:false,
                 },
 
-                products: [],
-                vendors: [],
-                couriers: [],
-                vars: [],
-                purchase: [],
+                products:[],
+                vendors:[],
+                couriers:[],
+                dimensions:[],
+                categories:[],
+                vars:[],
+                purchase:[],
             }
         },
         watch: {
@@ -253,6 +496,16 @@
                     toastr.error('Form is Not Good!', 'Error Alert', {timeOut: 5000})
                     return;
                 }
+            },
+            checkFormProduct:function(e) {
+                /*
+                this.checkErrors()
+                if (!this.errors.length) {
+                    return true;
+                    alert('Form is Not Good')
+                }
+                e.preventDefault();
+                */
             },
             //Methods for Form
             validateName(){
@@ -330,6 +583,11 @@
                 this.areProductsSelected()
                 this.resetAddProducts()
             },
+            
+            addNewRow() {
+                let variables = this.vars
+                variables.push({'product_id': this.product_selected,'product_name': '', 'qty': this.qty, 'batch_number': this.batch_number.toUpperCase()})
+            },
 
             //Methods for Ajax
             fetchProducts() {
@@ -356,11 +614,30 @@
                         this.loading_couriers = false
                     })
             },
+            fetchProductsDimensions() {
+                this.loading_dimensions = true
+                axios.get('/get_dimensions')
+                    .then(response => {
+                        this.dimensions = response.data.dimensions
+                        this.loading_dimensions = false
+                    })
+            },
+            fetchCategories() {
+                this.loading_categories = true
+                axios.get('/get_categories')
+                    .then(response => {
+                        this.categories = response.data.categories
+                        this.loading_categories = false
+                    })
+            },
         },
         created() {
             this.fetchProducts()
             this.fetchVendors()
             this.fetchCouriers()
+            this.fetchProductsDimensions()
+            this.fetchCategories()
+            this.addNewRow()
             //this.vendors = this.props_vendors
             //this.products = this.props_products
 
@@ -369,14 +646,12 @@
             }
 
             if(this.props_products_edit){
-                console.log('enter here')
                 this.vars = JSON.parse(this.props_products_edit);
             }
 
             if(this.props_purchase_edit){
 
                 this.purchase = JSON.parse(this.props_purchase_edit);
-                console.log('enter here 2 ', this.purchase)
                 this.form_id = this.purchase.id
                 this.form_name = this.purchase.name
                 this.form_date = this.purchase.date
