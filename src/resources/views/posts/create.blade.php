@@ -5,7 +5,7 @@
 <div class="card">
   <div class="card-header">
       <div class="float-right">
-          <a href="{{ route('post.index') }}" class="btn btn-primary btn-sm">Back to Posts</a>
+          <a href="{{ route('post.index') }}" class="btn btn-primary btn-sm"><i class="fas fa-undo-alt"></i>&nbsp;Back to Posts</a>
       </div>
      Create Post
   </div>
@@ -36,7 +36,7 @@
             <textarea class="form-control" id="body" name="body" rows="5">{{ old('body') }}</textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary"><i class="far fa-save"></i>&nbsp;Save</button>
 
       </form>
   </div>

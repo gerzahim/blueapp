@@ -31,7 +31,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="float-right">
-                            <a href="{{ route('category.index') }}" class="btn btn-primary btn-sm">Back to Categories</a>
+                            <a href="{{ route('category.index') }}" class="btn btn-primary btn-sm"><i class="fas fa-undo-alt"></i>&nbsp;Back to Categories</a>
                         </div>
                         <strong>Update Category</strong>
                     </div>
@@ -63,7 +63,7 @@
                                     value="{{ $category->name }}"
                                 />
                             </div>
-                            <button type="submit" class="btn btn-primary">Update</button>
+                            <button type="submit" class="btn btn-primary"><i class="far fa-save"></i>&nbsp;Save</button>
                         </form>
                     </div>
                 </div>

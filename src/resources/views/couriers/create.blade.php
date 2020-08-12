@@ -32,7 +32,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="float-right">
-                            <a href="{{ route('courier.index') }}" class="btn btn-primary btn-sm">Back to Couriers</a>
+                            <a href="{{ route('courier.index') }}" class="btn btn-primary btn-sm"><i class="fas fa-undo-alt"></i>&nbsp;Back to Couriers</a>
                         </div>
                         Create Courier
                     </div>
@@ -57,7 +57,7 @@
                                 <label for="name">Name</label>
                                 <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}">
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary"><i class="far fa-save"></i>&nbsp;Save</button>
 
                         </form>
                     </div>

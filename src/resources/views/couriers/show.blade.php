@@ -31,7 +31,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="float-right">
-                            <a href="{{ route('courier.index') }}" class="btn btn-primary btn-sm">Back to Couriers</a>
+                            <a href="{{ route('courier.index') }}" class="btn btn-primary btn-sm"><i class="fas fa-undo-alt"></i>&nbsp;Back to Couriers</a>
                         </div>
                         Courier
                     </div>

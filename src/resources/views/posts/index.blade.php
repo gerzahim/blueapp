@@ -1,4 +1,4 @@
-@extends('posts.master') 
+@extends('posts.master')
 
 @section('body')
 <div class="card">
@@ -40,7 +40,7 @@
                         <a
                         class="btn btn-primary btn-sm"
                         href="{{ route('post.edit',$post->id) }}"
-                        >Edit</a>
+                        ><i class="far fa-edit"></i>&nbsp;Edit</a>
 
                         <!-- Delete button -->
                         <form
@@ -49,9 +49,9 @@
                             style="display: inline;"
                         >
                             @csrf @method('DELETE')
-                            
+
                             <button type="submit" class="btn btn-danger btn-sm">
-                                Delete
+                                                <i class="far fa-trash-alt"></i>&nbsp;Delete
                             </button>
                         </form>
                     </td>

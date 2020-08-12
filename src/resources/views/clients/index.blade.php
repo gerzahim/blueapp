@@ -38,14 +38,8 @@
                             <!-- Column -->
                             <div class="col-md-6">
                                 <div class="float-right">
-                                    <a href="{{ url('/clients_sorted') }}" class="btn btn-info btn-sm">Sort by Name</a>
-                                    <a href="{{ route('client.create') }}" class="btn btn-success btn-sm">Add</a>
-                                    <!-- Large modal -->
-                                    <button type="button" class="btn btn-info" data-toggle="modal"
-                                            data-target="#bs-example-modal-lg">Large modal</button>
-                                    <!-- Info header modal -->
-                                    <button type="button" class="btn btn-info" data-toggle="modal"
-                                            data-target="#info-header-modal">Info Header</button>
+                                    <a href="{{ url('/clients_sorted') }}" class="btn btn-info btn-sm"><i class="fas fa-sort-alpha-up"></i>&nbsp;Sort by Name</a>
+                                    <a href="{{ route('client.create') }}" class="btn btn-success btn-sm"><i class="fas fa-plus-circle"></i>&nbsp;Add</a>
                                 </div>
                             </div>
                         </div>
@@ -79,7 +73,7 @@
                                         <a
                                             class="btn btn-primary btn-sm"
                                             href="{{ route('client.edit',$client->id) }}"
-                                        >Edit</a>
+                                        ><i class="far fa-edit"></i>&nbsp;Edit</a>
 
                                         <!-- Delete button -->
                                         <form
@@ -90,7 +84,7 @@
                                             @csrf @method('DELETE')
 
                                             <button type="submit" class="btn btn-danger btn-sm">
-                                                Delete
+                                                <i class="far fa-trash-alt"></i>&nbsp;Delete
                                             </button>
                                         </form>
                                     </td>

@@ -33,7 +33,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="float-right">
-                            <a href="{{ route('refurbishes.index') }}" class="btn btn-primary btn-sm">Back Refurbishments list</a>
+                            <a href="{{ route('refurbishes.index') }}" class="btn btn-primary btn-sm"><i class="fas fa-undo-alt"></i>&nbsp;Back Refurbishments list</a>
                         </div>
                         Edit Refurbishment
                     </div>

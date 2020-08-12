@@ -2414,6 +2414,26 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2847,6 +2867,7 @@ __webpack_require__.r(__webpack_exports__);
       loading_couriers: false,
       loading_dimensions: false,
       loading_categories: false,
+      loading_save_product: false,
       // var form
       form_id: '',
       form_name: null,
@@ -2858,10 +2879,25 @@ __webpack_require__.r(__webpack_exports__);
       form_bol: '',
       form_package_list: '',
       form_reference: '',
+      // var form_modal_product
+      form_modal_product_name: '',
+      form_modal_product_description: '',
+      form_modal_product_dimension: 0,
+      form_modal_product_category: 0,
       // var adder
       product_selected: 0,
       qty: 1,
       batch_number: '',
+      options_toastr: _defineProperty({
+        closeButton: true,
+        progressBar: true,
+        positionClass: "toast-top-right",
+        preventDuplicates: true,
+        showDuration: "300",
+        hideDuration: "1000",
+        timeOut: "5000",
+        extendedTimeOut: "1000"
+      }, "timeOut", 5000),
       // var errors
       errors: {
         name: false,
@@ -2915,15 +2951,49 @@ __webpack_require__.r(__webpack_exports__);
         return;
       }
     },
-    checkFormProduct: function checkFormProduct(e) {
-      /*
-      this.checkErrors()
-      if (!this.errors.length) {
-          return true;
-          alert('Form is Not Good')
+    addNewProduct: function addNewProduct() {
+      var _this = this;
+
+      if (this.form_modal_product_name === '' || typeof this.form_modal_product_name == 'undefined') {
+        toastr.error('Please Type a Name !', 'Error Alert', this.options_toastr);
+        return;
       }
-      e.preventDefault();
-      */
+
+      if (typeof this.form_modal_product_dimension == 'undefined' || this.form_modal_product_dimension === null || this.form_modal_product_dimension === 0) {
+        toastr.error('Please Select a Product Dimension !', 'Error Alert', this.options_toastr);
+        return;
+      }
+
+      if (typeof this.form_modal_product_category == 'undefined' || this.form_modal_product_category === null || this.form_modal_product_category === 0) {
+        toastr.error('Please Select a Category !', 'Error Alert', this.options_toastr);
+        return;
+      }
+
+      try {
+        this.loading_save_product = true;
+        axios.post('/create_product', {
+          name: this.form_modal_product_name,
+          description: this.form_modal_product_description,
+          dimensions_id: this.form_modal_product_dimension,
+          category_id: this.form_modal_product_category
+        }).then(function (response) {
+          _this.loading_save_product = false;
+          toastr.success('Product added Successfully', 'Information Alert', _this.options_toastr);
+        })["catch"](function (error) {
+          _this.loading_save_product = false;
+          toastr.error('Fail to Save Product !', 'Error Alert', _this.options_toastr);
+        });
+      } catch (error) {
+        console.log(error);
+      } // Clear Inputs Fields
+
+
+      this.form_modal_product_name = '';
+      this.form_modal_product_description = '';
+      this.form_modal_product_dimension = 0;
+      this.form_modal_product_category = 0; // Update products List
+
+      this.fetchProducts();
     },
     //Methods for Form
     validateName: function validateName() {
@@ -3023,48 +3093,48 @@ __webpack_require__.r(__webpack_exports__);
     },
     //Methods for Ajax
     fetchProducts: function fetchProducts() {
-      var _this = this;
+      var _this2 = this;
 
       this.loading_products = true;
       axios.get('/get_products').then(function (response) {
-        _this.loading_products = false;
-        _this.products = response.data.products;
+        _this2.loading_products = false;
+        _this2.products = response.data.products;
       });
     },
     fetchVendors: function fetchVendors() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.loading_vendors = true;
       axios.get('/get_vendors').then(function (response) {
-        _this2.vendors = response.data.vendors;
-        _this2.loading_vendors = false;
+        _this3.vendors = response.data.vendors;
+        _this3.loading_vendors = false;
       });
     },
     fetchCouriers: function fetchCouriers() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.loading_couriers = true;
       axios.get('/get_couriers').then(function (response) {
-        _this3.couriers = response.data.couriers;
-        _this3.loading_couriers = false;
+        _this4.couriers = response.data.couriers;
+        _this4.loading_couriers = false;
       });
     },
     fetchProductsDimensions: function fetchProductsDimensions() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.loading_dimensions = true;
       axios.get('/get_dimensions').then(function (response) {
-        _this4.dimensions = response.data.dimensions;
-        _this4.loading_dimensions = false;
+        _this5.dimensions = response.data.dimensions;
+        _this5.loading_dimensions = false;
       });
     },
     fetchCategories: function fetchCategories() {
-      var _this5 = this;
+      var _this6 = this;
 
       this.loading_categories = true;
       axios.get('/get_categories').then(function (response) {
-        _this5.categories = response.data.categories;
-        _this5.loading_categories = false;
+        _this6.categories = response.data.categories;
+        _this6.loading_categories = false;
       });
     }
   },
@@ -79599,8 +79669,10 @@ var render = function() {
       [
         _c("div", { staticClass: "modal-dialog modal-lg" }, [
           _c("div", { staticClass: "modal-content" }, [
+            _vm._m(13),
+            _vm._v(" "),
             _c("div", { staticClass: "modal-body mt-2" }, [
-              _vm._m(13),
+              _vm._m(14),
               _vm._v(" "),
               _c("div", { staticClass: "tab-content" }, [
                 _c("br"),
@@ -79617,7 +79689,12 @@ var render = function() {
                       "form",
                       {
                         attrs: { method: "POST", action: "/product" },
-                        on: { submit: _vm.checkFormProduct }
+                        on: {
+                          submit: function($event) {
+                            $event.preventDefault()
+                            return _vm.addNewProduct($event)
+                          }
+                        }
                       },
                       [
                         _c("input", {
@@ -79626,7 +79703,81 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c("div", { staticClass: "form-body" }, [
-                          _vm._m(14),
+                          _c("div", { staticClass: "row" }, [
+                            _c("div", { staticClass: "col-md-4" }, [
+                              _c("div", { staticClass: "form-group" }, [
+                                _c("label", [_vm._v("Product Name")]),
+                                _vm._v(" "),
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.form_modal_product_name,
+                                      expression: "form_modal_product_name"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  attrs: {
+                                    type: "text",
+                                    id: "product_name",
+                                    name: "name",
+                                    placeholder: "P10-MCXXa"
+                                  },
+                                  domProps: {
+                                    value: _vm.form_modal_product_name
+                                  },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.form_modal_product_name =
+                                        $event.target.value
+                                    }
+                                  }
+                                })
+                              ])
+                            ]),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-8" }, [
+                              _c("div", { staticClass: "form-group" }, [
+                                _c("label", [_vm._v("Product Description")]),
+                                _vm._v(" "),
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.form_modal_product_description,
+                                      expression:
+                                        "form_modal_product_description"
+                                    }
+                                  ],
+                                  staticClass: "form-control",
+                                  attrs: {
+                                    type: "text",
+                                    id: "product_description",
+                                    name: "description",
+                                    placeholder:
+                                      "Unit Cabinet P10, PO MIA-ZH..."
+                                  },
+                                  domProps: {
+                                    value: _vm.form_modal_product_description
+                                  },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.form_modal_product_description =
+                                        $event.target.value
+                                    }
+                                  }
+                                })
+                              ])
+                            ])
+                          ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "row" }, [
                             _c("div", { staticClass: "col-md-6" }, [
@@ -79636,10 +79787,38 @@ var render = function() {
                                 _c(
                                   "select",
                                   {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.form_modal_product_dimension,
+                                        expression:
+                                          "form_modal_product_dimension"
+                                      }
+                                    ],
                                     staticClass: "form-control form-control-sm",
                                     attrs: {
                                       id: "dimensions_id",
-                                      name: "dimensions_id"
+                                      name: "product_dimensions_id"
+                                    },
+                                    on: {
+                                      change: function($event) {
+                                        var $$selectedVal = Array.prototype.filter
+                                          .call($event.target.options, function(
+                                            o
+                                          ) {
+                                            return o.selected
+                                          })
+                                          .map(function(o) {
+                                            var val =
+                                              "_value" in o ? o._value : o.value
+                                            return val
+                                          })
+                                        _vm.form_modal_product_dimension = $event
+                                          .target.multiple
+                                          ? $$selectedVal
+                                          : $$selectedVal[0]
+                                      }
                                     }
                                   },
                                   [
@@ -79684,10 +79863,38 @@ var render = function() {
                                 _c(
                                   "select",
                                   {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.form_modal_product_category,
+                                        expression:
+                                          "form_modal_product_category"
+                                      }
+                                    ],
                                     staticClass: "form-control form-control-sm",
                                     attrs: {
                                       id: "category_id",
-                                      name: "category_id"
+                                      name: "product_category_id"
+                                    },
+                                    on: {
+                                      change: function($event) {
+                                        var $$selectedVal = Array.prototype.filter
+                                          .call($event.target.options, function(
+                                            o
+                                          ) {
+                                            return o.selected
+                                          })
+                                          .map(function(o) {
+                                            var val =
+                                              "_value" in o ? o._value : o.value
+                                            return val
+                                          })
+                                        _vm.form_modal_product_category = $event
+                                          .target.multiple
+                                          ? $$selectedVal
+                                          : $$selectedVal[0]
+                                      }
                                     }
                                   },
                                   [
@@ -79726,16 +79933,84 @@ var render = function() {
                             ])
                           ]),
                           _vm._v(" "),
-                          _vm._m(15)
+                          _c("div", { staticClass: "row mt-4" }, [
+                            _c("div", { staticClass: "col-md-12 text-right" }, [
+                              _c(
+                                "div",
+                                {
+                                  directives: [
+                                    {
+                                      name: "show",
+                                      rawName: "v-show",
+                                      value: _vm.loading_save_product,
+                                      expression: "loading_save_product"
+                                    }
+                                  ]
+                                },
+                                [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-light",
+                                      attrs: {
+                                        type: "button",
+                                        "data-dismiss": "modal"
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "Close\n                                            "
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _vm._m(15)
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  directives: [
+                                    {
+                                      name: "show",
+                                      rawName: "v-show",
+                                      value: !_vm.loading_save_product,
+                                      expression: "!loading_save_product"
+                                    }
+                                  ]
+                                },
+                                [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-light",
+                                      attrs: {
+                                        type: "button",
+                                        "data-dismiss": "modal"
+                                      }
+                                    },
+                                    [
+                                      _vm._v(
+                                        "Close\n                                            "
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _vm._m(16)
+                                ]
+                              )
+                            ])
+                          ])
                         ])
                       ]
                     )
                   ]
                 ),
                 _vm._v(" "),
-                _vm._m(16),
+                _vm._m(17),
                 _vm._v(" "),
-                _vm._m(17)
+                _vm._m(18)
               ])
             ])
           ])
@@ -79881,10 +80156,33 @@ var staticRenderFns = [
         _c(
           "button",
           { staticClass: "btn btn-info", attrs: { type: "submit" } },
-          [_vm._v("Save")]
+          [_c("i", { staticClass: "far fa-save" }), _vm._v(" Save")]
         )
       ])
     ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "modal-header modal-colored-header bg-primary" },
+      [
+        _c(
+          "button",
+          {
+            staticClass: "close",
+            attrs: {
+              type: "button",
+              "data-dismiss": "modal",
+              "aria-hidden": "true"
+            }
+          },
+          [_vm._v("×")]
+        )
+      ]
+    )
   },
   function() {
     var _vm = this
@@ -79969,62 +80267,35 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-4" }, [
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", [_vm._v("Product Name")]),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "form-control",
-            attrs: {
-              type: "text",
-              id: "name",
-              name: "name",
-              placeholder: "P10-MCXXa"
-            }
-          })
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-8" }, [
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", [_vm._v("Product Description")]),
-          _vm._v(" "),
-          _c("input", {
-            staticClass: "form-control",
-            attrs: {
-              type: "text",
-              id: "description",
-              name: "description",
-              placeholder: "Unit Cabinet P10, PO MIA-ZH..."
-            }
-          })
-        ])
-      ])
-    ])
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-primary",
+        attrs: { type: "button", disabled: "" }
+      },
+      [
+        _c("span", {
+          staticClass: "spinner-border spinner-border-sm",
+          attrs: { role: "status", "aria-hidden": "true" }
+        }),
+        _vm._v(
+          "\n                                                Saving...\n                                            "
+        )
+      ]
+    )
   },
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row mt-4" }, [
-      _c("div", { staticClass: "col-md-12 text-right" }, [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-light",
-            attrs: { type: "button", "data-dismiss": "modal" }
-          },
-          [_vm._v("Close")]
-        ),
-        _vm._v(" "),
-        _c(
-          "button",
-          { staticClass: "btn btn-info", attrs: { type: "button" } },
-          [_c("i", { staticClass: "far fa-save" }), _vm._v(" Save")]
-        )
-      ])
-    ])
+    return _c(
+      "button",
+      { staticClass: "btn btn-info", attrs: { type: "submit" } },
+      [
+        _c("i", { staticClass: "far fa-save" }),
+        _vm._v(" Save\n                                            ")
+      ]
+    )
   },
   function() {
     var _vm = this

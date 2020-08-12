@@ -33,7 +33,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="float-right">
-                            <a href="{{ route('product.index') }}" class="btn btn-primary btn-sm">Back to Products</a>
+                            <a href="{{ route('product.index') }}" class="btn btn-primary btn-sm"><i class="fas fa-undo-alt"></i>&nbsp;Back to Products</a>
                         </div>
                         Create Product
                     </div>

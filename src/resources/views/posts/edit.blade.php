@@ -5,7 +5,7 @@
 <div class="card">
   <div class="card-header">
       <div class="float-right">
-          <a href="{{ route('post.index') }}" class="btn btn-primary btn-sm">Back to Posts</a>
+          <a href="{{ route('post.index') }}" class="btn btn-primary btn-sm"><i class="fas fa-undo-alt"></i>&nbsp;Back to Posts</a>
       </div>
      Update Post
   </div>
@@ -49,7 +49,7 @@
             >
         </div>
 
-        <button type="submit" class="btn btn-primary">Update</button>
+        <button type="submit" class="btn btn-primary"><i class="far fa-save"></i>&nbsp;Save</button>
     </form>
 </div>
 @endsection

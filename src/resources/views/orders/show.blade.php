@@ -31,7 +31,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="float-right">
-                            <a href="{{ route('order.index') }}" class="btn btn-primary btn-sm">Back to Orders</a>
+                            <a href="{{ route('order.index') }}" class="btn btn-primary btn-sm"><i class="fas fa-undo-alt"></i>&nbsp;Back to Orders</a>
                         </div>
                         Order
                     </div>

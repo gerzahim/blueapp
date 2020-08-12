@@ -32,7 +32,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="float-right">
-                            <a href="{{ route('product_dimensions.index') }}" class="btn btn-primary btn-sm">Back to Product Dimensions</a>
+                            <a href="{{ route('product_dimensions.index') }}" class="btn btn-primary btn-sm"><i class="fas fa-undo-alt"></i>&nbsp;Back to Product Dimensions</a>
                         </div>
                         Edit Product Dimensions
                     </div>
@@ -58,7 +58,7 @@
                                 <input type="hidden" name="id" id="id" value="{{ $productDimensions->id }}">
                                 <input type="text" class="form-control" id="name" name="name" value="{{ $productDimensions->name }}" placeholder="500x500">
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary"><i class="far fa-save"></i>&nbsp;Save</button>
 
                         </form>
                     </div>

@@ -33,7 +33,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="float-right">
-                            <a href="{{ route('purchases.index') }}" class="btn btn-primary btn-sm">Back to PO list</a>
+                            <a href="{{ route('purchases.index') }}" class="btn btn-primary btn-sm"><i class="fas fa-undo-alt"></i>&nbsp;Back to PO list</a>
                         </div>
                         Edit PO
                     </div>

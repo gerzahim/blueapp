@@ -74,9 +74,6 @@ class ProductController extends Controller
 
         Product::create($request->only(['name','description','dimensions_id','category_id']));
 
-        if($request->ajax()){
-            return response()->json(['success'=>'Product saved successfully.']);
-        }
         return redirect()->route('product.index')->with('success', 'Product created successfully.');
     }
 

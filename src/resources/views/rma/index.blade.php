@@ -38,7 +38,7 @@
                             <!-- Column -->
                             <div class="col-md-6">
                                 <div class="float-right">
-                                    <a href="{{ route('rma.create') }}" class="btn btn-success btn-sm">Add</a>
+                                    <a href="{{ route('rma.create') }}" class="btn btn-success btn-sm"><i class="fas fa-plus-circle"></i>&nbsp;Add</a>
                                 </div>
                             </div>
                         </div>
@@ -72,7 +72,7 @@
                                         <a
                                         class="btn btn-primary btn-sm"
                                         href="{{ route('rma.edit', $rma->id ) }}"
-                                        >Edit</a>
+                                        ><i class="far fa-edit"></i>&nbsp;Edit</a>
 
                                         <!-- Delete button -->
                                         <form
@@ -83,7 +83,7 @@
                                             @csrf @method('DELETE')
                                             <input type='hidden' name='id' value='{{ $rma->id }}'>
                                             <button type="submit" class="btn btn-danger btn-sm">
-                                                Delete
+                                                <i class="far fa-trash-alt"></i>&nbsp;Delete
                                             </button>
                                         </form>
 

@@ -38,9 +38,9 @@
                             <!-- Column -->
                             <div class="col-md-6">
                                 <div class="float-right">
-                                    <a href="{{ url('/vendors_sorted') }}" class="btn btn-info btn-sm">Sort by Name</a>
+                                    <a href="{{ url('/vendors_sorted') }}" class="btn btn-info btn-sm"><i class="fas fa-sort-alpha-up"></i>&nbsp;Sort by Name</a>
                                     &nbsp;
-                                    <a href="{{ route('vendor.create') }}" class="btn btn-success btn-sm">Add</a>
+                                    <a href="{{ route('vendor.create') }}" class="btn btn-success btn-sm"><i class="fas fa-plus-circle"></i>&nbsp;Add</a>
                                 </div>
                             </div>
                         </div>
@@ -74,7 +74,7 @@
                                         <a
                                             class="btn btn-primary btn-sm"
                                             href="{{ route('vendor.edit',$vendor->id) }}"
-                                        >Edit</a>
+                                        ><i class="far fa-edit"></i>&nbsp;Edit</a>
 
                                         <!-- Delete button -->
                                         <form
@@ -84,7 +84,7 @@
                                         >
                                             @csrf @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm">
-                                                Delete
+                                                <i class="far fa-trash-alt"></i>&nbsp;Delete
                                             </button>
                                         </form>
                                     </td>

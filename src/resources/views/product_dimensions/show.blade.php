@@ -31,7 +31,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="float-right">
-                            <a href="{{ route('product_dimensions.index') }}" class="btn btn-primary btn-sm">Back to Product Dimensions</a>
+                            <a href="{{ route('product_dimensions.index') }}" class="btn btn-primary btn-sm"><i class="fas fa-undo-alt"></i>&nbsp;Back to Product Dimensions</a>
                         </div>
                         Product Dimensions
                     </div>

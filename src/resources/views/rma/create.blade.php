@@ -33,7 +33,7 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="float-right">
-                            <a href="{{ route('rma.index') }}" class="btn btn-primary btn-sm">Back RMA list</a>
+                            <a href="{{ route('rma.index') }}" class="btn btn-primary btn-sm"><i class="fas fa-undo-alt"></i>&nbsp;Back RMA list</a>
                         </div>
                         Create RMA
                     </div>

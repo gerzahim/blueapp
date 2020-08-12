@@ -96,14 +96,14 @@
                                     <tr>
                                         <th width="50%" scope="col">Product</th>
                                         <th width="30%" scope="col">Batch Number</th>
-                                        <th width="10%" scope="col">Qty</th>                                        
+                                        <th width="10%" scope="col">Qty</th>
                                         <th width="10%" scope="col">Handle</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr v-for="(po_product, k) in vars" :key="k">
 
-                                        <td width="50%"> 
+                                        <td width="50%">
                                             <select id="product_id" name="product_id" class="form-control form-control-sm" v-bind:class="[errors_adder.product ? 'is-invalid' : '']" v-model="po_product.product_id">
                                                 <option value="0" selected disabled>Select Product</option>
                                                 <option v-for="product in products" v-bind:value="product.id" :key="product.id">
@@ -119,7 +119,7 @@
                                             <input type="number" class="form-control form-control-sm" v-bind:class="[errors_adder.qty ? 'is-invalid' : '']" v-model="po_product.qty" min="1">
                                             <!-- <div v-show="errors_adder.qty" class="invalid-feedback">Please Indicate Qty!</div> -->
                                         </th>
-                                        <td align="center"> 
+                                        <td align="center">
                                             <!--
                                             <i class="far fa-trash-alt" @click="deleteRow(k, po_product)"></i>
                                             <a href="#" @click="$delete(vars, key)"><h3><i class="fa fa-times-circle" style="color:red"></i></h3></a>
@@ -133,8 +133,8 @@
                                                 <i class="fas fa-plus-circle"></i>&nbsp; Add a Line
                                             </button>
                                             <!-- Create Product modal -->
-                                            <button type='button' 
-                                                    class="btn btn-secondary btn-sm" 
+                                            <button type='button'
+                                                    class="btn btn-secondary btn-sm"
                                                     data-toggle="modal"
                                                     data-target="#create-modal">
                                                 <i class="fas fa-tags"></i>&nbsp; Create New Product
@@ -157,7 +157,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- 
+                <!--
                 <div class="p-4 border shadow-sm rounded">
                     <h4 class="card-title">List Products Selected</h4>
                     <hr>
@@ -258,7 +258,7 @@
                         </div>
                     </div>
 
-                    
+
                     <div class="col-md-6">
                         <div class="form-group-po">
                             <label class="mb-0" ><small>List Products Selected</small></label>
@@ -290,8 +290,8 @@
                             </ul>
                         </div>
                     </div>
-                    
-                </div> 
+
+                </div>
                 -->
 
                 <!-- END ROW -->
@@ -299,19 +299,22 @@
 
             <div class="form-actions mt-2">
                 <div class="text-right">
-                    <button type="submit" class="btn btn-info">Save</button>
+                    <button type="submit" class="btn btn-info"><i class="far fa-save"></i>&nbsp;Save</button>
                 </div>
             </div>
         </form>
 
 
 
-        <!-- Signup modal content -->
+        <!-- Modal content -->
         <div id="create-modal" class="modal fade" tabindex="-1" role="dialog"
             aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-
+                    <div class="modal-header modal-colored-header bg-primary">
+                        <button type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true">×</button>
+                    </div>
                     <div class="modal-body mt-2">
                     <ul class="nav nav-tabs nav-justified nav-bordered mb-3">
                         <li class="nav-item">
@@ -338,20 +341,20 @@
                     <div class="tab-content">
                         <br><br>
                         <div class="tab-pane show active" id="home">
-                                <form method="POST" @submit="checkFormProduct" action="/product">
+                                <form method="POST" @submit.prevent="addNewProduct" action="/product">
                                 <input type="hidden" name="_token" :value="csrf">
                                 <div class="form-body">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label>Product Name</label>
-                                                <input type="text" class="form-control" id="name" name="name" placeholder="P10-MCXXa">
+                                                <input type="text" class="form-control" id="product_name" name="name" v-model="form_modal_product_name" placeholder="P10-MCXXa">
                                             </div>
                                         </div>
                                         <div class="col-md-8">
                                             <div class="form-group">
                                                 <label>Product Description</label>
-                                                <input type="text" class="form-control" id="description" name="description" placeholder="Unit Cabinet P10, PO MIA-ZH...">
+                                                <input type="text" class="form-control" id="product_description" name="description" v-model="form_modal_product_description" placeholder="Unit Cabinet P10, PO MIA-ZH...">
                                             </div>
                                         </div>
                                     </div>
@@ -360,7 +363,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Dimensions</label>
-                                                <select id="dimensions_id" name="dimensions_id" class="form-control form-control-sm">
+                                                <select id="dimensions_id" name="product_dimensions_id" class="form-control form-control-sm" v-model="form_modal_product_dimension">
                                                     <option value="0" selected disabled>Select Product Dimension</option>
                                                     <option v-for="dimension in dimensions" v-bind:value="dimension.id" :key="dimension.id">
                                                         {{ dimension.name }}
@@ -371,7 +374,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Category</label>
-                                                <select id="category_id" name="category_id" class="form-control form-control-sm">
+                                                <select id="category_id" name="product_category_id" class="form-control form-control-sm" v-model="form_modal_product_category">
                                                     <option value="0" selected disabled>Select Category</option>
                                                     <option v-for="category in categories" v-bind:value="category.id" :key="category.id">
                                                         {{ category.name }}
@@ -382,9 +385,24 @@
                                     </div>
                                     <div class="row mt-4">
                                         <div class="col-md-12 text-right">
-                                            <button type="button" class="btn btn-light"
-                                                    data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-info"><i class="far fa-save"></i>&nbsp;Save</button>
+                                            <div v-show="loading_save_product">
+                                                <button type="button" class="btn btn-light"
+                                                        data-dismiss="modal">Close
+                                                </button>
+                                                <button class="btn btn-primary" type="button" disabled>
+                                                    <span class="spinner-border spinner-border-sm" role="status"
+                                                        aria-hidden="true"></span>
+                                                    Saving...
+                                                </button>
+                                            </div>
+                                            <div v-show="!loading_save_product">
+                                                <button type="button" class="btn btn-light"
+                                                        data-dismiss="modal">Close
+                                                </button>
+                                                <button type="submit" class="btn btn-info">
+                                                    <i class="far fa-save"></i>&nbsp;Save
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -417,7 +435,7 @@
 
     </div>
 
-    
+
 </template>
 
 <script>
@@ -426,28 +444,50 @@
         data: function () {
             return {
                 csrf: document.head.querySelector('meta[name="csrf-token"]').content,
-                action_edit:false,
-                loading_products:false,
-                loading_vendors:false,
-                loading_couriers:false,
+
+                action_edit       :false,
+                loading_products  :false,
+                loading_vendors   :false,
+                loading_couriers  :false,
                 loading_dimensions:false,
                 loading_categories:false,
+                loading_save_product:false,
 
                 // var form
-                form_id: '',
-                form_name: null,
-                form_date: '',
-                form_vendor_id: 0,
-                form_courier_id: 0,
-                form_transaction_type_id: 1,
-                form_tracking: '',
-                form_bol: '',
-                form_package_list: '',
-                form_reference: '',
+                form_id                 :'',
+                form_name               :null,
+                form_date               :'',
+                form_vendor_id          :0,
+                form_courier_id         :0,
+                form_transaction_type_id:1,
+                form_tracking           :'',
+                form_bol                :'',
+                form_package_list       :'',
+                form_reference          :'',
+
+                // var form_modal_product
+                form_modal_product_name       :'',
+                form_modal_product_description:'',
+                form_modal_product_dimension  :0,
+                form_modal_product_category   :0,
+
                 // var adder
                 product_selected: 0,
                 qty: 1,
                 batch_number: '',
+
+                options_toastr: {
+                    closeButton: true,
+                    progressBar: true,
+                    positionClass: "toast-top-right",
+                    preventDuplicates: true,
+                    showDuration: "300",
+                    hideDuration: "1000",
+                    timeOut: "5000",
+                    extendedTimeOut: "1000",
+                    timeOut: 5000
+                },
+
                 // var errors
                 errors: {
                     name:false,
@@ -497,15 +537,54 @@
                     return;
                 }
             },
-            checkFormProduct:function(e) {
-                /*
-                this.checkErrors()
-                if (!this.errors.length) {
-                    return true;
-                    alert('Form is Not Good')
+
+            addNewProduct(){
+
+                if ( this.form_modal_product_name  === '' || typeof(this.form_modal_product_name) == 'undefined' ){
+                    toastr.error('Please Type a Name !', 'Error Alert', this.options_toastr )
+                    return;
                 }
-                e.preventDefault();
-                */
+
+                if( typeof(this.form_modal_product_dimension) == 'undefined' || this.form_modal_product_dimension === null || this.form_modal_product_dimension === 0) {
+                    toastr.error('Please Select a Product Dimension !', 'Error Alert', this.options_toastr )
+                    return;
+                }
+
+                if( typeof(this.form_modal_product_category) == 'undefined' || this.form_modal_product_category === null || this.form_modal_product_category === 0) {
+                    toastr.error('Please Select a Category !', 'Error Alert', this.options_toastr )
+                    return;
+                }
+
+                try{
+                    this.loading_save_product = true
+                    axios.post('/create_product', {
+                        name          : this.form_modal_product_name,
+                        description   : this.form_modal_product_description,
+                        dimensions_id : this.form_modal_product_dimension,
+                        category_id   : this.form_modal_product_category,
+                    })
+                    .then(response => {
+                        this.loading_save_product = false
+                        toastr.success('Product added Successfully', 'Information Alert', this.options_toastr )
+                    })
+                    .catch(error => {
+                        this.loading_save_product = false
+                        toastr.error('Fail to Save Product !', 'Error Alert', this.options_toastr )
+                    });
+                }catch(error) {
+                    console.log(error)
+                }
+
+                // Clear Inputs Fields
+                this.form_modal_product_name        = ''
+                this.form_modal_product_description = ''
+                this.form_modal_product_dimension   = 0
+                this.form_modal_product_category    = 0
+
+
+                // Update products List
+                this.fetchProducts()
+
             },
             //Methods for Form
             validateName(){
@@ -583,7 +662,7 @@
                 this.areProductsSelected()
                 this.resetAddProducts()
             },
-            
+
             addNewRow() {
                 let variables = this.vars
                 variables.push({'product_id': this.product_selected,'product_name': '', 'qty': this.qty, 'batch_number': this.batch_number.toUpperCase()})

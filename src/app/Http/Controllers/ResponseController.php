@@ -16,6 +16,7 @@ use App\Vendor;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Traits\PaddingStringsTrait;
+use Illuminate\Support\Collection;
 
 
 class ResponseController extends Controller
@@ -303,6 +304,25 @@ class ResponseController extends Controller
         $sorted  = $dimensions->sortBy('name');
         $dimensions = $sorted->values()->all();
         return response()->json(['dimensions' => $dimensions]);
+    }
+
+
+    public function createProductAjax(Request $request){
+
+        $product = NULL;
+        try {
+            $product = Product::create($request->only(['name','description','dimensions_id','category_id']));
+        } catch (Exception $ex) {
+            // Anything that went wrong
+            abort(500, 'Could not create new Product'.$ex);
+        }
+
+        if($product instanceof Collection) {
+            return response()->json(['success'=>'Product saved successfully.'.$product], 200);
+        }else{
+            return response()->json(['error'=>'Product Not saved.'], 200);
+        }
+
     }
 
 

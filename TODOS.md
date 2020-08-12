@@ -1,15 +1,21 @@
 # TO DO List 
 
 ## TO DO   
-  
+- [x] add icons to Buttons
+- [X] Create Modal New Product
+- [ ] add Line 
+    - [ ] validate vars is ok with values and not duplicate
+    - [ ] Create computed vars to validate no duplication
+- [ ] Create Modal New Category
+- [ ] Create Modal New Product Dimension
+- [ ] https://oakml.com/auto-logout-inactive-users-after-a-period-of-time-in-laravel/  
 - [ ] Send refurbishment ( Create Order to Customer with refurbishes Items)
 - [ ] Report Filters
-- [ ] Import on Server GoDaddy
 
 ## Bugs 
      
 - [ ] created_at Stock (add created_at and updated_at in Model), update StockController.php
-- [ ] check rightjoin by join on ajaxcall ResponseController
+- [ ] 
 
 ## Core Improvements
 - [ ] Refactor PaddingStringsTrait , Replace - by spaces
@@ -57,7 +63,7 @@ https://docs.laravel-enso.com/
 - Npm Install 
 
 user1@gmail.com/12345678
-
+user1@gmail.com/password
 
 ## Done :checkered_flag:
 
