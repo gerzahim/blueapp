@@ -3,9 +3,10 @@
 ## TO DO   
 - [x] add icons to Buttons
 - [X] Create Modal New Product
-- [ ] add Line 
-    - [ ] validate vars is ok with values and not duplicate
-    - [ ] Create computed vars to validate no duplication
+- [X] add Line 
+    - [X] validate vars is ok with values and not duplicate
+    - [x] Create computed vars to validate no duplication
+- [ ] Clean Code PO 
 - [ ] Create Modal New Category
 - [ ] Create Modal New Product Dimension
 - [ ] https://oakml.com/auto-logout-inactive-users-after-a-period-of-time-in-laravel/  

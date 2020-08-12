@@ -528,12 +528,17 @@
                 this.validateName()
                 this.validateDate()
                 this.validateVendor()
-                this.areProductsSelected()
+                
+                // validate values with data
+                this.areProductsVarsGood(this.vars) 
+
+                // validate no duplicate values in vars
+                this.areProductsVarsDuplicated(this.vars)
 
                 if (this.errors.name || this.errors.date || this.errors.vendor || this.errors.vars) { //Put here the condition you want
                     e.preventDefault(); // Here triggering stop submit action
                     // Here you can put code relevant when event stops;
-                    toastr.error('Form is Not Good!', 'Error Alert', {timeOut: 5000})
+                    toastr.error('Sorry, Input values are not right !', 'Error Alert', this.options_toastr)
                     return;
                 }
             },
@@ -605,6 +610,33 @@
                     this.errors.vendor = true
                 }
             },
+
+            areProductsVarsGood(array){
+                this.errors.vars = false
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i].product_id === 0 || array[i].qty === 0){
+                        this.errors.vars = true
+                        toastr.error('Sorry, Product Lines Selected values are not right !', 'Error Alert', this.options_toastr)
+                        return
+                    }
+                }
+            },
+
+            areProductsVarsDuplicated(array){
+                this.errors.vars = false
+                for (var i = 0; i < array.length; i++) {
+                    for (var j = 0; j < array.length; j++) {
+                        if( (i !== j) && 
+                          (array[i].product_id === array[j].product_id) && 
+                          (array[i].batch_number === array[j].batch_number) ){
+                            this.errors.vars = true
+                            toastr.error('Sorry, Some Product Lines are Duplicated !', 'Error Alert', this.options_toastr)
+                            return
+                        }
+                    }
+                }
+            },
+
             areProductsSelected(){
                 this.errors.vars = false
                 if (!this.vars.length) {
