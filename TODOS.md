@@ -1,12 +1,9 @@
 # TO DO List 
 
 ## TO DO   
-- [x] add icons to Buttons
-- [X] Create Modal New Product
-- [X] add Line 
-    - [X] validate vars is ok with values and not duplicate
-    - [x] Create computed vars to validate no duplication
-- [ ] Clean Code PO 
+- [X] Clean Code PO 
+- [X] List errors.vars
+- [ ] Create Detail error.message
 - [ ] Create Modal New Category
 - [ ] Create Modal New Product Dimension
 - [ ] https://oakml.com/auto-logout-inactive-users-after-a-period-of-time-in-laravel/  
@@ -110,3 +107,8 @@ user1@gmail.com/password
 - [x] show PO
 - [x] show Order
 - [x] show RMA
+- [x] add icons to Buttons
+- [X] Create Modal New Product
+- [X] add Line 
+    - [X] validate vars is ok with values and not duplicate
+    - [x] Create computed vars to validate no duplication

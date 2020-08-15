@@ -86,9 +86,6 @@
                         </div>
                     </div>
                 </div>
-
-
-                <!-- Table Row of Products -->
                 <div class="p-2 border shadow-sm rounded">
                     <input type="hidden" name="vars" :value="JSON.stringify(vars)">
                     <div class="row">
@@ -100,53 +97,56 @@
                                         <th width="50%" scope="col">Product</th>
                                         <th width="30%" scope="col">Batch Number</th>
                                         <th width="10%" scope="col">Qty</th>
-                                        <th width="10%" scope="col"><center>Handle</center></th>
+                                        <th width="10%" scope="col">Handle</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr v-for="(po_product, k) in vars" :key="k">
 
                                         <td width="50%">
-                                            <div class="spinner-border text-success" role="status" v-show="loading_products">
-                                                <span class="sr-only">Loading...</span>
-                                            </div>
-                                            <div class="input-group" v-show="!loading_products">
-                                                <select id="product_id" name="product_id" class="form-control form-control-sm" v-model="po_product.product_id" @change="validateProductsVars">
-                                                    <option value="0" selected disabled>Select Product</option>
-                                                    <option v-for="product in products" v-bind:value="product.id" :key="product.id">
-                                                        {{ product.name }}
-                                                    </option>
-                                                </select>
-                                                <div class="input-group-append">
-                                                    <!-- Modal Button - Create Product  -->
-                                                    <button type='button'
-                                                            class="btn waves-effect waves-light btn-light btn-sm"
-                                                            data-toggle="modal"
-                                                            data-target="#create-modal">
-                                                        <i class="fas fa-plus-circle"></i>&nbsp;Add New Product
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </td> 
+                                            <select id="product_id" name="product_id" class="form-control form-control-sm" v-bind:class="[errors_adder.product ? 'is-invalid' : '']" v-model="po_product.product_id">
+                                                <option value="0" selected disabled>Select Product</option>
+                                                <option v-for="product in products" v-bind:value="product.id" :key="product.id">
+                                                    {{ product.name }}
+                                                </option>
+                                            </select>
+                                            <!-- <div v-show="errors_adder.product" class="invalid-feedback">Please Select a Product!</div> -->
+                                        </td>
                                         <td>
-                                            <input type="text" class="form-control form-control-sm text-uppercase" id="batch_number" name="batch_number" v-model="po_product.batch_number" placeholder="XFR4487..." @change="validateProductsVars">
+                                            <input type="text" class="form-control form-control-sm text-uppercase" id="batch_number" name="batch_number" v-model="po_product.batch_number" placeholder="XFR4487...">
                                         </td>
                                         <th scope="row">
-                                            <input type="number" class="form-control form-control-sm" v-model="po_product.qty" min="1" @change="validateProductsVars">
+                                            <input type="number" class="form-control form-control-sm" v-bind:class="[errors_adder.qty ? 'is-invalid' : '']" v-model="po_product.qty" min="1">
+                                            <!-- <div v-show="errors_adder.qty" class="invalid-feedback">Please Indicate Qty!</div> -->
                                         </th>
                                         <td align="center">
+                                            <!--
+                                            <i class="far fa-trash-alt" @click="deleteRow(k, po_product)"></i>
+                                            <a href="#" @click="$delete(vars, key)"><h3><i class="fa fa-times-circle" style="color:red"></i></h3></a>
+                                            -->
                                             <a href="#" @click="$delete(vars, k)"><h3><i class="far fa-trash-alt" style="color:red"></i></h3></a>
                                         </td>
                                     </tr>
                                     <tr v-show="errors.vars">
                                         <th colspan="4">
-                                            <div class="alert alert-danger">{{ errors.message }}</div>
+                                            <div class="alert alert-danger">
+                                                <p>
+                                                    <strong><li>Please Add a Product to PO</li></strong>
+                                                </p>
+                                            </div>
                                         </th>
                                     </tr>
                                     <tr>
                                         <th colspan="4">
                                             <button type='button' class="btn btn-success btn-sm" @click="addNewRow">
                                                 <i class="fas fa-plus-circle"></i>&nbsp; Add a Line
+                                            </button>
+                                            <!-- Create Product modal -->
+                                            <button type='button'
+                                                    class="btn btn-secondary btn-sm"
+                                                    data-toggle="modal"
+                                                    data-target="#create-modal">
+                                                <i class="fas fa-tags"></i>&nbsp; Create New Product
                                             </button>
                                         </th>
                                     </tr>
@@ -158,8 +158,144 @@
                         </div>
                     </div>
                 </div>
-                <!-- END Table Row of Products -->
-                
+                <!--
+                <div class="p-4 border shadow-sm rounded">
+                    <h4 class="card-title">List Products Selected</h4>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group-po">
+                            <input type="hidden" name="vars" :value="JSON.stringify(vars)">
+                        </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">Qty</th>
+                                        <th scope="col">Product</th>
+                                        <th scope="col">Batch Number</th>
+                                        <th scope="col">Handle</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="(variable, key) in vars" :key="key">
+                                        <th scope="row"><span class="badge badge-primary badge-pill"><b>{{variable.qty}}</b></span></th>
+                                        <td>{{variable.product_name}}</td>
+                                        <td>{{variable.batch_number}}</td>
+                                        <td><a href="#" @click="$delete(vars, key)"><h3><i class="fa fa-times-circle" style="color:red"></i></h3></a></td>
+                                    </tr>
+                                    <tr v-show="errors.vars">
+                                        <th colspan="4">
+                                            <div class="alert alert-danger">
+                                                <p>
+                                                    <strong><li>Please Add a Product to PO</li></strong>
+                                                </p>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                -->
+
+                <!--
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group-po">
+                            <div class="spinner-border text-success" role="status" v-show="loading_products">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <div class="card border-success pb-1 mb-2 mt-2" v-show="!loading_products">
+                                <div class="card-header bg-success pb-0 pt-1">
+                                    <h6 class="mb-1 mt-1 text-white text-sm-left">Add Products to PO</h6>
+                                </div>
+                                <div class="card-body bg-light pt-1 pb-1">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group-po">
+                                                <label class="mb-0"><small>Products</small></label>
+                                                <select id="product_id" name="product_id" class="form-control form-control-sm" v-bind:class="[errors_adder.product ? 'is-invalid' : '']" v-model="product_selected">
+                                                    <option value="0" disabled selected>Select Product</option>
+                                                    <option v-for="product in products" v-bind:value="{ id: product.id, name: product.name }" :key="product.id">
+                                                        {{ product.name }}
+                                                    </option>
+                                                </select>
+                                                <div v-show="errors_adder.product" class="invalid-feedback">Please Select a Product!</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group-po">
+                                                <label class="mb-0" ><small>Qty</small></label>
+                                                <input type="number" class="form-control form-control-sm" v-bind:class="[errors_adder.qty ? 'is-invalid' : '']" v-model="qty" min="1">
+                                                <div v-show="errors_adder.qty" class="invalid-feedback">Please Indicate Qty!</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group-po">
+                                                <label class="mb-0" ><small>Batch</small></label>
+                                                <input type="text" class="form-control form-control-sm text-uppercase" id="batch_number" name="batch_number" v-model="batch_number" placeholder="XFR4487...">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group-po">
+                                                <label class="mb-0"><small>Add</small></label>
+                                                <div class="input-group input-group-sm">
+                                                    <button type="button" class="btn-success" @click="insertNewProduct()"><i class="fas fa-plus"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <div class="form-group-po">
+                            <label class="mb-0" ><small>List Products Selected</small></label>
+                            <input type="hidden" name="vars" :value="JSON.stringify(vars)">
+                            <ul class="list-group list-group-full">
+                                <li v-for="(variable, key) in vars" :key="key" class="list-group-item">
+                                    <div class="row pr-1">
+                                        <div class="col-7 align-middle pl-2 px-1">
+                                            {{variable.product_name}}
+                                            <span class="badge badge-primary badge-pill"><b>{{variable.qty}}</b></span>
+                                        </div>
+                                        <div class="col-4 align-middle px-1">
+                                            <h4>
+                                                <span class="badge badge-secondary px-1">{{variable.batch_number}}</span>
+                                            </h4>
+                                        </div>
+                                        <div class="col-1 align-middle text-center px-1">
+                                            <a href="#" @click="$delete(vars, key)"><h3><i class="fa fa-times-circle" style="color:red"></i></h3></a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul v-show="errors.vars">
+                                <div class="alert alert-danger">
+                                    <p>
+                                        <strong><li>Please Add a Product to PO !</li></strong>
+                                    </p>
+                                </div>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+                -->
+
+                <!-- END ROW -->
             </div>
 
             <div class="form-actions mt-2">
@@ -185,19 +321,19 @@
                         <li class="nav-item">
                             <a href="#home" data-toggle="tab" aria-expanded="true" class="nav-link active">
                                 <i class="mdi mdi-home-variant d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block">Create New Product</span>
+                                <span class="d-none d-lg-block">Create a Product</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="#profile" data-toggle="tab" aria-expanded="false" class="nav-link">
                                 <i class="mdi mdi-account-circle d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block">Create New Category</span>
+                                <span class="d-none d-lg-block">Create Category</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="#settings" data-toggle="tab" aria-expanded="false" class="nav-link">
                                 <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
-                                <span class="d-none d-lg-block">Create New Prod. Dimensions</span>
+                                <span class="d-none d-lg-block">Create Product Dimensions</span>
                             </a>
                         </li>
                     </ul>
@@ -275,10 +411,18 @@
                             </form>
                         </div>
                         <div class="tab-pane" id="profile">
-                            <p>In Construction...</p>
+                            <p>Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim
+                                justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis
+                                eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum
+                                semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor
+                                eu, consequat vitae, eleifend ac, enim.</p>
                         </div>
                         <div class="tab-pane" id="settings">
-                            <p>In Construction...</p>
+                            <p>Food truck quinoa dolor sit amet, consectetuer adipiscing elit. Aenean
+                                commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et
+                                magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis,
+                                ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa
+                                quis enim.</p>
                         </div>
                     </div>
 
@@ -302,12 +446,12 @@
             return {
                 csrf: document.head.querySelector('meta[name="csrf-token"]').content,
 
-                action_edit         :false,
-                loading_products    :false,
-                loading_vendors     :false,
-                loading_couriers    :false,
-                loading_dimensions  :false,
-                loading_categories  :false,
+                action_edit       :false,
+                loading_products  :false,
+                loading_vendors   :false,
+                loading_couriers  :false,
+                loading_dimensions:false,
+                loading_categories:false,
                 loading_save_product:false,
 
                 // var form
@@ -329,47 +473,48 @@
                 form_modal_product_category   :0,
 
                 // var adder
-                product_selected:0,
-                qty             :1,
-                batch_number    :'',
+                product_selected: 0,
+                qty: 1,
+                batch_number: '',
 
                 options_toastr: {
-                    closeButton      :true,
-                    progressBar      :true,
-                    positionClass    :"toast-top-right",
-                    preventDuplicates:true,
-                    showDuration     :"300",
-                    hideDuration     :"1000",
-                    timeOut          :"5000",
-                    extendedTimeOut  :"1000",
-                    timeOut          :5000
+                    closeButton: true,
+                    progressBar: true,
+                    positionClass: "toast-top-right",
+                    preventDuplicates: true,
+                    showDuration: "300",
+                    hideDuration: "1000",
+                    timeOut: "5000",
+                    extendedTimeOut: "1000",
+                    timeOut: 5000
                 },
 
                 // var errors
                 errors: {
-                    name   :false,
-                    date   :false,
-                    vendor :false,
-                    vars   :false,
-                    message:''
+                    name:false,
+                    date:false,
+                    vendor:false,
+                    vars:false,
+                },
+                errors_adder: {
+                    qty:false,
+                    product:false,
                 },
 
-                products  :[],
-                vendors   :[],
-                couriers  :[],
+                products:[],
+                vendors:[],
+                couriers:[],
                 dimensions:[],
                 categories:[],
-                vars      :[],
-                purchase  :[],
+                vars:[],
+                purchase:[],
             }
         },
-
         watch: {
             form_date(){
                 this.validateDate();
             }
         },
-        
         computed: {
             computedAction: function() {
                 if(this.action_edit){
@@ -379,23 +524,26 @@
                 return `/purchases`
             },
         },
-
         methods: {
             processForm:function(e) {
                 this.validateName()
                 this.validateDate()
                 this.validateVendor()
-                this.validateProductsVars(this.vars) 
+                
+                // validate values with data
+                this.areProductsVarsGood(this.vars) 
 
-                if (this.errors.name || this.errors.date || this.errors.vendor || this.errors.vars) { 
+                // validate no duplicate values in vars
+                this.areProductsVarsDuplicated(this.vars)
+
+                if (this.errors.name || this.errors.date || this.errors.vendor || this.errors.vars) { //Put here the condition you want
                     e.preventDefault(); // Here triggering stop submit action
                     // Here you can put code relevant when event stops;
-                    toastr.error('Values in Form aren\'t right !', 'Error Alert', this.options_toastr)
+                    toastr.error('Sorry, Input values are not right !', 'Error Alert', this.options_toastr)
                     return;
                 }
             },
 
-            // Add New Product From Modal
             addNewProduct(){
 
                 if ( this.form_modal_product_name  === '' || typeof(this.form_modal_product_name) == 'undefined' ){
@@ -464,43 +612,89 @@
                 }
             },
 
-            validateProductsVars(array){
-                this.errors.vars    = false
-                this.errors.message = ''
-                
-                // Validate at least one product added 
-                if(array.length < 1){
-                    this.errors.vars = true
-                    this.errors.message = 'Please add Products to PO'
-                    //toastr.error('Please Add Products to PO','Error Alert',this.options_toastr)
-                    return
-                }
-                
-                //Validate Not empty or null values selected
+            areProductsVarsGood(array){
+                this.errors.vars = false
                 for (var i = 0; i < array.length; i++) {
                     if (array[i].product_id === 0 || array[i].qty === 0){
                         this.errors.vars = true
-                        this.errors.message = 'Please Select a Product and Qty !'
-                        //toastr.error('Selected Values in Products aren\'t right !', 'Error Alert', this.options_toastr)
+                        toastr.error('Sorry, Product Lines Selected values are not right !', 'Error Alert', this.options_toastr)
                         return
                     }
                 }
+            },
 
-                // validate no duplicate products-barcode in vars
+            areProductsVarsDuplicated(array){
+                this.errors.vars = false
                 for (var i = 0; i < array.length; i++) {
                     for (var j = 0; j < array.length; j++) {
                         if( (i !== j) && 
                           (array[i].product_id === array[j].product_id) && 
                           (array[i].batch_number === array[j].batch_number) ){
                             this.errors.vars = true
-                            this.errors.message = 'Error, Products are Duplicated ! !'
-                            //toastr.error('Some Products are Duplicated !', 'Error Alert', this.options_toastr)
+                            toastr.error('Sorry, Some Product Lines are Duplicated !', 'Error Alert', this.options_toastr)
                             return
                         }
                     }
                 }
             },
 
+            areProductsSelected(){
+                this.errors.vars = false
+                if (!this.vars.length) {
+                    this.errors.vars = true
+                }
+            },
+            //Methods for Adder
+            validateQty() {
+                this.errors_adder.qty = false;
+                if(this.qty < 1) {
+                    this.errors_adder.qty = true;
+                }
+            },
+            validateProductSelected() {
+                this.errors_adder.product = false;
+                if(typeof(this.product_selected.id) == 'undefined' || this.product_selected.id === null || this.product_selected.id === 0) {
+                    this.errors_adder.product = true;
+                }
+            },
+
+            areTheseValuesInArray(array, id, batch) {
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i].product_id === id && array[i].batch_number === batch)
+                        return [array[i].qty, i];
+                }
+                return 0;
+            },
+            areErrorsAdder(){
+                this.validateQty()
+                this.validateProductSelected()
+                if (this.errors_adder.qty || this.errors_adder.product) {
+                    return true;
+                }
+                return false
+            },
+            resetAddProducts() {
+                this.product_selected=0,
+                this.qty= 1,
+                this.batch_number= ''
+            },
+            insertNewProduct() {
+                if( !this.areErrorsAdder() ) {
+
+                    let variables = this.vars
+                    let getInfoArray = this.areTheseValuesInArray(this.vars, this.product_selected.id, this.batch_number)
+
+                    let previousQty = getInfoArray[0]
+                    let product_array_key = getInfoArray[1]
+                    if (previousQty > 0){
+                        variables.splice(product_array_key,1)
+                        this.qty = parseInt(this.qty)+parseInt(previousQty)
+                    }
+                    variables.push({'product_id': this.product_selected.id,'product_name': this.product_selected.name, 'qty': this.qty, 'batch_number': this.batch_number.toUpperCase()})
+                }
+                this.areProductsSelected()
+                this.resetAddProducts()
+            },
 
             addNewRow() {
                 let variables = this.vars
@@ -549,8 +743,6 @@
                     })
             },
         },
-
-
         created() {
             this.fetchProducts()
             this.fetchVendors()
@@ -558,6 +750,8 @@
             this.fetchProductsDimensions()
             this.fetchCategories()
             this.addNewRow()
+            //this.vendors = this.props_vendors
+            //this.products = this.props_products
 
             if (this.props_action){
                 this.action_edit = true
@@ -569,16 +763,16 @@
 
             if(this.props_purchase_edit){
 
-                this.purchase          = JSON.parse(this.props_purchase_edit);
-                this.form_id           = this.purchase.id
-                this.form_name         = this.purchase.name
-                this.form_date         = this.purchase.date
-                this.form_vendor_id    = this.purchase.contact_id
-                this.form_courier_id   = this.purchase.courier_id
-                this.form_tracking     = this.purchase.tracking
-                this.form_bol          = this.purchase.bol
+                this.purchase = JSON.parse(this.props_purchase_edit);
+                this.form_id = this.purchase.id
+                this.form_name = this.purchase.name
+                this.form_date = this.purchase.date
+                this.form_vendor_id = this.purchase.contact_id
+                this.form_courier_id = this.purchase.courier_id
+                this.form_tracking = this.purchase.tracking
+                this.form_bol = this.purchase.bol
                 this.form_package_list = this.purchase.package_list
-                this.form_reference    = this.purchase.reference
+                this.form_reference = this.purchase.reference
             }
         }
     }
