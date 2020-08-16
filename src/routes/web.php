@@ -59,11 +59,16 @@ Route::get('/get_clients', 'ResponseController@getClientsbyAjax');
 Route::get('/get_clientsDT', 'ResponseController@getClientsDT');
 Route::get('/get_couriers', 'ResponseController@getCouriersbyAjax');
 Route::get('/get_purchases_items', 'ResponseController@getPurchasesItemsbyAjax');
+Route::post('/get_po_name_availability', 'ResponseController@checkPoNameAvailabilityAjax');
+
 Route::get('/get_orders_by_customer_id/{id}', 'ResponseController@getOrderByCustomerID');
 Route::get('/get_purchases_by_vendor_id/{id}', 'ResponseController@getPurchasesByVendorID');
 Route::get('/get_rmas', 'ResponseController@getRMAItemsbyAjax');
 Route::get('/get_categories', 'ResponseController@getCategoriesAjax');
+Route::post('/create_category', 'ResponseController@createCategoryAjax');
 Route::get('/get_dimensions', 'ResponseController@getProductsDimensionsAjax');
+Route::post('/create_dimensions', 'ResponseController@createDimensionsAjax');
+
 
 
 

@@ -2,10 +2,10 @@
 
 ## TO DO
 
-- [X] Fix Icons on All places
-- [ ] Create Detail error.message
-- [ ] Create Modal New Category
-- [ ] Create Modal New Product Dimension
+- [x] Create Modal New Category
+- [x] Create Modal New Product Dimension
+- [x] Fix add Unique Category from Controler and Modal
+- [X] add instant PO Name Checker 
 - [ ] Fix Order Component
 - [ ] https://oakml.com/auto-logout-inactive-users-after-a-period-of-time-in-laravel/
 - [ ] Report Filters
@@ -16,7 +16,7 @@
 - [ ] Send refurbishment ( Create Order to Customer with refurbishes Items)
 
 ## Core Improvements
-
+- [ ] Create Detail error.message on Products Row Lines
 - [ ] Refactor PaddingStringsTrait , Replace - by spaces
 - [ ] 419 Page Expired , handle redirect or message error
 - [ ] Add Vue Datatables to RMA
@@ -39,9 +39,10 @@
 
 ## Deploy with Cpanel
 
-- update/replace src/app
-- update/replace src/public (file by file)
+- update/replace src/public (file by file) avoid .htaccess
 - update/replace src/resources
+
+- update/replace src/app
 - update/replace src/routes
 
 - descomprim node_modules
@@ -50,9 +51,6 @@
 - any new variable on .ENV
 - import .sql
 
-## For check
-
-https://docs.laravel-enso.com/
 
 ## RUN
 
@@ -65,6 +63,7 @@ user1@gmail.com/password
 
 ## Done :checkered_flag:
 
+- [X] Fix Icons on All places
 - [x] Define core ASF style & header information in the model and
       implement in various applications. [lib/whimsy/asf/themes.rb](lib/whimsy/asf/themes.rb)
 - [x] capital letter only works on Chrome

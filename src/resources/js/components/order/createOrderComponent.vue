@@ -153,7 +153,7 @@
             <div class="form-actions mt-2">
                 <div class="text-right">
                     <button type="submit" class="btn btn-info">Save</button>
-                    <button type="reset" class="btn btn-dark"><i class="fas fa-eraser"></i>&nbsp;Reset</button>
+                    <button type="reset" class="btn btn-light"><i class="fas fa-eraser"></i>&nbsp;Clear</button>
                 </div>
             </div>
         </form>

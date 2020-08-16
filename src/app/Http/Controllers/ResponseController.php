@@ -17,6 +17,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Traits\PaddingStringsTrait;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Validator;
 
 
 class ResponseController extends Controller
@@ -306,25 +307,87 @@ class ResponseController extends Controller
         return response()->json(['dimensions' => $dimensions]);
     }
 
-
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function createProductAjax(Request $request){
 
-        $product = NULL;
-        try {
+        $product = [];
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:categories|max:50',
+        ]);
+
+        if ($validator->passes()) {
             $product = Product::create($request->only(['name','description','dimensions_id','category_id']));
-        } catch (Exception $ex) {
-            // Anything that went wrong
-            abort(500, 'Could not create new Product'.$ex);
         }
 
-        if($product instanceof Collection) {
+        if( !empty($product) ) {
             return response()->json(['success'=>'Product saved successfully.'.$product], 200);
         }else{
-            return response()->json(['error'=>'Product Not saved.'], 200);
+            return response()->json(['error'=>$validator->errors()->all()]);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function createCategoryAjax(Request $request) {
+        $category = [];
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:categories|max:50',
+        ]);
+
+        if ($validator->passes()) {
+            $category = Category::create($request->only(['name']));
+        }
+
+        if( !empty($category) ) {
+            return response()->json(['success'=>'Category saved successfully.'.$category], 200);
+        }else{
+            return response()->json(['error'=>$validator->errors()->all()]);
         }
 
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function createDimensionsAjax(Request $request) {
+
+        $ProductDimensions = [];
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:product_dimensions|max:50',
+        ]);
+
+        if ($validator->passes()) {
+            $ProductDimensions = ProductDimensions::create($request->only(['name']));
+        }
+
+        if( !empty($ProductDimensions) ) {
+            return response()->json(['success'=>'ProductDimensions saved successfully.'.$ProductDimensions], 200);
+        }else{
+            return response()->json(['error'=>$validator->errors()->all()]);
+        }
+
+    }
+
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function checkPoNameAvailabilityAjax(Request $request) {
+
+        $purchases = Purchases::where('name', $request->name )->first();
+        $response = !empty($purchases);
+        return response()->json(['success'=> $response], 200);
+    }
 
 
 }

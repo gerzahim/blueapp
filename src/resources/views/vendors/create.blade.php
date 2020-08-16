@@ -141,7 +141,7 @@
                             </div>
                             <div class="form-actions">
                                 <div class="text-right">
-                                    <button type="reset" class="btn btn-dark"><i class="fas fa-eraser"></i>&nbsp;Reset</button>
+                                    <button type="reset" class="btn btn-light"><i class="fas fa-eraser"></i>&nbsp;Clear</button>
                                     <button type="submit" class="btn btn-info"><i class="far fa-save"></i>&nbsp;Save</button>
                                 </div>
                             </div>

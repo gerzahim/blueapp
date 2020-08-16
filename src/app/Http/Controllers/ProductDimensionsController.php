@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Product;
 use App\ProductDimensions;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 
 class ProductDimensionsController extends Controller
@@ -52,11 +53,12 @@ class ProductDimensionsController extends Controller
             'name.unique'    => 'The Product Dimension is already exist.'
         ];
         $this->validate($request, [
-            'name'                => 'required|unique:product_dimensions|max:50',
+            'name' => 'required|unique:product_dimensions|max:50',
         ], $messages);
 
         ProductDimensions::create($request->only(['name']));
         return redirect()->route('product_dimensions.index')->with('success', 'Product Dimensions created successfully.');
+
     }
 
     /**

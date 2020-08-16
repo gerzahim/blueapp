@@ -12,14 +12,12 @@
                             <input type="hidden" name="transaction_type_id" :value="form_transaction_type_id">
                             <input type="text" id="name" name="name" placeholder="MIA-ZHE011.."
                                    class="form-control form-control-sm"
-                                   v-bind:class="[ ( errors.name || ( !this.errors.po_name_availability ) ) ? 'is-invalid' : '']"
+                                   v-bind:class="[errors.name ? 'is-invalid' : '']"
                                    v-model="form_name"
+                                   @change="validateName"
                             />
                             <div v-show="errors.name" class="invalid-feedback">
-                                Please fill out this field with a unique PO Name !
-                            </div>
-                            <div v-show="(!this.errors.po_name_availability)" class="invalid-feedback">
-                                The PO Name has already been taken !
+                                Please Indicate unique PO Name !
                             </div>
                         </div>
                     </div>
@@ -152,17 +150,24 @@
                                                     </select>
                                                     <div class="input-group-append">
                                                         <!-- Modal Button - Create Product  -->
-                                                        <button type="button" class="btn waves-effect waves-light btn-success btn-sm"
-                                                                data-toggle="modal"
-                                                                data-target="#create-modal">
-                                                            <i class="fas fa-plus-circle"></i>&nbsp;Add New Product
+                                                        <button
+                                                            type="button"
+                                                            class="btn waves-effect waves-light btn-light btn-sm"
+                                                            data-toggle="modal"
+                                                            data-target="#create-modal"
+                                                        >
+                                                            <i
+                                                                class="fas fa-plus-circle"
+                                                            ></i
+                                                            >&nbsp;Add New
+                                                            Product
                                                         </button>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>
                                                 <input type="text" id="batch_number" name="batch_number" placeholder="XFR4487..."
-                                                       class="form-control form-control-sm text-uppercase"
+                                                       class="form-control form-control-sm text-uppercase"                                                    
                                                        v-model="po_product.batch_number"
                                                        @change="validateProductsVars"
                                                 />
@@ -217,36 +222,35 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header modal-colored-header bg-primary">
-                        Create New:
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                             <i class="fa fa-window-close" aria-hidden="true"></i>
                         </button>
                     </div>
-                    <div class="modal-body mt-1">
+                    <div class="modal-body mt-2">
                         <ul class="nav nav-tabs nav-justified nav-bordered mb-3">
                             <li class="nav-item">
                                 <a href="#home" data-toggle="tab" aria-expanded="true" class="nav-link active">
                                     <i class="mdi mdi-home-variant d-lg-none d-block mr-1"></i>
-                                    <span class="d-none d-lg-block">Product</span>
+                                    <span class="d-none d-lg-block">Create New Product</span>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="#profile" data-toggle="tab" aria-expanded="false" class="nav-link">
                                     <i class="mdi mdi-account-circle d-lg-none d-block mr-1"></i>
-                                    <span class="d-none d-lg-block">Category</span>
+                                    <span class="d-none d-lg-block">Create New Category</span>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="#settings" data-toggle="tab" aria-expanded="false" class="nav-link">
                                     <i class="mdi mdi-settings-outline d-lg-none d-block mr-1"></i>
-                                    <span class="d-none d-lg-block">Prod. Dimensions</span>
+                                    <span class="d-none d-lg-block"><i class="fas fa-plus-circle"></i>&nbsp; New P. Dimensions</span>
                                 </a>
                             </li>
                         </ul>
 
 
                         <div class="tab-content">
-                            <!-- FORM Product -->
+                            <br><br>
                             <div class="tab-pane show active" id="home">
                                 <form method="POST" @submit.prevent="addNewProduct" action="/product">
                                     <input type="hidden" name="_token" :value="csrf">
@@ -293,23 +297,17 @@
                                         <div class="row mt-4">
                                             <div class="col-md-12 text-right">
                                                 <div v-show="loading_save_product">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" disabled>
+                                                    <button type="button" class="btn btn-light" data-dismiss="modal">
                                                         <i class="fa fa-times" aria-hidden="true"></i>&nbsp;Close
                                                     </button>
-                                                    <button type="reset" class="btn btn-light" disabled>
-                                                        <i class="fas fa-eraser"></i>&nbsp;Clear
-                                                    </button>
-                                                    <button type="button" class="btn btn-primary" disabled>
+                                                    <button class="btn btn-primary" type="button" disabled>
                                                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                                         Saving...
                                                     </button>
                                                 </div>
                                                 <div v-show="!loading_save_product">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                    <button type="button" class="btn btn-light" data-dismiss="modal">
                                                         <i class="fa fa-times" aria-hidden="true"></i>&nbsp;Close
-                                                    </button>
-                                                    <button type="reset" class="btn btn-light">
-                                                        <i class="fas fa-eraser"></i>&nbsp;Clear
                                                     </button>
                                                     <button type="submit" class="btn btn-info">
                                                         <i class="far fa-save"></i>&nbsp;Save
@@ -321,101 +319,12 @@
 
                                 </form>
                             </div>
-                            <!-- END FORM Product -->
-
-                            <!-- FORM Category -->
                             <div class="tab-pane" id="profile">
-                                <form method="POST" @submit.prevent="addNewCategory" action="/category">
-                                    <input type="hidden" name="_token" :value="csrf">
-                                    <div class="form-body">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="name">Category Name</label>
-                                                    <input type="text" class="form-control" id="category_name" name="name" v-model="form_modal_category_name">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row mt-4">
-                                            <div class="col-md-12 text-right">
-                                                <div v-show="loading_save_category">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" disabled>
-                                                        <i class="fa fa-times" aria-hidden="true"></i>&nbsp;Close
-                                                    </button>
-                                                    <button type="reset" class="btn btn-light" disabled>
-                                                        <i class="fas fa-eraser"></i>&nbsp;Clear
-                                                    </button>
-                                                    <button type="button" class="btn btn-primary" disabled>
-                                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                                        Saving...
-                                                    </button>
-                                                </div>
-                                                <div v-show="!loading_save_category">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                                        <i class="fa fa-times" aria-hidden="true"></i>&nbsp;Close
-                                                    </button>
-                                                    <button type="reset" class="btn btn-light">
-                                                        <i class="fas fa-eraser"></i>&nbsp;Clear
-                                                    </button>
-                                                    <button type="submit" class="btn btn-info">
-                                                        <i class="far fa-save"></i>&nbsp;Save
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </form>
+                                <p>In Construction...</p>
                             </div>
-                            <!-- END FORM Category -->
-
-
-                            <!-- FORM PRODUCT DIMENSIONS -->
                             <div class="tab-pane" id="settings">
-                                <form method="POST" @submit.prevent="addNewDimension" action="/product_dimensions">
-                                    <input type="hidden" name="_token" :value="csrf">
-                                    <div class="form-body">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label for="name">Product Dimensions</label>
-                                                    <input type="text" class="form-control" id="dimension_name" name="name" placeholder="500x500" v-model="form_modal_dimension_name">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row mt-4">
-                                            <div class="col-md-12 text-right">
-                                                <div v-show="loading_save_dimension">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" disabled>
-                                                        <i class="fa fa-times" aria-hidden="true"></i>&nbsp;Close
-                                                    </button>
-                                                    <button type="reset" class="btn btn-light" disabled>
-                                                        <i class="fas fa-eraser"></i>&nbsp;Clear
-                                                    </button>
-                                                    <button type="button" class="btn btn-primary" disabled>
-                                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                                        Saving...
-                                                    </button>
-                                                </div>
-                                                <div v-show="!loading_save_dimension">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                                        <i class="fa fa-times" aria-hidden="true"></i>&nbsp;Close
-                                                    </button>
-                                                    <button type="reset" class="btn btn-light">
-                                                        <i class="fas fa-eraser"></i>&nbsp;Clear
-                                                    </button>
-                                                    <button type="submit" class="btn btn-info">
-                                                        <i class="far fa-save"></i>&nbsp;Save
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </form>
+                                <p>In Construction...</p>
                             </div>
-                            <!-- END FORM PRODUCT DIMENSIONS -->
-
                         </div>
 
                     </div>
@@ -433,15 +342,13 @@ export default {
             csrf: document.head.querySelector('meta[name="csrf-token"]')
                 .content,
 
-            action_edit           : false,
-            loading_products      : false,
-            loading_vendors       : false,
-            loading_couriers      : false,
-            loading_dimensions    : false,
-            loading_categories    : false,
-            loading_save_product  : false,
-            loading_save_category : false,
-            loading_save_dimension: false,
+            action_edit         : false,
+            loading_products    : false,
+            loading_vendors     : false,
+            loading_couriers    : false,
+            loading_dimensions  : false,
+            loading_categories  : false,
+            loading_save_product: false,
 
             // var form
             form_id                 : "",
@@ -460,9 +367,6 @@ export default {
             form_modal_product_description: "",
             form_modal_product_dimension  : 0,
             form_modal_product_category   : 0,
-            form_modal_category_name      : "",
-            form_modal_dimension_name     : "",
-
 
             // var adder
             product_selected: 0,
@@ -482,12 +386,11 @@ export default {
 
             // var errors
             errors: {
-                name                 : false,
-                po_name_availability : true,
-                date                 : false,
-                vendor               : false,
-                vars                 : false,
-                message              : ""
+                name   : false,
+                date   : false,
+                vendor : false,
+                vars   : false,
+                message: ""
             },
 
             products  : [],
@@ -503,10 +406,6 @@ export default {
     watch: {
         form_date() {
             this.validateDate();
-        },
-
-        form_name(){
-            this.validateName();
         }
     },
 
@@ -527,32 +426,47 @@ export default {
             this.validateVendor();
             this.validateProductsVars(this.vars);
 
-            if ( this.errors.name || (!this.errors.po_name_availability) || this.errors.date || this.errors.vendor || this.errors.vars ) {
+            if (
+                this.errors.name ||
+                this.errors.date ||
+                this.errors.vendor ||
+                this.errors.vars
+            ) {
                 e.preventDefault(); // Here triggering stop submit action
                 // Here you can put code relevant when event stops;
-                toastr.error("Values in Form aren't right !", "Error Alert", this.options_toastr);
+                toastr.error(
+                    "Values in Form aren't right !",
+                    "Error Alert",
+                    this.options_toastr
+                );
                 return;
             }
         },
 
         // Add New Product From Modal
         addNewProduct() {
-            if ( this.form_modal_product_name === "" || typeof this.form_modal_product_name == "undefined" ) {
-                toastr.error("Please Enter a Name !", "Error Alert", this.options_toastr);
+            if (
+                this.form_modal_product_name === "" ||
+                typeof this.form_modal_product_name == "undefined"
+            ) {
+                toastr.error("Please Type a Name !", "Error Alert", this.options_toastr);
                 return;
             }
 
-            if ( typeof this.form_modal_product_dimension == "undefined" ||
-                 this.form_modal_product_dimension === null ||
-                 this.form_modal_product_dimension === 0 ) {
+            if (
+                typeof this.form_modal_product_dimension == "undefined" ||
+                this.form_modal_product_dimension === null ||
+                this.form_modal_product_dimension === 0
+            ) {
                 toastr.error("Please Select a Product Dimension !", "Error Alert", this.options_toastr);
                 return;
             }
 
-            if ( typeof this.form_modal_product_category == "undefined" ||
-                 this.form_modal_product_category === null ||
-                 this.form_modal_product_category === 0 ) 
-            {
+            if (
+                typeof this.form_modal_product_category == "undefined" ||
+                this.form_modal_product_category === null ||
+                this.form_modal_product_category === 0
+            ) {
                 toastr.error("Please Select a Category !", "Error Alert", this.options_toastr);
                 return;
             }
@@ -566,23 +480,8 @@ export default {
                         category_id  : this.form_modal_product_category
                     })
                     .then(response => {
-
-                        if (response.data.success) {
-                            //alert('success=>'+response.data.success+'error=>'+response.data.error);
-                            toastr.success("Product added Successfully", "Information Alert", this.options_toastr);
-
-                            // Clear Inputs Fields
-                            this.form_modal_product_name        = "";
-                            this.form_modal_product_description = "";
-                            this.form_modal_product_dimension   = 0;
-                            this.form_modal_product_category    = 0;
-
-                            // Update products List
-                            this.fetchProducts();
-                        }else {
-                            toastr.error("Fail to Save Product ! <br>"+response.data.error, "Error Alert", this.options_toastr);
-                        }
-                        this.loading_save_product = false;                              
+                        this.loading_save_product = false;
+                        toastr.success("Product added Successfully", "Information Alert", this.options_toastr);
                     })
                     .catch(error => {
                         this.loading_save_product = false;
@@ -591,122 +490,23 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+
+            // Clear Inputs Fields
+            this.form_modal_product_name        = "";
+            this.form_modal_product_description = "";
+            this.form_modal_product_dimension   = 0;
+            this.form_modal_product_category    = 0;
+
+            // Update products List
+            this.fetchProducts();
         },
-
-
-        addNewCategory() {
-            if ( this.form_modal_category_name === "" ||
-                 typeof this.form_modal_category_name == "undefined") 
-            {
-                toastr.error("Please Enter a Category !", "Error Alert", this.options_toastr);
-                return;
-            }
-
-            try {
-                this.loading_save_category = true;
-                axios.post("/create_category", {
-                        name : this.form_modal_category_name
-                    })
-                    .then(response => {
-                        if (response.data.success) {
-                            //alert('success=>'+response.data.success+'error=>'+response.data.error);
-                            toastr.success("Category added Successfully", "Information Alert", this.options_toastr);
-
-                            // Clear Inputs Fields
-                            this.form_modal_category_name = "";
-
-                            //update Category List 
-                            this.fetchCategories()
-                        }else {
-                            toastr.error("Fail to Save Category ! <br>"+response.data.error, "Error Alert", this.options_toastr);
-                        }
-                        this.loading_save_category = false;                        
-                    })
-                    .catch(error => {
-                        this.loading_save_category = false;
-                        toastr.error("Fail to Save Category !", "Error Alert", this.options_toastr);
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        },
-
-        addNewDimension() {
-            if ( this.form_modal_dimension_name === "" ||
-                 typeof this.form_modal_dimension_name == "undefined" ) {
-                toastr.error("Please Enter the Dimensions !", "Error Alert", this.options_toastr);
-                return;
-            }
-
-            try {
-                this.loading_save_dimension = true;
-                axios.post("/create_dimensions", {
-                        name : this.form_modal_dimension_name
-                    })
-                    .then(response => {
-                        if (response.data.success) {
-                            //alert('success=>'+response.data.success+'error=>'+response.data.error);
-                            toastr.success("Dimensions added Successfully", "Information Alert", this.options_toastr);
-
-                            // Clear Inputs Fields
-                            this.form_modal_dimension_name = "";
-
-                            //update Dimensions List 
-                            this.fetchProductsDimensions()
-                        }else   {
-                            toastr.error("Fail to Save Dimensions ! <br>"+response.data.error, "Error Alert", this.options_toastr);
-                        }
-                        this.loading_save_dimension = false;
-                        
-                    })
-                    .catch(error => {
-                        this.loading_save_dimension = false;
-                        toastr.error("Fail to Save Dimensions !", "Error Alert", this.options_toastr);
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-        },
-
         //Methods for Form
         validateName() {
-
-            // Check is not Empty
             this.errors.name = false;
             if (!this.form_name) {
                 this.errors.name = true;
-                this.errors.po_name_availability = true;
-                return
             }
-
-            if ( this.action_edit && (this.purchase.name == this.form_name) ) {
-                this.errors.po_name_availability = true;
-                return
-            }
-
-            //Check If PO Name has already been taken.            
-            try {
-                axios.post("/get_po_name_availability", {
-                        name : this.form_name
-                    })
-                    .then(response => {
-                        
-                        if(response.data.success) {
-                            //alert('success=>'+response.data.success+'error=>'+response.data.error);
-                            //toastr.error("PO Name has already been taken.", "Information Alert", this.options_toastr);
-
-                            this.errors.po_name_availability = false;
-                            return
-                        }
-                        this.errors.po_name_availability = true;
-
-                    });
-            } catch (error) {
-                console.log(error);
-            }
-
         },
-
         validateDate() {
             this.errors.date = false;
             if (this.form_date === "") {
@@ -749,7 +549,7 @@ export default {
                         array[i].batch_number === array[j].batch_number
                     ) {
                         this.errors.vars = true;
-                        this.errors.message = "Error, Duplicated Products! !";
+                        this.errors.message = "Error, Products are Duplicated ! !";
                         return;
                     }
                 }
