@@ -43,9 +43,9 @@
                             <thead class="bg-primary text-white">
                                 <tr>
                                     <th>No</th>
+                                    <th>PO</th>
                                     <th>Product</th>
                                     <th>Batch</th>
-                                    <th>PO</th>
                                     <th>Purchased</th>
                                     <th>Sold</th>
                                     <th>QOH</th>
@@ -63,16 +63,16 @@
                                             {{ $key + 1 }}
                                         </td>
                                         <td>
+                                            <a href="{{ route('purchases.show',$stock->purchases_id) }}">
+                                                {{ $purchases_name[$stock->purchases_id] }}
+                                            </a>
+                                        </td>
+                                        <td>
                                             <a href="{{ route('product.show',$stock->product_id) }}">
                                                 {{ $products_name[$stock->product_id] }}
                                             </a>
                                         </td>
                                         <td>{{ $products_batch[$stock->purchases_item_id] }}</td>
-                                        <td>
-                                            <a href="{{ route('purchases.show',$stock->purchases_id) }}">
-                                                {{ $purchases_name[$stock->purchases_id] }}
-                                            </a>
-                                        </td>
                                         <td>{{ $stock->purchased }}</td>
                                         <td>{{ $stock->sold }}</td>
                                         <td>{{ $stock->qoh }}</td>
@@ -85,7 +85,7 @@
                                 </tbody>
                             @endforeach
                         </table>
-                        {!! $stocks->links() !!}
+                        {!! $stocks->render() !!}
                     </div>
                 </div>
             </div>

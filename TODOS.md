@@ -2,10 +2,8 @@
 
 ## TO DO
 
-- [x] Create Modal New Category
-- [x] Create Modal New Product Dimension
-- [x] Fix add Unique Category from Controler and Modal
-- [X] add instant PO Name Checker 
+- [X] Fix Inventory PO First Colum Order DESC PO , Order PO ASC
+- [X] Disable Search from TOP 
 - [ ] Fix Order Component
 - [ ] https://oakml.com/auto-logout-inactive-users-after-a-period-of-time-in-laravel/
 - [ ] Report Filters
@@ -113,3 +111,9 @@ user1@gmail.com/password
   - [x] Create computed vars to validate no duplication
 - [x] Clean Code PO
 - [x] List errors.vars
+
+- [x] Create Modal New Category
+- [x] Create Modal New Product Dimension
+- [x] Fix add Unique Category from Controler and Modal
+- [X] add instant PO Name Checker 
+- [X] Add New Product by Create New

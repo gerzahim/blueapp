@@ -7,7 +7,8 @@ use App\PurchasesItem;
 use App\Stock;
 use App\Product;
 use Debugbar;
-use Illuminate\Http\Request;
+use Request;
+
 
 class StockController extends Controller
 {
@@ -65,8 +66,10 @@ class StockController extends Controller
         $products_name  = $this->products_name;
         $products_batch = $this->products_batch;
         $purchases_name = $this->purchases_name;
-        $stocks         = Stock::latest()->paginate(10);
+        $stocks         = Stock::join('products', 'stocks.product_id', '=', 'products.id')
+                               ->orderBy('purchases_id', 'desc')->orderBy('products.name')->paginate(25);
 
+        //return view('stock.index', compact('stocks','products_name', 'products_batch', 'purchases_name', 'links'));
         return view('stock.index', compact('stocks','products_name', 'products_batch', 'purchases_name'));
     }
 
