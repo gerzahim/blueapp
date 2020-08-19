@@ -2,9 +2,7 @@
 
 ## TO DO
 
-- [X] Fix Inventory PO First Colum Order DESC PO , Order PO ASC
-- [X] Disable Search from TOP 
-- [ ] Fix Order Component
+- [X] Fix Order Component
 - [ ] https://oakml.com/auto-logout-inactive-users-after-a-period-of-time-in-laravel/
 - [ ] Report Filters
 
@@ -61,6 +59,8 @@ user1@gmail.com/password
 
 ## Done :checkered_flag:
 
+- [X] Fix Inventory PO First Colum Order DESC PO , Order PO ASC
+- [X] Disable Search from TOP 
 - [X] Fix Icons on All places
 - [x] Define core ASF style & header information in the model and
       implement in various applications. [lib/whimsy/asf/themes.rb](lib/whimsy/asf/themes.rb)

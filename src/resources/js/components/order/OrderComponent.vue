@@ -73,94 +73,148 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group-po">
-                            <div class="spinner-border text-success" role="status" v-show="loading_products">
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                            <div class="card border-success pb-1 mb-2 mt-2" v-show="!loading_products">
-                                <div class="card-header bg-success pb-0 pt-1">
-                                    <h6 class="mb-1 mt-1 text-white text-sm-left">Add Products to PO</h6>
-                                </div>
-                                <div class="card-body bg-light pt-1 pb-1">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group-po">
-                                                <label class="typo__label mb-0"><small>List Products</small></label>
-                                                <multiselect :options="products" placeholder="Select Product" label="text" track-by="text" v-model="product_selected" @select="dispatchAction">
-                                                </multiselect>
-                                                <div v-show="errors_adder.product" class="invalid-feedback">Please Select a Product!</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="form-group-po">
-                                                <label class="mb-0" ><small>Qty</small></label>
-                                                <input type="number" class="form-control form-control-sm" v-bind:class="[errors_adder.qty ? 'is-invalid' : '']" v-model="qty" min="1">
-                                                <div v-show="errors_adder.qty" class="invalid-feedback">Please Indicate Qty!</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="form-group-po">
-                                                <label class="mb-0"><small>Add</small></label>
-                                                <div class="input-group input-group-sm">
-                                                    <button type="button" class="btn-success" @click="insertNewProduct()"><i class="fas fa-plus"></i></button>
+                <!-- Table Row of Products -->
+                <div class="p-2 border shadow-sm rounded">
+                    <input type="hidden" name="vars" :value="JSON.stringify(vars)"/>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th width="35%" scope="col">Product</th>
+                                            <th width="20%" scope="col">Batch Number</th>
+                                            <th width="25%" scope="col">PO</th>
+                                            <th width="10%" scope="col">Qty</th>
+                                            <th width="10%" scope="col"><center>Handle</center></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(variable, key) in vars" :key="key" >
+                                            <td width="35%">
+                                                {{variable.product_name}}
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-secondary">{{variable.batch}}</span>
+                                            </td>
+                                            <td scope="row">
+                                                <span class="badge badge-warning">{{variable.po_name}}</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-primary badge-pill"><b>{{variable.qty}}</b></span>
+                                            </td>
+                                            <td align="center">
+                                                <a href="#" @click="dispatchDelete(vars, key)">
+                                                    <h3><i class="far fa-trash-alt" style="color:red"></i></h3>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr v-show="errors.vars">
+                                            <th colspan="5">
+                                                <div class="alert alert-danger">
+                                                    {{ errors.message }}
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group-po">
-                            <label class="mb-0" ><small>List Products Selected</small></label>
-                            <input type="hidden" name="vars" :value="JSON.stringify(vars)">
-                            <ul class="list-group list-group-full">
-                                <li v-for="(variable, key) in vars" :key="key" class="list-group-item">
-                                    <div class="row" style="height: 50px;">
-                                        <div class="col-10 align-middle">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    {{variable.product_name}}
-                                                    <span class="badge badge-primary badge-pill"><b>{{variable.qty}}</b></span>
-                                                </div>
-                                                <div class="col-12">
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <span class="badge badge-success">{{variable.po_name}}</span>
+                                            </th>
+                                        </tr>
+                                        <!-- tr>
+                                            <th colspan="5">                                                
+                                                <div class="col-md-12">
+                                                    <div class="form-group-po">
+                                                        <div class="spinner-border text-success" role="status" v-show="loading_products">
+                                                            <span class="sr-only">Loading...</span>
                                                         </div>
-                                                        <div class="col-6">
-                                                            <span class="badge badge-secondary">{{variable.batch}}</span>
+                                                        <div class="card border-success pb-1 mb-2 mt-2" v-show="!loading_products">
+                                                            <div class="card-header bg-success pb-0 pt-1">
+                                                                <h6 class="mb-1 mt-1 text-white text-sm-left">Add Products to Order</h6>
+                                                            </div>
+                                                            <div class="card-body bg-light pt-1 pb-1">
+                                                                <div class="row">
+                                                                    <div class="col-md-8">
+                                                                        <div class="form-group-po">
+                                                                            <label class="typo__label mb-0"><small>List Products</small></label>
+                                                                            <multiselect :options="products" placeholder="Select Product" label="text" track-by="text" v-model="product_selected" @select="dispatchAction">
+                                                                            </multiselect>
+                                                                            <div v-show="errors_adder.product" class="invalid-feedback">Please Select a Product!</div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="form-group-po">
+                                                                            <label class="mb-0" ><small>Qty</small></label>
+                                                                            <input type="number" class="form-control form-control-sm" v-bind:class="[errors_adder.qty ? 'is-invalid' : '']" v-model="qty" min="1">
+                                                                            <div v-show="errors_adder.qty" class="invalid-feedback">Please Indicate Qty!</div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <div class="form-group-po">
+                                                                            <label class="mb-0"><small>Add</small></label>
+                                                                            <div class="input-group input-group-sm">
+                                                                                <button type="button" class="btn-success" @click="insertNewProduct()"><i class="fas fa-plus-circle"></i></button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-2 align-middle text-right mt-1">
-                                            <a href="#" @click="dispatchDelete(vars, key)"><h3><i class="fa fa-times-circle" style="color:red"></i></h3></a>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                            <ul v-show="errors.vars">
-                                <div class="alert alert-danger">
-                                    <p>
-                                        <strong><li>Please Add Product to Order !</li></strong>
-                                    </p>
-                                </div>
-                            </ul>
+                                            </th>
+                                        </tr -->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div> <!-- END ROW -->
+                </div>
+                <!-- END Table Row of Products -->
+
+                <!-- Adder Products Tools -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="spinner-border text-success" role="status" v-show="loading_products">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <div class="card border-success pb-1 mb-2 mt-2" v-show="!loading_products">
+                            <div class="card-header bg-success pb-0 pt-1">
+                                <h6 class="mb-1 mt-1 text-white text-sm-left">Add Products to Order</h6>
+                            </div>
+                            <div class="card-body bg-light pt-1 pb-1">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group-po">
+                                            <label class="typo__label mb-0"><small>List Products</small></label>
+                                            <multiselect :options="products" placeholder="Select Product" label="text" track-by="text" v-model="product_selected" @select="dispatchAction">
+                                            </multiselect>
+                                            <div v-show="errors_adder.product" class="invalid-feedback">Please Select a Product!</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group-po">
+                                            <label class="mb-0" ><small>Qty</small></label>
+                                            <input type="number" class="form-control form-control-sm" v-bind:class="[errors_adder.qty ? 'is-invalid' : '']" v-model="qty" min="1">
+                                            <div v-show="errors_adder.qty" class="invalid-feedback">Please Indicate Qty!</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group-po">
+                                            <label class="mb-0"><small>Add</small></label>
+                                            <div class="input-group input-group-sm">
+                                                <button type="button" class="btn-success" @click="insertNewProduct()"><i class="fas fa-plus-circle"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                <!-- END Adder ROW -->
             </div>
 
             <div class="form-actions mt-2">
                 <div class="text-right">
-                    <button type="submit" class="btn btn-info">Save</button>
+                    <button type="submit" class="btn btn-info">
+                        <i class="far fa-save"></i>&nbsp;Save
+                    </button>
                 </div>
             </div>
         </form>
@@ -173,51 +227,55 @@
         data: function () {
             return {
                 csrf: document.head.querySelector('meta[name="csrf-token"]').content,
-                action_edit: false,
-                loading_products: false,
+
+                action_edit      : false,
+                loading_products : false,
                 loading_customers: false,
-                loading_couriers: false,
+                loading_couriers : false,
+                
                 // var form
-                form_id: '',
-                form_name: null,
-                form_date: '',
-                form_client_id: 0,
-                form_courier_id: 0,
+                form_id                 : '',
+                form_name               : null,
+                form_date               : '',
+                form_client_id          : 0,
+                form_courier_id         : 0,
                 form_transaction_type_id: 3,
-                form_tracking: '',
-                form_reference: '',
+                form_tracking           : '',
+                form_reference          : '',
+
                 // var adder
                 product_selected: 0,
-                qty: 1,
+                qty             : 1,
+
                 // var errors
                 errors: {
-                    name :false,
-                    date : false,
-                    client :false,
-                    vendor :false,
-                    vars :false,
+                    name   : false,
+                    date   : false,
+                    client : false,
+                    vendor : false,
+                    vars   : false,
                 },
                 errors_adder: {
-                    qty :false,
-                    product :false,
+                    qty      : false,
+                    product  : false,
                     available: false,
                 },
 
                 // var products_vars
-                current_prod_po_id: 0,
+                current_prod_po_id     : 0,
                 current_prod_po_item_id: 0,
-                current_prod_id: 0,
-                current_prod_name: '',
-                current_prod_batch: '',
-                current_prod_po_name: '',
-                current_prod_available: 0,
+                current_prod_id        : 0,
+                current_prod_name      : '',
+                current_prod_batch     : '',
+                current_prod_po_name   : '',
+                current_prod_available : 0,
 
-                products: [],
-                clients: [],
-                couriers: [],
-                vars: [],
+                products      : [],
+                clients       : [],
+                couriers      : [],
+                vars          : [],
                 vars_available: [],
-                order: [],
+                order         : [],
             }
         },
         watch: {
@@ -314,9 +372,9 @@
             },
             validateProductAvailable() {
                 this.errors_adder.available = false;
-                let previous_qty = 0
-                let previous_qty_edit = 0
-                let available = 0
+                let previous_qty            = 0
+                let previous_qty_edit       = 0
+                let available               = 0
 
                 // exist on vars_edit, means was already added
                 previous_qty_edit = this.getPreviousQty(this.vars_available, this.current_prod_id)
@@ -361,33 +419,35 @@
                 }
                 return false
             },
-            resetAddProducts() {
-                //this.product_selected=0,
-                this.qty= 1
+            resetAdderProducts() {
+                this.product_selected = 0,
+                this.qty = 1
             },
             insertNewProduct() {
                 if( !this.areErrorsAdder() ) {
 
-                    let variables = this.vars
-                    let getInfoArray = this.isThisValueInArray(this.vars, this.current_prod_id)
-                    let previousQty = getInfoArray[0]
+                    let variables         = this.vars
+                    let getInfoArray      = this.isThisValueInArray(this.vars, this.current_prod_id)
+                    let previousQty       = getInfoArray[0]
                     let product_array_key = getInfoArray[1]
-                    if (previousQty > 0){
+                    // If Product exist already on list , update Qty
+                    if (previousQty > 0) {
                         variables.splice(product_array_key,1)
                         this.qty = parseInt(this.qty)+parseInt(previousQty)
                     }
                     variables.push({
-                        'po_id': this.current_prod_po_id,
-                        'po_item_id': this.current_prod_po_item_id,
-                        'product_id': this.current_prod_id,
+                        'po_id'       : this.current_prod_po_id,
+                        'po_item_id'  : this.current_prod_po_item_id,
+                        'product_id'  : this.current_prod_id,
                         'product_name': this.current_prod_name,
-                        'batch': this.current_prod_batch,
-                        'po_name': this.current_prod_po_name,
-                        'available': this.current_prod_available,
-                        'qty': this.qty})
+                        'batch'       : this.current_prod_batch,
+                        'po_name'     : this.current_prod_po_name,
+                        'available'   : this.current_prod_available,
+                        'qty'         : this.qty 
+                    })
                 }
                 this.areProductsSelected()
-                this.resetAddProducts()
+                this.resetAdderProducts()
             },
 
             //Methods for Ajax
@@ -395,7 +455,7 @@
                 this.loading_customers = true
                 axios.get('/get_clients')
                     .then(response => {
-                        this.clients = response.data.clients
+                        this.clients           = response.data.clients
                         this.loading_customers = false
                     })
             },
@@ -403,7 +463,7 @@
                 this.loading_couriers = true
                 axios.get('/get_couriers')
                     .then(response => {
-                        this.couriers = response.data.couriers
+                        this.couriers         = response.data.couriers
                         this.loading_couriers = false
                     })
             },
@@ -412,7 +472,7 @@
                 axios
                     .get('/get_purchases_items')
                     .then(response => {
-                        this.products = response.data.products
+                        this.products         = response.data.products
                         this.loading_products = false
                     })
             }
@@ -435,14 +495,14 @@
             }
 
             if(this.props_order_edit){
-                this.order = JSON.parse(this.props_order_edit);
-                this.form_id = this.order.id
-                this.form_name = this.order.name
-                this.form_date = this.order.date
-                this.form_client_id = this.order.client_id
+                this.order           = JSON.parse(this.props_order_edit);
+                this.form_id         = this.order.id
+                this.form_name       = this.order.name
+                this.form_date       = this.order.date
+                this.form_client_id  = this.order.client_id
                 this.form_courier_id = this.order.courier_id
-                this.form_tracking = this.order.tracking
-                this.form_reference = this.order.reference
+                this.form_tracking   = this.order.tracking
+                this.form_reference  = this.order.reference
             }
         }
     }

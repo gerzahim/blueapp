@@ -43,7 +43,7 @@ class ResponseController extends Controller
      */
     public function getClientsDT() {
         $clients  = Client::all();
-        $subset = $clients->map->only(['id','name']);
+        $subset   = $clients->map->only(['id','name']);
         return response()->json(['data' => $subset]);
     }
 
@@ -152,16 +152,16 @@ class ResponseController extends Controller
         $i=0;
         foreach ($purchases_items as $purchase_item)
         {
-            $data2[$i]['id'] = $purchase_item->id;
-            //$data2[$i]['text'] = $purchase_item->product_name.' | PO: '.$purchase_item->po_name.' | Av ('.$purchase_item->available.')';
-            $data2[$i]['text'] = $this->formatPadString($purchase_item->product_name,$purchase_item->po_name,$purchase_item->available);
+            $data2[$i]['id']         = $purchase_item->id;
+            //$data2[$i]['text']     = $purchase_item->product_name.' | PO: '.$purchase_item->po_name.' | Av ('.$purchase_item->available.')';
+            $data2[$i]['text']       = $this->formatPadString($purchase_item->product_name,$purchase_item->po_name,$purchase_item->available);
             $data2[$i]['product_id'] = $purchase_item->product_id;
-            $data2[$i]['name'] = $purchase_item->product_name;
-            $data2[$i]['batch'] = $purchase_item->batch;
-            $data2[$i]['po_name'] = $purchase_item->po_name;
-            $data2[$i]['po_id'] = $purchase_item->po_id;
+            $data2[$i]['name']       = $purchase_item->product_name;
+            $data2[$i]['batch']      = $purchase_item->batch;
+            $data2[$i]['po_name']    = $purchase_item->po_name;
+            $data2[$i]['po_id']      = $purchase_item->po_id;
             $data2[$i]['po_item_id'] = $purchase_item->id;
-            $data2[$i]['available'] = $purchase_item->available;
+            $data2[$i]['available']  = $purchase_item->available;
             $i++;
         }
         $purchases_items = $data2;
@@ -192,16 +192,16 @@ class ResponseController extends Controller
         $i=0;
         foreach ($orders_items as $order_item)
         {
-            $data2[$i]['id'] = $order_item->id;
-            $data2[$i]['text'] = $this->formatPadString2($order_item->product_name,$order_item->po_name, $order_item->order_name, $order_item->available);
+            $data2[$i]['id']         = $order_item->id;
+            $data2[$i]['text']       = $this->formatPadString2($order_item->product_name,$order_item->po_name, $order_item->order_name, $order_item->available);
             $data2[$i]['product_id'] = $order_item->product_id;
-            $data2[$i]['name'] = $order_item->product_name;
-            $data2[$i]['batch'] = $order_item->batch;
-            $data2[$i]['order_id'] = $order_item->order_id;
-            $data2[$i]['po_name'] = $order_item->po_name;
-            $data2[$i]['po_id'] = $order_item->po_id;
+            $data2[$i]['name']       = $order_item->product_name;
+            $data2[$i]['batch']      = $order_item->batch;
+            $data2[$i]['order_id']   = $order_item->order_id;
+            $data2[$i]['po_name']    = $order_item->po_name;
+            $data2[$i]['po_id']      = $order_item->po_id;
             $data2[$i]['po_item_id'] = $order_item->id;
-            $data2[$i]['available'] = $order_item->available;
+            $data2[$i]['available']  = $order_item->available;
             $i++;
         }
         $orders_items = $data2;
@@ -232,16 +232,16 @@ class ResponseController extends Controller
         $i=0;
         foreach ($purchases_items as $purchase_item)
         {
-            $data3[$i]['id'] = $purchase_item->id;
-            $data3[$i]['text'] = $this->formatPadString($purchase_item->product_name,$purchase_item->po_name,$purchase_item->available);
+            $data3[$i]['id']         = $purchase_item->id;
+            $data3[$i]['text']       = $this->formatPadString($purchase_item->product_name,$purchase_item->po_name,$purchase_item->available);
             $data3[$i]['product_id'] = $purchase_item->product_id;
-            $data3[$i]['name'] = $purchase_item->product_name;
-            $data3[$i]['batch'] = $purchase_item->batch;
-            $data3[$i]['order_id'] = 0;
-            $data3[$i]['po_name'] = $purchase_item->po_name;
-            $data3[$i]['po_id'] = $purchase_item->po_id;
+            $data3[$i]['name']       = $purchase_item->product_name;
+            $data3[$i]['batch']      = $purchase_item->batch;
+            $data3[$i]['order_id']   = 0;
+            $data3[$i]['po_name']    = $purchase_item->po_name;
+            $data3[$i]['po_id']      = $purchase_item->po_id;
             $data3[$i]['po_item_id'] = $purchase_item->id;
-            $data3[$i]['available'] = $purchase_item->available;
+            $data3[$i]['available']  = $purchase_item->available;
             $i++;
         }
         $purchases_items = $data3;
@@ -266,15 +266,15 @@ class ResponseController extends Controller
         $i=0;
         foreach ($rma_items as $purchase_item)
         {
-            $data2[$i]['id'] = $purchase_item->id;
-            $data2[$i]['text'] = $this->formatPadString3($purchase_item->product_name,$purchase_item->po_name,$purchase_item->available);
+            $data2[$i]['id']         = $purchase_item->id;
+            $data2[$i]['text']       = $this->formatPadString3($purchase_item->product_name,$purchase_item->po_name,$purchase_item->available);
             $data2[$i]['product_id'] = $purchase_item->product_id;
-            $data2[$i]['name'] = $purchase_item->product_name;
-            $data2[$i]['batch'] = $purchase_item->batch;
-            $data2[$i]['po_name'] = $purchase_item->po_name;
-            $data2[$i]['po_id'] = $purchase_item->po_id;
+            $data2[$i]['name']       = $purchase_item->product_name;
+            $data2[$i]['batch']      = $purchase_item->batch;
+            $data2[$i]['po_name']    = $purchase_item->po_name;
+            $data2[$i]['po_id']      = $purchase_item->po_id;
             $data2[$i]['po_item_id'] = $purchase_item->id;
-            $data2[$i]['available'] = $purchase_item->available;
+            $data2[$i]['available']  = $purchase_item->available;
             $i++;
         }
         $purchases_items = $data2;
@@ -290,7 +290,7 @@ class ResponseController extends Controller
      */
     public function getCategoriesAjax() {
         $categories = Category::all();
-        $sorted  = $categories->sortBy('name');
+        $sorted     = $categories->sortBy('name');
         $categories = $sorted->values()->all();
         return response()->json(['categories' => $categories]);
     }
@@ -302,7 +302,7 @@ class ResponseController extends Controller
      */
     public function getProductsDimensionsAjax() {
         $dimensions = ProductDimensions::all();
-        $sorted  = $dimensions->sortBy('name');
+        $sorted     = $dimensions->sortBy('name');
         $dimensions = $sorted->values()->all();
         return response()->json(['dimensions' => $dimensions]);
     }

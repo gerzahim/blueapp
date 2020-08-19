@@ -152,10 +152,10 @@
                                                     </select>
                                                     <div class="input-group-append">
                                                         <!-- Modal Button - Create Product  -->
-                                                        <button type="button" class="btn waves-effect waves-light btn-success btn-sm"
+                                                        <button type="button" class="btn btn-success btn-sm"
                                                                 data-toggle="modal"
                                                                 data-target="#create-modal">
-                                                            <i class="fas fa-plus-circle"></i>&nbsp;Add New Product
+                                                            <i class="fas fa-plus-circle"></i>&nbsp;Create New
                                                         </button>
                                                     </div>
                                                 </div>

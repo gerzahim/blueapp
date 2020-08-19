@@ -44,7 +44,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('createpo-component', require('./components/po/createPOComponent.vue').default);
 Vue.component('editpo-component', require('./components/po/editPOComponent.vue').default);
 
-Vue.component('createorder-component', require('./components/order/createOrderComponent.vue').default);
+Vue.component('createorder-component', require('./components/order/createOrderComponent08182020.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
