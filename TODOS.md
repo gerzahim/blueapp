@@ -3,6 +3,8 @@
 ## TO DO
 
 - [X] Fix Order Component
+- [X] Fix RMAComponent
+- [X] Fix RefurbishComponent
 - [ ] https://oakml.com/auto-logout-inactive-users-after-a-period-of-time-in-laravel/
 - [ ] Report Filters
 
