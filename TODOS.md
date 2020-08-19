@@ -2,10 +2,8 @@
 
 ## TO DO
 
-- [X] Fix Order Component
-- [X] Fix RMAComponent
-- [X] Fix RefurbishComponent
-- [ ] https://oakml.com/auto-logout-inactive-users-after-a-period-of-time-in-laravel/
+
+- [ ] Search List (autosearch with axios)
 - [ ] Report Filters
 
 ## Bugs
@@ -16,7 +14,6 @@
 ## Core Improvements
 - [ ] Create Detail error.message on Products Row Lines
 - [ ] Refactor PaddingStringsTrait , Replace - by spaces
-- [ ] 419 Page Expired , handle redirect or message error
 - [ ] Add Vue Datatables to RMA
       https://vuejsexamples.com/data-table-simplify-datatable-component-for-vue-2-x/
       https://codepen.io/ratiw/pen/GmJayw
@@ -29,13 +26,12 @@
   <td style="font-weight: bold; text-align:right;background-color:#FFEEAA;"> +1,192 </td>
 
 - [ ] If fail refill values ( No priority) on Vue component
-- [ ] Disable Button Save or Message why not submit
 
 ## Crazy Ideas :
 
 - [ ] Turbolinks
 
-## Deploy with Cpanel
+## Deploy with Cpanel and winSCP
 
 - update/replace src/public (file by file) avoid .htaccess
 - update/replace src/resources
@@ -61,6 +57,10 @@ user1@gmail.com/password
 
 ## Done :checkered_flag:
 
+- [X] https://oakml.com/auto-logout-inactive-users-after-a-period-of-time-in-laravel/
+- [X] Fix Order Component
+- [X] Fix RMAComponent
+- [X] Fix RefurbishComponent
 - [X] Fix Inventory PO First Colum Order DESC PO , Order PO ASC
 - [X] Disable Search from TOP 
 - [X] Fix Icons on All places

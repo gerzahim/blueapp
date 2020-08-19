@@ -50,11 +50,11 @@
     <!-- Main wrapper Vue app -->
     <!-- ============================================================== -->
     <div id="app">
+
         <!-- ============================================================== -->
         <!-- Main wrapper - style you can find in pages.scss -->
         <!-- ============================================================== -->
         <div id="main-wrapper" data-theme="light" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed" data-boxed-layout="full">
-
 
             <!-- ============================================================== -->
             <!-- Topbar header - style you can find in pages.scss -->
@@ -76,6 +76,14 @@
             <!-- Page wrapper SECTION -->
             <!-- ============================================================== -->
             <div class="page-wrapper">
+
+                <!-- ============================================================== -->
+                <!-- Auto-Logout Component  -->
+                <!-- ============================================================== -->
+                @auth
+                    <auto-logout></auto-logout>
+                @endauth
+
 
                 @yield('content')
 
