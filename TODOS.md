@@ -2,7 +2,9 @@
 
 ## TO DO
 
-
+- [X] Fix Css to mix.js('resources/js/app.js', 'public/js')
+- [ ] Fix Css to mix.sass('resources/sass/app.scss', 'public/css');
+       https://stackoverflow.com/questions/43451509/how-to-install-font-awesome-in-laravel-mix
 - [ ] Search List (autosearch with axios)
 - [ ] Report Filters
 

@@ -2,6 +2,7 @@
 @import url(icons/font-awesome/css/fontawesome-all.css);
 @import url(icons/simple-line-icons/css/simple-line-icons.css);
 @import url(icons/themify-icons/themify-icons.css);
+
 .topbar .dropdown-menu .with-arrow > span {
   transform: rotate(45deg);
   -ms-transform: rotate(45deg);
@@ -4910,7 +4911,7 @@ button.bg-success:focus {
 a.bg-successalt:hover, a.bg-successalt:focus,
 button.bg-successalt:hover,
 button.bg-successalt:focus {
-  background-color: #25C681 !important; }  
+  background-color: #25C681 !important; }
 
 .bg-info {
   background-color: #5f76e8 !important; }

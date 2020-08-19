@@ -14,17 +14,19 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('/adminmart/images/favicon.png') }}">
     @if(!isset($TITLE)) <?php $TITLE = "Inventory Huahai";?> @endif
     <title>.: {{$TITLE}} :.</title>
-    <!-- This page css -->
+
     <!-- Custom CSS -->
     <link href="{{ asset('/adminmart/css/style.css') }}" rel="stylesheet">
+
+    <!-- Laravel-MIX CSS
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    -->
 
     <!-- Toastr CSS -->
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}">
 
 
-    <!-- Laravel-MIX CSS
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    -->
+
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -125,7 +127,8 @@
     <!-- ============================================================== -->
 
     <!-- Laravel-MIX JS -->
-    <script src="{{asset('js/app.js')}}"></script>
+    <script src="{{ mix('js/app.js') }}"></script>
+    <!-- script src=" {{ asset('js/app.js') }}"></script -->
 
     <!-- Adminmart JS -->
     <!--
